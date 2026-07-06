@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('aim-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<title>An Ideas Merchant · Clarity before creation</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ============================================================
+     An Ideas Merchant — website. Dark direction (cinema black).
+     Built on AIM design system tokens (styles.css). Page-level
+     layout only; colour + type come from the system.
+     ============================================================ */
+  :root {
+    --maxw: 1200px;
+    --gutter: clamp(22px, 5vw, 80px);
+    --section-y: clamp(80px, 11vw, 150px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--aim-black); color: var(--aim-ivory);
+    overflow-x: hidden; margin: 0;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  p { text-wrap: pretty; margin: 0; }
+
+  .display { font-family: var(--font-display); font-weight: 600; line-height: 1.04; letter-spacing: -0.02em; }
+  .kicker {
+    font-family: var(--font-body); font-weight: 500; font-size: 12px;
+    letter-spacing: var(--tracking-meta); text-transform: uppercase;
+    color: var(--aim-gold); margin: 0;
+  }
+  .meta-label {
+    font-family: var(--font-body); font-weight: 500; font-size: 11px;
+    letter-spacing: var(--tracking-meta); text-transform: uppercase;
+    color: var(--aim-muted); margin: 0;
+  }
+  .lede { font-size: clamp(17px, 1.5vw, 20px); line-height: 1.62; color: var(--aim-muted); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); }
+  section { position: relative; }
+
+  /* ---- NAV ---- */
+  .nav {
+    position: sticky; top: 0; z-index: 60;
+    background: color-mix(in srgb, var(--aim-black) 82%, transparent);
+    backdrop-filter: saturate(120%) blur(12px);
+    border-bottom: 1px solid var(--aim-hairline-ivory);
+  }
+  .nav-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: 16px var(--gutter);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  }
+  .brand { display: flex; align-items: center; gap: 13px; }
+  .brand .mono-logo { height: 40px; width: auto; display: block; }
+  .brand .word { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .nav-links { display: flex; align-items: center; gap: 34px; }
+  .nav-links a {
+    font-family: var(--font-body); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--aim-muted);
+    transition: color var(--dur) var(--ease-out);
+  }
+  .nav-links a:hover { color: var(--aim-ivory); }
+
+  .btn {
+    font-family: var(--font-body); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 13px 26px; cursor: pointer; border: 1px solid transparent;
+    white-space: nowrap; display: inline-flex; align-items: center; gap: 10px;
+    transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out);
+  }
+  .btn .arw { transition: transform var(--dur) var(--ease-out); }
+  .btn:hover .arw { transform: translateX(4px); }
+  .btn-outline { border-color: var(--aim-gold); color: var(--aim-gold); }
+  .btn-outline:hover { background: var(--aim-gold); color: var(--aim-charcoal); }
+  .btn-solid { background: var(--aim-gold); color: var(--aim-charcoal); }
+  .btn-solid:hover { background: var(--aim-gold-light); }
+  .btn-ghost { border-color: var(--aim-hairline-ivory-strong); color: var(--aim-ivory); }
+  .btn-ghost:hover { border-color: var(--aim-ivory); }
+
+  /* ---- HERO ---- */
+  .hero { position: relative; min-height: min(92vh, 900px); display: flex; align-items: center; isolation: isolate; overflow: hidden; }
+  .hero-slides { position: absolute; inset: 0; z-index: -2; }
+  .hero-slides img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    object-position: 70% 50%; opacity: 0; transition: opacity 1600ms var(--ease-inout);
+    filter: saturate(0.9) contrast(1.02);
+  }
+  .hero-slides img.on { opacity: 1; }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(90deg, rgba(8,8,7,0.97) 0%, rgba(8,8,7,0.86) 34%, rgba(8,8,7,0.42) 66%, rgba(8,8,7,0.15) 100%),
+      linear-gradient(0deg, rgba(8,8,7,0.65) 0%, rgba(8,8,7,0) 40%);
+  }
+  .hero-inner { width: 100%; padding-block: clamp(90px, 14vw, 140px); }
+  .hero .eyebrow { margin-bottom: 26px; }
+  .hero-wordmark { margin: 0; }
+  .hero-wordmark img { width: clamp(230px, 42vw, 470px); height: auto; display: block; }
+  .hero-sub { margin: 30px 0 0; max-width: 44ch; }
+  .hero-actions { margin-top: 44px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .hero-progress { position: absolute; left: var(--gutter); bottom: 34px; z-index: 2; display: flex; gap: 8px; }
+  .hero-progress span { width: 34px; height: 2px; background: var(--aim-hairline-ivory-strong); transition: background var(--dur) var(--ease-out); }
+  .hero-progress span.on { background: var(--aim-gold); }
+
+  /* ---- generic section head ---- */
+  .sec-head h2 { font-size: clamp(34px, 5vw, 60px); margin: 16px 0 0; }
+  .rule { height: 1px; background: var(--aim-hairline-ivory); border: 0; margin: 0; }
+
+  /* ---- THE PROBLEM ---- */
+  .problem { padding-block: var(--section-y); background: var(--aim-charcoal); }
+  .problem-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(36px, 6vw, 100px); align-items: start; }
+  .problem h2 { font-size: clamp(30px, 4.2vw, 52px); margin: 18px 0 0; max-width: 20ch; line-height: 1.08; letter-spacing: -0.024em; text-wrap: balance; }
+  .problem h2 .soft { color: var(--aim-muted); }
+  .problem-body p { font-size: clamp(16px, 1.2vw, 18px); line-height: 1.72; color: var(--aim-muted); margin: 0 0 20px; }
+  .problem-body p:last-child { margin-bottom: 0; }
+  .problem-body .turn { color: var(--aim-ivory); font-family: var(--font-display); font-style: italic; font-size: clamp(20px, 2vw, 26px); line-height: 1.4; }
+
+  /* ---- THE PROCESS ---- */
+  .process { padding-block: var(--section-y); }
+  .process-top { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 80px); align-items: center; }
+  .process-figure { aspect-ratio: 16/10; overflow: hidden; border: 1px solid var(--aim-hairline-ivory); }
+  .process-figure img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9); }
+  .process h2 { font-size: clamp(40px, 6vw, 80px); margin: 16px 0 0; line-height: 1.0; letter-spacing: -0.03em; }
+  .process-intro p { color: var(--aim-muted); font-size: clamp(16px, 1.25vw, 18px); line-height: 1.72; margin: 22px 0 0; max-width: 46ch; }
+
+  .framework-label { margin: clamp(56px, 8vw, 96px) 0 8px; }
+  .steps { border-top: 1px solid var(--aim-hairline-ivory); }
+  .step { border-bottom: 1px solid var(--aim-hairline-ivory); }
+  .step-head {
+    width: 100%; background: none; border: 0; cursor: pointer; color: inherit;
+    display: grid; grid-template-columns: 64px 1fr 32px; align-items: center; gap: clamp(16px, 3vw, 40px);
+    padding: clamp(26px, 3vw, 38px) 0; text-align: left; font: inherit;
+  }
+  .step-num { font-family: var(--font-display); font-size: clamp(20px, 2vw, 26px); color: var(--aim-gold); }
+  .step-title { font-family: var(--font-display); font-weight: 600; font-size: clamp(23px, 2.6vw, 33px); line-height: 1.08; letter-spacing: -0.02em; }
+  .step-title .role { display: block; font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin-top: 8px; }
+  .step-toggle { position: relative; width: 20px; height: 20px; justify-self: end; }
+  .step-toggle::before, .step-toggle::after { content: ""; position: absolute; background: var(--aim-gold); transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+  .step-toggle::before { left: 0; top: 9px; width: 20px; height: 2px; }
+  .step-toggle::after { left: 9px; top: 0; width: 2px; height: 20px; }
+  .step[aria-expanded="true"] .step-toggle::after { opacity: 0; transform: scaleY(0); }
+  .step-panel { overflow: hidden; max-height: 0; transition: max-height var(--dur-slow) var(--ease-inout); }
+  .step-panel-inner {
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(28px, 5vw, 64px);
+    align-items: center; padding: 0 0 clamp(36px, 4vw, 52px) 0;
+  }
+  .step-panel-inner .txt { padding-left: clamp(0px, calc(64px + 3vw), 104px); }
+  .step-desc { color: var(--aim-muted); font-size: clamp(16px, 1.2vw, 18px); line-height: 1.74; margin: 0; max-width: 52ch; }
+  .step-output { margin-top: 26px; display: inline-flex; align-items: baseline; gap: 12px; padding-top: 20px; border-top: 1px solid var(--aim-hairline-ivory); }
+  .step-output .arrow { color: var(--aim-gold); }
+  .step-output .lbl { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .step-output .val { font-family: var(--font-display); font-style: italic; font-size: clamp(18px, 1.8vw, 22px); color: var(--aim-ivory); }
+  .step-figure { aspect-ratio: 16/11; overflow: hidden; border: 1px solid var(--aim-hairline-ivory); }
+  .step-figure img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9); }
+
+  /* ---- CASE STUDY ---- */
+  .case { position: relative; min-height: clamp(520px, 72vh, 720px); display: grid; grid-template-columns: 1fr 1fr; isolation: isolate; }
+  .case-media { position: relative; overflow: hidden; }
+  .case-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.88); }
+  .case-media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(8,8,7,0) 55%, var(--aim-black) 100%); }
+  .case-body { background: var(--aim-black); display: flex; align-items: center; padding: clamp(48px, 8vw, 110px) var(--gutter); }
+  .case-body-inner { max-width: 46ch; }
+  .case h2 { font-size: clamp(32px, 4.2vw, 54px); margin: 18px 0 0; line-height: 1.02; letter-spacing: -0.028em; }
+  .case .sub { margin: 14px 0 0; font-family: var(--font-display); font-style: italic; font-size: clamp(20px, 2.2vw, 28px); color: var(--aim-gold); }
+  .case p.body { margin: 26px 0 0; color: var(--aim-muted); font-size: clamp(16px, 1.25vw, 18px); line-height: 1.72; }
+  .case .btn { margin-top: 38px; }
+
+  /* ---- ABOUT ---- */
+  .about { padding-block: var(--section-y); background: var(--aim-charcoal); }
+  .about-grid { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: clamp(36px, 6vw, 90px); align-items: center; }
+  .about-figure { aspect-ratio: 2/3; overflow: hidden; border: 1px solid var(--aim-hairline-ivory); }
+  .about-figure img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.86) contrast(1.03); }
+  .about h2 { font-size: clamp(32px, 4.4vw, 56px); margin: 16px 0 0; max-width: 15ch; line-height: 1.03; letter-spacing: -0.028em; }
+  .about p.bio { color: var(--aim-muted); line-height: 1.74; font-size: clamp(16px, 1.25vw, 18px); margin: 28px 0 0; max-width: 52ch; }
+  .about .about-cta { margin-top: 34px; }
+  .about-frames { margin-top: clamp(48px, 7vw, 84px); }
+  .about-frames .fh { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 20px; flex-wrap: wrap; }
+  .frames-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .frames-grid figure { margin: 0; aspect-ratio: 3/4; overflow: hidden; border: 1px solid var(--aim-hairline-ivory); }
+  .frames-grid img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.88); transition: transform 700ms var(--ease-out); }
+  .frames-grid figure:hover img { transform: scale(1.045); }
+
+  /* ---- CONTACT ---- */
+  .contact { position: relative; min-height: clamp(520px, 72vh, 700px); display: flex; align-items: center; isolation: isolate; overflow: hidden; background: var(--aim-black); }
+  .contact::before { content: ""; position: absolute; inset: 0; z-index: 0; background: var(--aim-black); }
+  .contact-body { position: relative; z-index: 2; display: flex; align-items: center; padding: clamp(56px, 8vw, 120px) var(--gutter); }
+  /* align contact copy to the same left edge as the centered .wrap blocks. */
+  @media (min-width: 941px) {
+    .contact { padding-left: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter))); }
+    .contact-body { padding-left: 0; }
+    .contact .contact-media img { left: 400px; }
+  }
+  .contact-body-inner { max-width: 360px; }
+  .contact h2 { font-size: clamp(30px, 3.2vw, 44px); margin: 16px 0 0; line-height: 1.02; letter-spacing: -0.03em; }
+  .contact .intro { margin: 22px 0 0; color: var(--aim-muted); font-size: clamp(15px, 1.15vw, 17px); line-height: 1.65; max-width: 32ch; }
+  .contact-list { margin: 40px 0 0; display: grid; gap: 20px; }
+  .contact-row { display: flex; align-items: baseline; gap: 16px; }
+  .contact-row .rk { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); min-width: 76px; }
+  .contact-row a, .contact-row span.v { font-family: var(--font-display); font-size: clamp(16px, 1.5vw, 19px); color: var(--aim-ivory); transition: color var(--dur) var(--ease-out); }
+  .contact-row a:hover { color: var(--aim-gold); }
+  .contact-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; --cl: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter))); -webkit-mask-image: linear-gradient(90deg, transparent calc(var(--cl) + 380px), #000 calc(var(--cl) + 620px)); mask-image: linear-gradient(90deg, transparent calc(var(--cl) + 380px), #000 calc(var(--cl) + 620px)); }
+  .contact-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.9); }
+
+  /* ---- FOOTER ---- */
+  .footer { padding: clamp(52px,7vw,88px) 0 48px; background: var(--aim-black); border-top: 1px solid var(--aim-hairline-ivory); }
+  .footer-top { display: flex; justify-content: space-between; gap: 44px; flex-wrap: wrap; align-items: flex-start; }
+  .footer-brand .brand { margin-bottom: 16px; }
+  .footer-brand p { max-width: 34ch; color: var(--aim-muted); line-height: 1.66; font-size: 14px; }
+  .footer-cols { display: flex; gap: clamp(40px, 7vw, 88px); flex-wrap: wrap; }
+  .footer-col h4 { font-family: var(--font-body); font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0 0 16px; font-weight: 500; }
+  .footer-col a { display: block; font-size: 14px; color: var(--aim-ivory); margin-bottom: 12px; transition: color var(--dur) var(--ease-out); }
+  .footer-col a:hover { color: var(--aim-gold); }
+  .footer-line { margin-top: clamp(48px,6vw,72px); padding-top: 24px; border-top: 1px solid var(--aim-hairline-ivory); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .footer-line span { font-size: 12px; color: var(--aim-muted); letter-spacing: 0.04em; }
+
+  /* ---- reveal ---- */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 800ms var(--ease-out), transform 800ms var(--ease-out); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ---- framework diagrams: hand-drawn journal glyphs, themeable ink ---- */
+  .figure-diagram { border: 0; background: none; aspect-ratio: 5/4;
+    display: flex; align-items: center; justify-content: center; padding: clamp(10px, 2.6vw, 40px); }
+  .diagram { width: 100%; height: 100%; background-color: var(--aim-ivory);
+    -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    -webkit-mask-position: center; mask-position: center;
+    -webkit-mask-size: contain; mask-size: contain; }
+
+  /* ---- theme toggle ---- */
+  .theme-toggle { background: none; border: 1px solid var(--aim-hairline-ivory-strong); color: var(--aim-muted);
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center;
+    justify-content: center; flex: none; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .theme-toggle:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); }
+  .theme-toggle svg { width: 18px; height: 18px; display: block; }
+  .theme-toggle .i-moon { display: none; }
+  .theme-toggle .i-sun { display: block; }
+  [data-theme="light"] .theme-toggle .i-moon { display: block; }
+  [data-theme="light"] .theme-toggle .i-sun { display: none; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+
+  /* ============================================================
+     LIGHT THEME — premium paper. Flips raw tokens; the hero stays
+     cinematic (dark) because it is photographic.
+     ============================================================ */
+  html { transition: background-color var(--dur-slow) var(--ease-out); }
+  [data-theme="light"] {
+    --aim-black:      #F4EFE6;
+    --aim-charcoal:   #E9E0D1;
+    --aim-surface:    #E6DCCB;
+    --aim-muted:      #6D6258;
+    --aim-ivory:      #14120F;
+    --aim-gold:       #9A6B28;
+    --aim-gold-light: #C99A45;
+    --aim-hairline-ivory:        rgba(17,16,14,0.13);
+    --aim-hairline-ivory-strong: rgba(17,16,14,0.24);
+  }
+  /* keep the hero cinematic dark in light mode */
+  [data-theme="light"] .hero {
+    --aim-black:      #080807;
+    --aim-charcoal:   #11100E;
+    --aim-muted:      #A9A099;
+    --aim-ivory:      #F4EFE6;
+    --aim-gold:       #C99A45;
+    --aim-gold-light: #E2BE72;
+    --aim-hairline-ivory:        rgba(244,239,230,0.12);
+    --aim-hairline-ivory-strong: rgba(244,239,230,0.20);
+  }
+  /* logos are ivory PNGs — flip to ink where they sit on paper */
+  [data-theme="light"] .nav .mono-logo,
+  [data-theme="light"] .footer .mono-logo { filter: invert(1) grayscale(1) brightness(0.16); }
+  /* faint background glyph watermarks — flip ivory line-art to ink */
+  [data-theme="light"] .glyph { filter: invert(1); }
+
+  /* ---- responsive ---- */
+  @media (max-width: 940px) {
+    .nav-links { display: none; }
+    .problem-grid, .process-top, .step-panel-inner, .about-grid { grid-template-columns: 1fr; }
+    .step-panel-inner .txt { padding-left: 0; }
+    .case { grid-template-columns: 1fr; }
+    .case-media { min-height: 340px; order: -1; }
+    .case-media::after { background: linear-gradient(0deg, var(--aim-black) 0%, rgba(8,8,7,0) 55%); }
+    .contact { flex-direction: column; min-height: auto; }
+    .contact-media { position: relative; inset: auto; height: clamp(280px, 55vw, 380px); -webkit-mask-image: none; mask-image: none; }
+    .about-figure { aspect-ratio: 16/11; }
+    .frames-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .step-head { grid-template-columns: 40px 1fr 24px; gap: 14px; }
+    .contact-row { flex-direction: column; gap: 4px; }
+  }
+  /* ---- typographic rag: intentional measure + balanced line endings ---- */
+  h1, h2, h3 { text-wrap: balance; }
+  .hero-sub { max-width: 37ch; }
+  .problem-body p { max-width: 43ch; }
+  .process-intro p { max-width: 43ch; }
+  .step-desc { max-width: 50ch; }
+  .case p.body { max-width: 39ch; }
+  .case-body-inner { max-width: 40ch; }
+  .about p.bio { max-width: 46ch; }
+  .contact .intro { max-width: 36ch; }
+  .lede, .hero-sub, .problem-body p, .problem-body .turn, .process-intro p,
+  .step-desc, .case p.body, .case .sub, .about p.bio, .contact .intro { text-wrap: balance; }
+  /* body copy: prevent single-word orphans/widows (balance is only for headings + the turn line) */
+  .problem-body p { text-wrap: pretty; }
+  .problem-body .turn { text-wrap: balance; }
+
+  /* ---- field-note glyphs: hand-drawn chalk diagrams peppered behind sections ---- */
+  .problem, .process, .about, .contact { position: relative; overflow: hidden; }
+  .problem > .wrap, .process > .wrap, .about > .wrap, .contact > .wrap { position: relative; z-index: 1; }
+  .glyph { position: absolute; z-index: 0; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: contain; opacity: 0.28; filter: brightness(1.05); }
+  .glyph.d-container  { aspect-ratio: 205/200; background-image: url('assets/glyphs/bg-cylinder.png'); }
+  .glyph.d-bridge     { aspect-ratio: 420/185; background-image: url('assets/glyphs/bg-bridge.png'); }
+  .glyph.d-tension    { aspect-ratio: 151/154; background-image: url('assets/glyphs/t-tension.png'); }
+  .glyph.d-diagnosis  { aspect-ratio: 246/220; background-image: url('assets/glyphs/t-diagnosis.png'); }
+  .glyph.d-scope      { aspect-ratio: 269/179; background-image: url('assets/glyphs/t-scope.png'); }
+  .glyph.d-narrative  { aspect-ratio: 235/210; background-image: url('assets/glyphs/s4-narrative.png'); }
+  .glyph.d-pressure   { aspect-ratio: 208/195; background-image: url('assets/glyphs/bg-gauge.png'); }
+  .glyph.d-focus      { aspect-ratio: 195/200; background-image: url('assets/glyphs/bg-focus.png'); }
+  .glyph.d-cost       { aspect-ratio: 275/217; background-image: url('assets/glyphs/t-cost.png'); }
+  .glyph.d-delay      { aspect-ratio: 214/190; background-image: url('assets/glyphs/bg-mountain.png'); }
+  .glyph.d-gap        { aspect-ratio: 293/182; background-image: url('assets/glyphs/t-gap.png'); }
+  .glyph.d-hidden     { aspect-ratio: 195/205; background-image: url('assets/glyphs/bg-iceberg.png'); }
+  .glyph.d-identity   { aspect-ratio: 298/195; background-image: url('assets/glyphs/t-identity.png'); }
+  .glyph.d-empathy    { aspect-ratio: 246/184; background-image: url('assets/glyphs/t-empathy.png'); }
+  .glyph.d-assume     { aspect-ratio: 230/189; background-image: url('assets/glyphs/t-assume.png'); }
+  .glyph.d-remove     { aspect-ratio: 314/122; background-image: url('assets/glyphs/t-remove.png'); }
+  .glyph.d-filter     { aspect-ratio: 258/173; background-image: url('assets/glyphs/t-filter.png'); }
+  .glyph.d-diagnostic { aspect-ratio: 296/177; background-image: url('assets/glyphs/t-diagnostic.png'); }
+  @media (max-width: 1100px) { .glyph { display: none; } }
+</style>
+</head>
+<body>
+
+<template id="__bundler_thumbnail" data-bg-color="#0b0b0a">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0b0b0a"/>
+    <g fill="none" stroke="#c9a227" stroke-width="6">
+      <circle cx="600" cy="360" r="150"/>
+      <circle cx="600" cy="360" r="98"/>
+      <circle cx="600" cy="360" r="46"/>
+    </g>
+    <circle cx="600" cy="360" r="12" fill="#c9a227"/>
+    <text x="600" y="600" text-anchor="middle" fill="#f4efe6" font-family="Georgia, serif" font-size="58" font-style="italic">An Ideas Merchant</text>
+  </svg>
+</template>
+
+<!-- ====================== NAV ====================== -->
+<header class="nav">
+  <nav class="nav-inner" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="An Ideas Merchant, home">
+      <img class="mono-logo" src="assets/logos/aim-monogram-ivory.png" alt="AIM">
+      <span class="word">An Ideas Merchant</span>
+    </a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#problem">The Problem</a>
+        <a href="#process">The Process</a>
+        <a href="case-study.html">Case Study</a>
+        <a href="#about">About</a>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M2.4 12h2.6M19 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9"></path></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+      </button>
+      <a class="btn btn-outline" href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- ====================== HERO ====================== -->
+  <section class="hero">
+    <div class="hero-slides" aria-hidden="true">
+      <img class="on" src="uploads/aim-home-landing-light-container.jpg" alt="">
+      <img src="uploads/target-practice-overview-calibration-wall-v2.jpg" alt="">
+      <img src="uploads/target-practice-01-origin-script-shot-list-v3.jpg" alt="">
+      <img src="uploads/target-practice-02-identity-casting-wall-v3.jpg" alt="">
+      <img src="uploads/target-practice-03-audience-truth-listening-room.jpg" alt="">
+      <img src="uploads/target-practice-04-narrative-engine-edit-suite.jpg" alt="">
+      <img src="uploads/target-practice-05-decision-map-continuity-board-v3.jpg" alt="">
+    </div>
+    <div class="wrap hero-inner">
+      <h1 class="hero-wordmark reveal"><img src="assets/logos/aim-wordmark-collapsed-ivory.png" alt="An Ideas Merchant"></h1>
+      <p class="hero-sub lede reveal">A creative direction practice that helps people understand what they're really building, why it matters, and what to do next.</p>
+      <div class="hero-actions reveal">
+        <a class="btn btn-solid" href="#process">Explore the framework <span class="arw">&rarr;</span></a>
+        <a class="btn btn-ghost" href="#problem">Start with the problem</a>
+      </div>
+    </div>
+    <div class="hero-progress" aria-hidden="true">
+      <span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <!-- ====================== THE PROBLEM ====================== -->
+  <section class="problem" id="problem">
+    <span class="glyph d-tension"   style="width:95px; top:10px; left:5%; transform:rotate(-3deg);" aria-hidden="true"></span>
+    <span class="glyph d-diagnosis" style="width:110px; top:12px; right:6%; transform:rotate(4deg); opacity:0.24;" aria-hidden="true"></span>
+    <span class="glyph d-scope"     style="width:120px; bottom:12px; left:6%; transform:rotate(-3deg);" aria-hidden="true"></span>
+    <span class="glyph d-cost"      style="width:120px; bottom:10px; right:7%; transform:rotate(3deg); opacity:0.22;" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="problem-grid">
+        <div class="reveal">
+          <p class="kicker">The Problem</p>
+          <h2 class="display">When everything feels important, how do you decide what actually matters?</h2>
+        </div>
+        <div class="problem-body reveal">
+          <p>Something isn't quite landing, and you know it.</p>
+          <p>Maybe the content isn't converting. The offer makes sense in your head but falls flat when you try to explain it. The brand looks fine, but no longer feels like you. Or you're busy, genuinely busy, but somehow still not moving towards the thing you actually want.</p>
+          <p>Each problem looks different on the surface.</p>
+          <p>Often, they're all pointing to the same thing: you've started solving before you've fully understood what needed solving.</p>
+          <p>You've probably been told the answer is more content. Better photos. A new website. Maybe.</p>
+          <p class="turn">But first: what's the actual problem? That's where An Ideas Merchant comes in.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== THE PROCESS ====================== -->
+  <section class="process" id="process">
+    <span class="glyph d-narrative" style="width:110px; top:10px; right:5%; transform:rotate(6deg);" aria-hidden="true"></span>
+    <span class="glyph d-focus"     style="width:95px; top:12px; left:6%; transform:rotate(-5deg); opacity:0.24;" aria-hidden="true"></span>
+    <span class="glyph d-container" style="width:80px; top:12px; left:44%; transform:rotate(-9deg); opacity:0.24;" aria-hidden="true"></span>
+    <span class="glyph d-filter"    style="width:120px; bottom:12px; right:6%; transform:rotate(3deg);" aria-hidden="true"></span>
+    <span class="glyph d-pressure"  style="width:100px; bottom:12px; left:7%; transform:rotate(-6deg); opacity:0.24;" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="process-top">
+        <div class="reveal">
+          <p class="kicker">The Process</p>
+          <h2 class="display">Target Practice.</h2>
+          <div class="process-intro">
+            <p>A five-stage clarity framework designed from user experience and brand strategy systems.</p>
+            <p>It's a lens to see what matters, a filter to cut through the noise, and a container to move you from tension, to clarity, and into a desired outcome.</p>
+          </div>
+        </div>
+        <figure class="process-figure reveal">
+          <img src="uploads/target-practice-overview-calibration-wall-v2.jpg" alt="A calibration chart on a concrete studio wall">
+        </figure>
+      </div>
+
+      <p class="kicker framework-label reveal">The AIM Five-Stage Framework</p>
+      <div class="steps reveal">
+
+        <article class="step" aria-expanded="true">
+          <button class="step-head" aria-controls="stp1">
+            <span class="step-num display">01</span>
+            <span class="step-title">Origin / Awareness <span class="role">Foundation</span></span>
+            <span class="step-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="step-panel" id="stp1">
+            <div class="step-panel-inner">
+              <div class="txt">
+                <p class="step-desc">Every project starts with a real tension, even if it hasn't been named yet. This stage gets underneath the brief to find what's actually driving the work, and produces a single sentence that becomes the anchor for everything after it.</p>
+                <div class="step-output"><span class="arrow">&rarr;</span><span><span class="lbl">Output</span><br><span class="val">The Core Tension Statement</span></span></div>
+              </div>
+              <figure class="step-figure figure-diagram"><span class="diagram" style="-webkit-mask-image:url('assets/glyphs/s1-origin.png'); mask-image:url('assets/glyphs/s1-origin.png');" role="img" aria-label="Origin: the core tension diagram"></span></figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="step" aria-expanded="false">
+          <button class="step-head" aria-controls="stp2">
+            <span class="step-num display">02</span>
+            <span class="step-title">Identity <span class="role">Foundation</span></span>
+            <span class="step-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="step-panel" id="stp2">
+            <div class="step-panel-inner">
+              <div class="txt">
+                <p class="step-desc">Before a brand can speak, it has to know what it is and what it refuses to be. This stage defines the role it plays in someone's life, guide, rebel, translator or protector, and sets the filter every future decision gets run through.</p>
+                <div class="step-output"><span class="arrow">&rarr;</span><span><span class="lbl">Output</span><br><span class="val">The Decision Filter</span></span></div>
+              </div>
+              <figure class="step-figure figure-diagram"><span class="diagram" style="-webkit-mask-image:url('assets/glyphs/s2-identity.png'); mask-image:url('assets/glyphs/s2-identity.png');" role="img" aria-label="Identity: the decision filter diagram"></span></figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="step" aria-expanded="false">
+          <button class="step-head" aria-controls="stp3">
+            <span class="step-num display">03</span>
+            <span class="step-title">Audience Truth <span class="role">Strategy</span></span>
+            <span class="step-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="step-panel" id="stp3">
+            <div class="step-panel-inner">
+              <div class="txt">
+                <p class="step-desc">Demographics don't tell you who someone is. This stage gets at what they're actually tired of, what they secretly want, and what moment in their life they're standing in, so the work speaks to a real person, not a segment.</p>
+                <div class="step-output"><span class="arrow">&rarr;</span><span><span class="lbl">Output</span><br><span class="val">The Audience Pressure Point</span></span></div>
+              </div>
+              <figure class="step-figure figure-diagram"><span class="diagram" style="-webkit-mask-image:url('assets/glyphs/s3-audience.png'); mask-image:url('assets/glyphs/s3-audience.png');" role="img" aria-label="Audience truth diagram"></span></figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="step" aria-expanded="false">
+          <button class="step-head" aria-controls="stp4">
+            <span class="step-num display">04</span>
+            <span class="step-title">Narrative Engine <span class="role">Strategy</span></span>
+            <span class="step-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="step-panel" id="stp4">
+            <div class="step-panel-inner">
+              <div class="txt">
+                <p class="step-desc">Every brand is telling a story whether it means to or not. This stage shapes that story deliberately where someone starts, what shifts, who they become on the other side, and turns it into language you can actually use.</p>
+                <div class="step-output"><span class="arrow">&rarr;</span><span><span class="lbl">Output</span><br><span class="val">The Narrative Arc</span></span></div>
+              </div>
+              <figure class="step-figure figure-diagram"><span class="diagram" style="-webkit-mask-image:url('assets/glyphs/s4-narrative.png'); mask-image:url('assets/glyphs/s4-narrative.png');" role="img" aria-label="Narrative engine diagram"></span></figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="step" aria-expanded="false">
+          <button class="step-head" aria-controls="stp5">
+            <span class="step-num display">05</span>
+            <span class="step-title">Decision Map <span class="role">Execution</span></span>
+            <span class="step-toggle" aria-hidden="true"></span>
+          </button>
+          <div class="step-panel" id="stp5">
+            <div class="step-panel-inner">
+              <div class="txt">
+                <p class="step-desc">Clarity means nothing without action. This stage cuts the noise down to what actually matters right now, what's premature, and what moves the needle first, so the next 90 days have a spine, not a wish list.</p>
+                <div class="step-output"><span class="arrow">&rarr;</span><span><span class="lbl">Output</span><br><span class="val">A 90-Day Action Spine</span></span></div>
+              </div>
+              <figure class="step-figure figure-diagram"><span class="diagram" style="-webkit-mask-image:url('assets/glyphs/s5-process.png'); mask-image:url('assets/glyphs/s5-process.png');" role="img" aria-label="Decision map diagram"></span></figure>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CASE STUDY ====================== -->
+  <section class="case" id="casestudy">
+    <div class="case-media reveal">
+      <img src="uploads/aim-case-study-logistics-warehouse-desk-v2.jpg" alt="A logistics desk at a warehouse loading dock at dusk">
+    </div>
+    <div class="case-body">
+      <div class="case-body-inner reveal">
+        <p class="kicker">Case Study</p>
+        <h2 class="display">GoSweetSpot &amp; GoTrack.</h2>
+        <p class="sub">From insight to impact.</p>
+        <p class="body">Understanding a brand and building a companion app through clarity, separated from noise and designed to support what matters most.</p>
+        <a class="btn btn-outline" href="case-study.html">View the case study <span class="arw">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== ABOUT ====================== -->
+  <section class="about" id="about">
+    <span class="glyph d-empathy"    style="width:110px; top:10px; left:5%; transform:rotate(-6deg);" aria-hidden="true"></span>
+    <span class="glyph d-diagnostic" style="width:110px; top:12px; right:6%; transform:rotate(-4deg); opacity:0.22;" aria-hidden="true"></span>
+    <span class="glyph d-remove"     style="width:120px; top:16px; left:45%; transform:rotate(4deg); opacity:0.22;" aria-hidden="true"></span>
+    <span class="glyph d-assume"     style="width:110px; bottom:12px; right:6%; transform:rotate(5deg); opacity:0.24;" aria-hidden="true"></span>
+    <span class="glyph d-delay"      style="width:105px; bottom:12px; left:6%; transform:rotate(7deg); opacity:0.22;" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="about-grid">
+        <figure class="about-figure reveal">
+          <img src="uploads/About Image.jpg" alt="Aidan photographing on a wet city street">
+        </figure>
+        <div class="reveal">
+          <p class="kicker">About</p>
+          <h2 class="display">Years of practice. A lifetime of curiosity.</h2>
+          <p class="bio">Director, writer, camera operator, brand and user experience designer. A career spent learning how to see the bigger picture, where detail matters, and how to turn complex ideas into clear, human outcomes.</p>
+          <a class="btn btn-ghost about-cta" href="story.html">Read my story <span class="arw">&rarr;</span></a>
+        </div>
+      </div>
+      <div class="about-frames reveal">
+        <div class="fh">
+          <p class="kicker">Selected Frames</p>
+          <p class="meta-label">Street work · Auckland</p>
+        </div>
+        <div class="frames-grid" id="framesGrid">
+          <figure><img src="uploads/9948.jpeg" alt="Street photograph, Auckland" loading="lazy"></figure>
+          <figure><img src="uploads/8804.jpeg" alt="Street photograph, Auckland" loading="lazy"></figure>
+          <figure><img src="uploads/8817.jpeg" alt="Street photograph, Auckland" loading="lazy"></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== CONTACT ====================== -->
+  <section class="contact" id="contact">
+    <span class="glyph d-bridge"   style="width:150px; top:12px; right:6%; transform:rotate(-4deg); opacity:0.22;" aria-hidden="true"></span>
+    <span class="glyph d-identity" style="width:100px; top:12px; left:6%; transform:rotate(-5deg); opacity:0.22;" aria-hidden="true"></span>
+    <span class="glyph d-gap"      style="width:130px; bottom:12px; right:7%; transform:rotate(3deg); opacity:0.22;" aria-hidden="true"></span>
+    <span class="glyph d-hidden"   style="width:80px; bottom:12px; left:8%; transform:rotate(7deg); opacity:0.24;" aria-hidden="true"></span>
+    <div class="contact-body">
+      <div class="contact-body-inner reveal">
+        <p class="kicker">Let's build clarity</p>
+        <h2 class="display">Start a conversation.</h2>
+        <p class="intro">Whether you have a project in mind or just need clarity on your next move, I'd love to hear from you.</p>
+        <div class="contact-list">
+          <div class="contact-row"><span class="rk">Email</span><a href="mailto:aidan@anideasmerchant.com">aidan@anideasmerchant.com</a></div>
+          <div class="contact-row"><span class="rk">Instagram</span><a href="https://instagram.com/anideasmerchant" target="_blank" rel="noopener">@anideasmerchant</a></div>
+          <div class="contact-row"><span class="rk">Based in</span><span class="v">Auckland, New Zealand</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-media reveal">
+      <img src="uploads/aim-contact-production-office-card-v3.jpg" alt="A blank card on a production office desk in warm light">
+    </div>
+  </section>
+
+</main>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <img class="mono-logo" src="assets/logos/aim-monogram-ivory.png" alt="AIM">
+          <span class="word">An Ideas Merchant</span>
+        </a>
+        <p>Clarity before creation.<br>Direction before delivery.<br>Meaning before momentum.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Practice</h4>
+          <a href="#problem">The Problem</a>
+          <a href="#process">The Process</a>
+          <a href="case-study.html">Case Study</a>
+          <a href="#about">About</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="mailto:aidan@anideasmerchant.com">Email</a>
+          <a href="https://instagram.com/anideasmerchant" target="_blank" rel="noopener">Instagram</a>
+          <a href="#contact">Start a conversation</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-line">
+      <span>&copy; 2026 An Ideas Merchant</span>
+      <span>Auckland, New Zealand</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    /* ---- theme toggle ---- */
+    var tt = document.querySelector('.theme-toggle');
+    if (tt) tt.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      var next = cur === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('aim-theme', next); } catch (e) {}
+    });
+
+    /* ---- reveal on scroll ---- */
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (e) { e.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    }
+
+    /* ---- hero image sequence ---- */
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.hero-slides img'));
+    var dots = Array.prototype.slice.call(document.querySelectorAll('.hero-progress span'));
+    var i = 0;
+    if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setInterval(function () {
+        slides[i].classList.remove('on');
+        if (dots[i]) dots[i].classList.remove('on');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('on');
+        if (dots[i]) dots[i].classList.add('on');
+      }, 8000);
+    }
+
+    /* ---- accordion ---- */
+    var steps = document.querySelectorAll('.step');
+    function setOpen(step, open) {
+      step.setAttribute('aria-expanded', open ? 'true' : 'false');
+      var panel = step.querySelector('.step-panel');
+      panel.style.maxHeight = open ? (panel.scrollHeight + 'px') : '0px';
+      var btn = step.querySelector('.step-head');
+      if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    steps.forEach(function (step) {
+      var btn = step.querySelector('.step-head');
+      btn.addEventListener('click', function () {
+        var isOpen = step.getAttribute('aria-expanded') === 'true';
+        steps.forEach(function (s) { if (s !== step) setOpen(s, false); });
+        setOpen(step, !isOpen);
+      });
+    });
+    /* open the first by default once images can affect height */
+    window.addEventListener('load', function () {
+      steps.forEach(function (s) { if (s.getAttribute('aria-expanded') === 'true') setOpen(s, true); });
+    });
+    setTimeout(function () {
+      steps.forEach(function (s) { if (s.getAttribute('aria-expanded') === 'true') setOpen(s, true); });
+    }, 300);
+    window.addEventListener('resize', function () {
+      steps.forEach(function (s) { if (s.getAttribute('aria-expanded') === 'true') { var p = s.querySelector('.step-panel'); p.style.maxHeight = 'none'; } });
+    });
+  })();
+</script>
+
+<script>
+  /* ---- Selected Frames: cycle through street work on each load ----
+     Curated pool of real street photographs. When the Instagram grid is
+     fuller, swap POOL for a fetch of the latest @anideasmerchant posts —
+     the shuffle-and-pick-3 logic below stays exactly the same. */
+  (function () {
+    var POOL = [
+      '9948.jpeg', '8799.jpeg', '8801.jpeg', '8802.jpeg', '8804.jpeg',
+      '8807.jpeg', '8808.jpeg', '8814.jpeg', '8816.jpeg',
+      '8817.jpeg', '8819.jpeg', '8821.jpeg', '8823.jpeg'
+    ];
+    var grid = document.getElementById('framesGrid');
+    if (!grid) return;
+    /* Fisher–Yates shuffle */
+    for (var i = POOL.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = POOL[i]; POOL[i] = POOL[j]; POOL[j] = t;
+    }
+    var pick = POOL.slice(0, 3);
+    grid.innerHTML = pick.map(function (name) {
+      return '<figure><img src="uploads/' + name + '" alt="Street photograph, Auckland" loading="lazy"></figure>';
+    }).join('');
+  })();
+</script>
+</body>
+</html>

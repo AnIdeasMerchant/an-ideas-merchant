@@ -1,0 +1,27 @@
+/* ============================================================
+   AIM — base reset + document defaults (dark by default).
+   Kept minimal: tokens carry the system, this just wires
+   sensible page defaults for specimen cards and kits.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--type-body);
+  line-height: var(--body-leading);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--color-accent-wash); color: var(--color-text); }
+
+a { color: inherit; text-decoration: none; }
+
+/* Display headings default to the serif */
+h1, h2, h3 { font-family: var(--font-display); font-weight: var(--display-weight); margin: 0; }
+p { text-wrap: pretty; }

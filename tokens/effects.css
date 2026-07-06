@@ -1,0 +1,35 @@
+/* ============================================================
+   AIM — RADII, BORDERS, ELEVATION, MOTION
+   Elevation comes from contrast & surface colour, never from
+   large blurred shadows. Corners are soft (12px), not playful.
+   ============================================================ */
+:root {
+  /* Corner radii */
+  --radius-sm: 8px;
+  --radius:    12px;   /* default UI radius — soft, not playful */
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Hairline border width */
+  --border-hairline: 1px;
+
+  /* Elevation — subtle only. Prefer surface + border over blur. */
+  --elev-1: 0 1px 0 var(--color-border);                          /* Level 1: subtle */
+  --elev-2: 0 1px 2px rgba(0,0,0,0.30), 0 0 0 1px var(--color-border); /* Level 2: gentle */
+  --elev-3: 0 8px 30px rgba(0,0,0,0.40), 0 0 0 1px var(--color-border-strong); /* Level 3: focused (modals only) */
+
+  /* Gold focus ring — for active/selected states */
+  --ring-gold: 0 0 0 1px var(--color-accent), 0 0 0 4px var(--color-accent-wash);
+
+  /* ---- Motion: calm and deliberate. Reveal, don't perform. ---- */
+  --ease-out:   cubic-bezier(0.22, 0.61, 0.36, 1); /* @kind other */ /* gentle settle */
+  --ease-inout: cubic-bezier(0.4, 0.0, 0.2, 1);     /* @kind other */
+  --dur-fast:   180ms;  /* @kind other */
+  --dur:        280ms;  /* @kind other */ /* default */
+  --dur-slow:   520ms;  /* @kind other */ /* unfold / reveal */
+  /* No bounce, no spring, no elastic. */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms /* @kind other */; --dur: 0ms /* @kind other */; --dur-slow: 0ms /* @kind other */; }
+}

@@ -1,0 +1,25 @@
+/* ============================================================
+   AIM — SPACING (8pt grid)
+   Whitespace is a design element. If unsure, add more space.
+   ============================================================ */
+:root {
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 48px;
+  --space-6: 64px;
+  --space-7: 96px;
+
+  /* Generous section rhythm */
+  --section-gap: var(--space-7);
+  --block-gap:   var(--space-5);
+
+  /* Content measure — keep lines editorial, not full-width */
+  --measure: 62ch;
+  --measure-narrow: 46ch;
+
+  /* Common layout widths */
+  --app-max:   1200px;
+  --mobile-w:  390px;
+}

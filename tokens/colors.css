@@ -1,0 +1,80 @@
+/* ============================================================
+   AIM — COLOUR SYSTEM
+   Gold is earned, never decorative. Dark mode is the default
+   experience; light mode should feel like premium paper.
+   ============================================================ */
+:root {
+  /* --- Dark mode raw palette (primary experience) --- */
+  --aim-black:      #080807; /* deep cinema black, app background */
+  --aim-charcoal:   #11100E; /* charcoal panels */
+  --aim-surface:    #171512; /* raised surface */
+  --aim-muted:      #A9A099; /* muted text */
+  --aim-ivory:      #F4EFE6; /* primary text on dark */
+  --aim-gold:       #C99A45; /* the accent — earned only */
+  --aim-gold-light: #E2BE72; /* gold hover / highlight */
+
+  /* --- Light mode raw palette (secondary experience) --- */
+  --aim-paper:      #F4EFE6; /* premium paper, never pure white */
+  --aim-paper-soft: #EDE5D8; /* soft paper, raised surface */
+  --aim-ink:        #11100E; /* primary text on paper */
+  --aim-warm-grey:  #6D6258; /* secondary text on paper */
+  --aim-gold-dark:  #9A6B28; /* gold for light backgrounds (contrast) */
+
+  /* --- Hairline borders: defined by opacity, never solid lines --- */
+  --aim-hairline-ivory: rgba(244, 239, 230, 0.12); /* on dark */
+  --aim-hairline-ivory-strong: rgba(244, 239, 230, 0.20);
+  --aim-hairline-ink:   rgba(17, 16, 14, 0.12);     /* on paper */
+  --aim-hairline-ink-strong: rgba(17, 16, 14, 0.20);
+  --aim-gold-soft:      rgba(201, 154, 69, 0.16);   /* gold hairline / wash */
+
+  /* ============================================================
+     SEMANTIC ALIASES — default theme is DARK
+     Components should consume these, not the raw tokens above.
+     ============================================================ */
+  --color-bg:           var(--aim-black);
+  --color-bg-elevated:  var(--aim-charcoal);
+  --color-surface:      var(--aim-surface);
+  --color-surface-2:    #1E1B17;
+
+  --color-text:         var(--aim-ivory);
+  --color-text-muted:   var(--aim-muted);
+  --color-text-faint:   rgba(169, 160, 153, 0.55);
+
+  --color-accent:       var(--aim-gold);
+  --color-accent-hi:    var(--aim-gold-light);
+  --color-on-accent:    var(--aim-charcoal); /* dark text on gold fill */
+
+  --color-border:        var(--aim-hairline-ivory);
+  --color-border-strong: var(--aim-hairline-ivory-strong);
+  --color-accent-wash:   var(--aim-gold-soft);
+
+  /* Confidence / progress */
+  --color-track:        rgba(244, 239, 230, 0.10);
+  --color-progress:     var(--aim-gold);
+}
+
+/* ============================================================
+   LIGHT THEME — premium paper. Apply via [data-theme="light"]
+   on a container or <html>.
+   ============================================================ */
+[data-theme="light"] {
+  --color-bg:           var(--aim-paper);
+  --color-bg-elevated:  var(--aim-paper-soft);
+  --color-surface:      var(--aim-paper-soft);
+  --color-surface-2:    #E6DCCB;
+
+  --color-text:         var(--aim-ink);
+  --color-text-muted:   var(--aim-warm-grey);
+  --color-text-faint:   rgba(109, 98, 88, 0.65);
+
+  --color-accent:       var(--aim-gold-dark);
+  --color-accent-hi:    var(--aim-gold);
+  --color-on-accent:    var(--aim-paper);
+
+  --color-border:        var(--aim-hairline-ink);
+  --color-border-strong: var(--aim-hairline-ink-strong);
+  --color-accent-wash:   rgba(154, 107, 40, 0.12);
+
+  --color-track:        rgba(17, 16, 14, 0.10);
+  --color-progress:     var(--aim-gold-dark);
+}

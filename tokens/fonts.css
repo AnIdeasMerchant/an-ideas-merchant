@@ -1,0 +1,5 @@
+/* AIM webfonts — Cormorant Garamond (display) + Inter (body).
+   Served from Google Fonts. Substituted from the spec's "Cormorant Garamond"
+   (the exact licensed cut may differ — flag to brand owner if a bespoke
+   display face is required). */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&display=swap');

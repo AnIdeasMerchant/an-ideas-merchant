@@ -1,0 +1,53 @@
+/* ============================================================
+   AIM — TYPOGRAPHY
+   Typography is the primary visual device — not imagery, not UI.
+   Display = Cormorant Garamond (serif). Body = Inter (sans).
+   ============================================================ */
+:root {
+  /* Families */
+  --font-display: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Display scale (Cormorant Garamond, weight 500) */
+  --type-h1: 72px;   /* hero statements */
+  --type-h2: 48px;   /* section titles */
+  --type-h3: 32px;   /* sub-section / card titles */
+  --display-weight: 500;
+  --display-leading: 1.05;
+
+  /* Body scale (Inter) */
+  --type-body-lg: 20px;  /* lead paragraphs */
+  --type-body:    16px;  /* default copy + UI */
+  --type-small:   14px;  /* supporting text */
+  --type-meta:    12px;  /* labels, editorial meta */
+
+  --body-weight:    400;
+  --body-leading:   1.6;
+  --meta-weight:    500;
+
+  /* Letter-spacing — meta is editorial, not technical.
+     Spec calls for +10% to +20% tracking on meta/labels. */
+  --tracking-tight:  -0.01em;
+  --tracking-normal: 0;
+  --tracking-meta:   0.16em;   /* ~ +16% — editorial uppercase labels */
+  --tracking-wide:   0.22em;   /* hero kicker / brand lockup */
+}
+
+/* Convenience utility classes (optional — components may also
+   reference the tokens directly). */
+.aim-h1 { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--type-h1); line-height: var(--display-leading); letter-spacing: var(--tracking-tight); }
+.aim-h2 { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--type-h2); line-height: 1.08; }
+.aim-h3 { font-family: var(--font-display); font-weight: var(--display-weight); font-size: var(--type-h3); line-height: 1.15; }
+
+.aim-body-lg { font-family: var(--font-body); font-weight: 400; font-size: var(--type-body-lg); line-height: var(--body-leading); }
+.aim-body    { font-family: var(--font-body); font-weight: 400; font-size: var(--type-body); line-height: var(--body-leading); }
+.aim-small   { font-family: var(--font-body); font-weight: 400; font-size: var(--type-small); line-height: 1.5; }
+
+/* Editorial uppercase label — used for kickers, nav, section meta */
+.aim-meta {
+  font-family: var(--font-body);
+  font-weight: var(--meta-weight);
+  font-size: var(--type-meta);
+  letter-spacing: var(--tracking-meta);
+  text-transform: uppercase;
+}
