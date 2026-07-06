@@ -12,6 +12,10 @@
   })();
 </script>
 <title>GoTrack · Case Study · An Ideas Merchant</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="assets/favicon/favicon-48.png">
+<link rel="icon" type="image/png" sizes="512x512" href="assets/favicon/favicon-512.png">
+<link rel="apple-touch-icon" href="assets/favicon/apple-touch-icon.png">
 <link rel="stylesheet" href="styles.css">
 <style>
   /* ============================================================
@@ -255,9 +259,12 @@
   /* ---- responsive ---- */
   @media (max-width: 940px) {
     .hero-grid, .origin-grid, .phase-grid, .attrs-head, .app-feature { grid-template-columns: 1fr; }
-    .hero::after { background: linear-gradient(180deg, rgba(8,8,7,0.28) 0%, rgba(8,8,7,0.12) 32%, rgba(8,8,7,0.62) 74%, rgba(8,8,7,0.9) 100%); }
+    .hero-grid { padding-block: clamp(22px, 4vw, 44px); gap: clamp(20px, 3vw, 34px); }
+    .hero::after { background: linear-gradient(180deg, rgba(8,8,7,0.92) 0%, rgba(8,8,7,0.7) 22%, rgba(8,8,7,0.36) 48%, rgba(8,8,7,0.22) 100%); }
     .phase.reverse .phase-grid { direction: ltr; }
-    .hero-visual { order: -1; }
+    .hero-visual { order: 0; margin-top: clamp(8px, 2vw, 20px); }
+    .hero-phone { width: min(58%, 288px); }
+    .hero-appicon { width: 78px; }
     .credits-grid { grid-template-columns: 1fr 1fr; gap: 26px; }
     .attrs-grid { grid-template-columns: 1fr 1fr; }
     .elements { grid-template-columns: 1fr 1fr; }
@@ -547,7 +554,7 @@
         </div>
         <div class="footer-col">
           <h4>Connect</h4>
-          <a href="/cdn-cgi/l/email-protection#1879717c7976587976717c7d796b757d6a7b7079766c367b7775">Email</a>
+          <a href="mailto:aidan@anideasmerchant.com">Email</a>
           <a href="https://instagram.com/anideasmerchant" target="_blank" rel="noopener">Instagram</a>
           <a href="index.html#contact">Start a conversation</a>
         </div>
@@ -560,7 +567,7 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   (function () {
     var tt = document.querySelector('.theme-toggle');
     if (tt) tt.addEventListener('click', function () {
