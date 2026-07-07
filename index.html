@@ -131,8 +131,11 @@
   .hero-sub { margin: 30px 0 0; max-width: 44ch; }
   .hero-actions { margin-top: 44px; display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
   .hero-progress { position: absolute; left: var(--gutter); bottom: 34px; z-index: 2; display: flex; gap: 8px; }
-  .hero-progress span { width: 34px; height: 2px; background: var(--aim-hairline-ivory-strong); transition: background var(--dur) var(--ease-out); }
-  .hero-progress span.on { background: var(--aim-gold); }
+  .hero-progress button { -webkit-appearance: none; appearance: none; border: 0; padding: 12px 0 0; margin: -12px 0 0; background: transparent; cursor: pointer; display: block; }
+  .hero-progress button span { display: block; width: 34px; height: 2px; background: var(--aim-hairline-ivory-strong); transition: background var(--dur) var(--ease-out); }
+  .hero-progress button.on span { background: var(--aim-gold); }
+  .hero-progress button:hover span { background: var(--aim-ivory); }
+  .hero-progress button.on:hover span { background: var(--aim-gold); }
 
   /* ---- generic section head ---- */
   .sec-head h2 { font-size: clamp(34px, 5vw, 60px); margin: 16px 0 0; }
@@ -421,8 +424,8 @@
         <a class="btn btn-ghost" href="#problem">Start with the problem</a>
       </div>
     </div>
-    <div class="hero-progress" aria-hidden="true">
-      <span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    <div class="hero-progress" role="tablist" aria-label="Hero image">
+      <button type="button" class="on" aria-label="Show image 1"><span></span></button><button type="button" aria-label="Show image 2"><span></span></button><button type="button" aria-label="Show image 3"><span></span></button><button type="button" aria-label="Show image 4"><span></span></button><button type="button" aria-label="Show image 5"><span></span></button><button type="button" aria-label="Show image 6"><span></span></button><button type="button" aria-label="Show image 7"><span></span></button>
     </div>
   </section>
 
@@ -698,17 +701,30 @@
 
     /* ---- hero image sequence ---- */
     var slides = Array.prototype.slice.call(document.querySelectorAll('.hero-slides img'));
-    var dots = Array.prototype.slice.call(document.querySelectorAll('.hero-progress span'));
+    var dots = Array.prototype.slice.call(document.querySelectorAll('.hero-progress button'));
     var i = 0;
-    if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setInterval(function () {
-        slides[i].classList.remove('on');
-        if (dots[i]) dots[i].classList.remove('on');
-        i = (i + 1) % slides.length;
-        slides[i].classList.add('on');
-        if (dots[i]) dots[i].classList.add('on');
-      }, 8000);
+    var heroTimer = null;
+    var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function showSlide(n) {
+      if (n === i || !slides[n]) return;
+      slides[i].classList.remove('on');
+      if (dots[i]) dots[i].classList.remove('on');
+      i = n;
+      slides[i].classList.add('on');
+      if (dots[i]) dots[i].classList.add('on');
     }
+    function startHero() {
+      if (heroTimer || reduce || slides.length < 2) return;
+      heroTimer = setInterval(function () { showSlide((i + 1) % slides.length); }, 8000);
+    }
+    function restartHero() {
+      if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+      startHero();
+    }
+    dots.forEach(function (dot, idx) {
+      dot.addEventListener('click', function () { showSlide(idx); restartHero(); });
+    });
+    startHero();
 
     /* ---- accordion ---- */
     var steps = document.querySelectorAll('.step');
