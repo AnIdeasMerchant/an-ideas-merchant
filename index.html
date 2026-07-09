@@ -223,7 +223,7 @@
   @media (min-width: 941px) {
     .contact { padding-left: max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter))); }
     .contact-body { padding-left: 0; }
-    .contact .contact-media img { left: 400px; max-width: 1700px; }
+    .contact .contact-media img { left: max(400px, calc(var(--cl) + 164px)); max-width: 1700px; }
   }
   .contact-body-inner { max-width: 360px; }
   .contact h2 { font-size: clamp(30px, 3.2vw, 44px); margin: 16px 0 0; line-height: 1.02; letter-spacing: -0.03em; }
