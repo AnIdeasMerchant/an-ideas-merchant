@@ -4,8 +4,8 @@ Static, dependency-free website. Three pages, plain HTML/CSS/JS. No build step.
 
 ## Pages
 - `index.html` — home (hero sequence, problem, process/Target Practice, case-study teaser, about, contact)
-- `story.html` — long-form founder story
-- `case-study.html` — GoSweetSpot / GoTrack case study
+- `story/index.html` — long-form founder story (served at `/story/`)
+- `case-study/index.html` — GoSweetSpot / GoTrack case study (served at `/case-study/`)
 
 ## Run locally
 Any static file server works, e.g.:
@@ -21,7 +21,7 @@ Drop the whole folder on any static host (Netlify, Vercel, Cloudflare Pages, Git
 
 ## Structure
 ```
-index.html, story.html, case-study.html
+index.html, story/index.html, case-study/index.html
 styles.css                 → @imports tokens/*.css
 tokens/                    design tokens (colors, type, spacing, effects, base, fonts)
 assets/logos/              brand marks (AIM, GoSweetSpot, GoTrack, motifs)
