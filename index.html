@@ -787,7 +787,6 @@
       return deck[di++];
     }
     function slotCountForWidth(w) { return w <= 560 ? 1 : (w <= 940 ? 2 : 3); }
-    function intervalForSlots(n) { return n >= 3 ? 20000 : (n === 2 ? 15000 : 10000); }
     var current = [];
     function render() {
       grid.innerHTML = current.map(function (name) {
@@ -795,24 +794,11 @@
       }).join('');
     }
     function setSlotCount(n) {
-      if (current.length === n) return;
-      if (current.length < n) { while (current.length < n) current.push(nextPhoto()); }
-      else { current.length = n; }
+      current = [];
+      while (current.length < n) current.push(nextPhoto());
       render();
     }
-    var idx = 0, timer = null;
-    function tick() {
-      var n = current.length;
-      if (!n) return;
-      current[idx % n] = nextPhoto();
-      idx++;
-      render();
-    }
-    function startTimer() {
-      if (timer) clearInterval(timer);
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(tick, intervalForSlots(current.length));
-    }
-    function refreshSlots() { setSlotCount(slotCountForWidth(window.innerWidth)); startTimer(); }
+    function refreshSlots() { setSlotCount(slotCountForWidth(window.innerWidth)); }
     refreshSlots();
     window.addEventListener('resize', refreshSlots);
   })();
