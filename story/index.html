@@ -197,10 +197,9 @@
       <div class="gallery reveal">
         <div class="gallery-head">
           <div>
-            <p class="kicker">Selected Frames</p>
+            <p class="kicker">Observations and Field Notes</p>
             <h2>The way I see.</h2>
           </div>
-          <p class="figcaption" style="font-size:11px;letter-spacing:var(--tracking-meta);text-transform:uppercase;color:var(--aim-muted)">Street Observations · Auckland</p>
         </div>
         <div class="gallery-grid" id="framesGrid"></div>
       </div>
@@ -243,9 +242,8 @@
   })();
 </script>
 <script>
-  /* ---- Selected Frames: responsive random cycling ----
-     3 slots desktop / 2 mid / 1 mobile. One slot swaps every 8s,
-     round-robin, so effective hold = slotCount * 8s (24s / 16s / 8s). */
+  /* ---- Observations and Field Notes: responsive random selection ----
+     3 slots desktop / 2 mid / 1 mobile. Picked randomly on load/resize, no auto-cycling. */
   (function () {
     var POOL = [
       'street-8776.jpeg','street-8794.jpeg','street-8799.jpeg','street-8800.jpeg',
@@ -273,7 +271,6 @@
       return deck[di++];
     }
     function slotCountForWidth(w) { return w <= 460 ? 1 : (w <= 640 ? 2 : 3); }
-    function intervalForSlots(n) { return n >= 3 ? 20000 : (n === 2 ? 15000 : 10000); }
     var current = [];
     function render() {
       grid.innerHTML = current.map(function (name) {
@@ -281,24 +278,11 @@
       }).join('');
     }
     function setSlotCount(n) {
-      if (current.length === n) return;
-      if (current.length < n) { while (current.length < n) current.push(nextPhoto()); }
-      else { current.length = n; }
+      current = [];
+      while (current.length < n) current.push(nextPhoto());
       render();
     }
-    var idx = 0, timer = null;
-    function tick() {
-      var n = current.length;
-      if (!n) return;
-      current[idx % n] = nextPhoto();
-      idx++;
-      render();
-    }
-    function startTimer() {
-      if (timer) clearInterval(timer);
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(tick, intervalForSlots(current.length));
-    }
-    function refreshSlots() { setSlotCount(slotCountForWidth(window.innerWidth)); startTimer(); }
+    function refreshSlots() { setSlotCount(slotCountForWidth(window.innerWidth)); }
     refreshSlots();
     window.addEventListener('resize', refreshSlots);
   })();
