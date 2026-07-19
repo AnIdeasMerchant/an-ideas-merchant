@@ -324,6 +324,7 @@
   @media (max-width: 560px) {
     .step-head { grid-template-columns: 40px 1fr 24px; gap: 14px; }
     .contact-row { flex-direction: column; gap: 4px; }
+    .frames-grid { grid-template-columns: 1fr; }
   }
   /* ---- typographic rag: intentional measure + balanced line endings ---- */
   h1, h2, h3 { text-wrap: balance; }
@@ -606,7 +607,7 @@
       <div class="about-frames reveal">
         <div class="fh">
           <p class="kicker">Selected Frames</p>
-          <p class="meta-label">Street work · Auckland</p>
+          <p class="meta-label">Street Observations · Auckland</p>
         </div>
         <div class="frames-grid" id="framesGrid">
           <figure><img src="uploads/9948.jpeg" alt="Street photograph, Auckland" loading="lazy"></figure>
@@ -758,27 +759,66 @@
 </script>
 
 <script>
-  /* ---- Selected Frames: cycle through street work on each load ----
-     Curated pool of real street photographs. When the Instagram grid is
-     fuller, swap POOL for a fetch of the latest @anideasmerchant posts —
-     the shuffle-and-pick-3 logic below stays exactly the same. */
+  /* ---- Selected Frames: responsive random cycling ----
+     3 slots desktop / 2 mid / 1 mobile. One slot swaps every 8s,
+     round-robin, so effective hold = slotCount * 8s (24s / 16s / 8s).
+     When the Instagram grid is fuller, swap POOL for a fetch of the
+     latest @anideasmerchant posts — the logic below stays the same. */
   (function () {
     var POOL = [
-      '9948.jpeg', '8799.jpeg', '8801.jpeg', '8802.jpeg', '8804.jpeg',
-      '8807.jpeg', '8808.jpeg', '8814.jpeg', '8816.jpeg',
-      '8817.jpeg', '8819.jpeg', '8821.jpeg', '8823.jpeg'
+      '8776-73bfccd6.jpeg','8794-ac98214b.jpeg','8799-287b5783.jpeg','8800-aadfb7ec.jpeg',
+      '8802-9fe5be63.jpeg','8803-3addfb36.jpeg','8804 (2)-1d34eb97.jpeg','8807-5cd5767a.jpeg','8808-af0fb5c0.jpeg',
+      '8816(1).jpeg','8817(2).jpeg','8818(1).jpeg','8819(1)-dbf07818.jpeg','8820-f7ee3af0.jpeg',
+      '8821-e8cffcef.jpeg','8822 (2)(1).jpeg','8823-408e64ea.jpeg','8824-eb5a018e.jpeg','8829.jpeg',
+      '8840.jpeg','8860.jpeg','9017.jpeg','9948 (1) (1).jpeg',
+      '10209 (1).jpeg','10215.jpeg','10224.jpeg','10225.jpeg','10230.jpeg','10241.jpeg',
+      '10243.jpeg','10244.jpeg','10261.jpeg','10266.jpeg','10268.jpeg','10269.jpeg','10270.jpeg',
+      '10275.jpeg','10280.jpeg','10287.jpeg','10296.jpeg','10306.jpeg','10315.jpeg'
     ];
     var grid = document.getElementById('framesGrid');
     if (!grid) return;
-    /* Fisher–Yates shuffle */
-    for (var i = POOL.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = POOL[i]; POOL[i] = POOL[j]; POOL[j] = t;
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
     }
-    var pick = POOL.slice(0, 3);
-    grid.innerHTML = pick.map(function (name) {
-      return '<figure><img src="uploads/' + name + '" alt="Street photograph, Auckland" loading="lazy"></figure>';
-    }).join('');
+    var deck = shuffle(POOL), di = 0;
+    function nextPhoto() {
+      if (di >= deck.length) { deck = shuffle(POOL); di = 0; }
+      return deck[di++];
+    }
+    function slotCountForWidth(w) { return w <= 560 ? 1 : (w <= 940 ? 2 : 3); }
+    function intervalForSlots(n) { return n >= 3 ? 20000 : (n === 2 ? 15000 : 10000); }
+    var current = [];
+    function render() {
+      grid.innerHTML = current.map(function (name) {
+        return '<figure><img src="uploads/' + encodeURIComponent(name) + '" alt="Street photograph, Auckland" loading="lazy"></figure>';
+      }).join('');
+    }
+    function setSlotCount(n) {
+      if (current.length === n) return;
+      if (current.length < n) { while (current.length < n) current.push(nextPhoto()); }
+      else { current.length = n; }
+      render();
+    }
+    var idx = 0, timer = null;
+    function tick() {
+      var n = current.length;
+      if (!n) return;
+      current[idx % n] = nextPhoto();
+      idx++;
+      render();
+    }
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(tick, intervalForSlots(current.length));
+    }
+    function refreshSlots() { setSlotCount(slotCountForWidth(window.innerWidth)); startTimer(); }
+    refreshSlots();
+    window.addEventListener('resize', refreshSlots);
   })();
 </script>
 </body>
