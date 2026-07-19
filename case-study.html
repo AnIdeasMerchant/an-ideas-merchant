@@ -237,10 +237,11 @@
 
   /* ---- NUMBERED PHASES: one container, journey-map behind, read left/centre/right ---- */
   .phases { position: relative; overflow: hidden; isolation: isolate; border-top: 1px solid var(--aim-hairline-ivory); min-height: min(94vh, 940px); display: flex; align-items: flex-end; }
-  .phases-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; z-index: -3; opacity: 0.6; filter: saturate(0.82) contrast(1.03); }
-  .phases::after { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(180deg, rgba(8,8,7,0.4) 0%, rgba(8,8,7,0.1) 18%, rgba(8,8,7,0.45) 42%, rgba(8,8,7,0.85) 66%, #080807 100%); }
+  .phases-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 78% 18%; z-index: -3; opacity: 0.6; filter: saturate(0.82) contrast(1.03); }
+  .phases::after { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(180deg, rgba(8,8,7,0.4) 0%, rgba(8,8,7,0.1) 18%, rgba(8,8,7,0.45) 42%, rgba(8,8,7,0.85) 66%, #080807 100%), linear-gradient(90deg, rgba(8,8,7,0.88) 0%, rgba(8,8,7,0.5) 32%, rgba(8,8,7,0) 56%); }
   .phases .wrap { width: 100%; padding-block: clamp(40px, 6vw, 72px) clamp(52px, 8vw, 104px); }
   .phases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(26px, 3.5vw, 52px); }
+  .phases-head { display: inline-block; }
   .phase-col { position: relative; }
   .phase-col + .phase-col { padding-left: clamp(26px, 3.5vw, 52px); border-left: 1px solid rgba(244,239,230,0.2); }
   .phase-num { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 4vw, 54px); line-height: 0.9; letter-spacing: -0.04em; color: var(--gt-blue); text-shadow: 0 2px 16px rgba(8,8,7,0.55); }
@@ -276,6 +277,8 @@
     .hero-grid { padding-block: clamp(22px, 4vw, 44px); gap: clamp(20px, 3vw, 34px); }
     .hero::after { background: linear-gradient(180deg, rgba(8,8,7,0.92) 0%, rgba(8,8,7,0.7) 22%, rgba(8,8,7,0.36) 48%, rgba(8,8,7,0.22) 100%); }
     .phase.reverse .phase-grid { direction: ltr; }
+    .phases-bg { opacity: 0.22; filter: saturate(0.6) contrast(1.0) brightness(0.85); }
+    .phases::after { background: linear-gradient(180deg, rgba(8,8,7,0.75) 0%, rgba(8,8,7,0.6) 18%, rgba(8,8,7,0.8) 42%, rgba(8,8,7,0.94) 66%, #080807 100%); }
     .hero-visual { order: 0; margin-top: clamp(8px, 2vw, 20px); }
     .hero-phone { width: min(58%, 288px); }
     .hero-appicon { width: 78px; }
@@ -387,6 +390,10 @@
   <section class="phases">
     <img class="phases-bg" src="uploads/journey-map.jpg" alt="" aria-hidden="true">
     <div class="wrap">
+      <div class="phases-head reveal" style="margin-bottom:clamp(28px,4vw,48px);">
+        <p class="kicker" style="margin-bottom:20px;">The Pressure Point</p>
+        <h2 class="display" style="color:var(--aim-ivory);margin:0;font-size:clamp(32px,4vw,52px);">Four journeys,<br>one map.</h2>
+      </div>
       <div class="phases-grid">
         <article class="phase-col reveal">
           <div class="phase-num">01<span class="of">The Problem</span></div>
