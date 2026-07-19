@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('aim-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<title>My Story · An Ideas Merchant</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon/favicon-48.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon/favicon-512.png">
+<link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
+<meta name="description" content="Years of practice, a lifetime of curiosity. The story behind An Ideas Merchant.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="An Ideas Merchant">
+<meta property="og:url" content="https://anideasmerchant.com/story/">
+<meta property="og:title" content="My Story · An Ideas Merchant">
+<meta property="og:description" content="Years of practice, a lifetime of curiosity. The story behind An Ideas Merchant.">
+<meta property="og:image" content="https://anideasmerchant.com/assets/og/og-home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="My Story · An Ideas Merchant">
+<meta name="twitter:description" content="Years of practice, a lifetime of curiosity. The story behind An Ideas Merchant.">
+<meta name="twitter:image" content="https://anideasmerchant.com/assets/og/og-home.jpg">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  :root { --maxw: 1200px; --readw: 660px; --gutter: clamp(22px, 5vw, 80px); }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--aim-black); color: var(--aim-ivory); margin: 0; overflow-x: hidden; font-family: var(--font-body); }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  p { margin: 0; text-wrap: pretty; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); }
+  .display { font-family: var(--font-display); font-weight: 500; line-height: 1.05; letter-spacing: -0.01em; }
+  .kicker { font-family: var(--font-body); font-weight: 500; font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); margin: 0; }
+
+  /* nav */
+  .nav { position: sticky; top: 0; z-index: 60; background: color-mix(in srgb, var(--aim-black) 82%, transparent); backdrop-filter: saturate(120%) blur(12px); border-bottom: 1px solid var(--aim-hairline-ivory); }
+  .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 16px var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 13px; }
+  .brand .mono-logo { height: 38px; width: auto; display: block; }
+  .brand .word { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .back { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aim-muted); display: inline-flex; align-items: center; gap: 10px; transition: color var(--dur) var(--ease-out); }
+  .back:hover { color: var(--aim-ivory); }
+
+  /* header */
+  .hd { position: relative; min-height: clamp(420px, 62vh, 620px); display: flex; align-items: flex-end; isolation: isolate; overflow: hidden; }
+  .hd img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; filter: saturate(0.88); }
+  .hd::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(8,8,7,0.96) 0%, rgba(8,8,7,0.5) 45%, rgba(8,8,7,0.35) 100%); }
+  .hd-inner { padding-block: clamp(40px, 6vw, 72px); }
+  .hd h1 { font-size: clamp(44px, 7vw, 96px); margin: 18px 0 0; max-width: 16ch; color: var(--aim-ivory); }
+  .hd h1 .soft { color: var(--aim-muted); }
+
+  /* article */
+  .article { padding-block: clamp(64px, 9vw, 120px); }
+  .lead { max-width: var(--readw); margin: 0 auto; font-family: var(--font-display); font-style: italic; font-size: clamp(24px, 3vw, 34px); line-height: 1.34; color: var(--aim-ivory); }
+  .prose { max-width: var(--readw); margin: 0 auto; }
+  .prose p { font-size: clamp(17px, 1.3vw, 19px); line-height: 1.78; color: var(--aim-muted); margin: 28px 0 0; }
+  .prose p.turn { color: var(--aim-ivory); font-family: var(--font-display); font-style: italic; font-size: clamp(21px, 2.2vw, 27px); line-height: 1.42; margin-top: 44px; }
+  .prose p:first-child { margin-top: 0; }
+
+  .figure { margin: clamp(56px, 8vw, 96px) auto; max-width: 860px; }
+  .frame-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .figure .frame { aspect-ratio: 3/4; overflow: hidden; border: 1px solid var(--aim-hairline-ivory); }
+  .figure img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.88); }
+  .figure figcaption { margin-top: 14px; font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+
+  .end { max-width: var(--readw); margin: clamp(56px,8vw,88px) auto 0; padding-top: 36px; border-top: 1px solid var(--aim-hairline-ivory); text-align: center; }  .end .sign { font-family: var(--font-display); font-style: italic; font-size: clamp(22px, 2.4vw, 30px); color: var(--aim-ivory); }
+  .btn { font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 26px; cursor: pointer; border: 1px solid var(--aim-gold); color: var(--aim-gold); display: inline-flex; align-items: center; gap: 10px; margin-top: 30px; transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
+  .btn:hover { background: var(--aim-gold); color: var(--aim-charcoal); }
+
+  .footer { padding: 48px 0; border-top: 1px solid var(--aim-hairline-ivory); }
+  .footer-line { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .footer-line span { font-size: 12px; color: var(--aim-muted); letter-spacing: 0.04em; }
+
+  /* ---- theme toggle ---- */
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .theme-toggle { background: none; border: 1px solid var(--aim-hairline-ivory-strong); color: var(--aim-muted);
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center;
+    justify-content: center; flex: none; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .theme-toggle:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); }
+  .theme-toggle svg { width: 18px; height: 18px; display: block; }
+  .theme-toggle .i-moon { display: none; } .theme-toggle .i-sun { display: block; }
+  [data-theme="light"] .theme-toggle .i-moon { display: block; } [data-theme="light"] .theme-toggle .i-sun { display: none; }
+
+  /* ---- LIGHT THEME: premium paper; the header stays cinematic ---- */
+  html { transition: background-color var(--dur-slow) var(--ease-out); }
+  [data-theme="light"] {
+    --aim-black: #F4EFE6; --aim-charcoal: #E9E0D1; --aim-surface: #E6DCCB;
+    --aim-muted: #6D6258; --aim-ivory: #14120F; --aim-gold: #9A6B28; --aim-gold-light: #C99A45;
+    --aim-hairline-ivory: rgba(17,16,14,0.13); --aim-hairline-ivory-strong: rgba(17,16,14,0.24);
+  }
+  [data-theme="light"] .hd {
+    --aim-black: #080807; --aim-muted: #A9A099; --aim-ivory: #F4EFE6; --aim-gold: #C99A45;
+    --aim-hairline-ivory: rgba(244,239,230,0.12); --aim-hairline-ivory-strong: rgba(244,239,230,0.20);
+  }
+  [data-theme="light"] .nav .mono-logo, [data-theme="light"] .footer .mono-logo { filter: invert(1) grayscale(1) brightness(0.16); }
+  [data-theme="light"] .g, [data-theme="light"] .story-bg { filter: invert(1); }
+
+  .gallery { max-width: var(--maxw); margin: clamp(64px,9vw,104px) auto 0; }
+  .gallery-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+  .gallery-head h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3vw, 38px); letter-spacing: -0.02em; margin: 6px 0 0; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .gallery-grid figure { margin: 0; aspect-ratio: 3/4; overflow: hidden; border: 1px solid var(--aim-hairline-ivory); }
+  .gallery-grid img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.88); transition: transform 700ms var(--ease-out); }
+  .gallery-grid figure:hover img { transform: scale(1.045); }
+  @media (max-width: 640px) { .gallery-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 460px) { .gallery-grid { grid-template-columns: 1fr; } }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 800ms var(--ease-out), transform 800ms var(--ease-out); }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* typographic rag */
+  .hd h1, .gallery-head h2 { text-wrap: balance; }
+  .lead, .prose p.turn { text-wrap: balance; }
+
+  /* field-note glyphs: hand-drawn chalk diagrams peppered through the story */
+  .article { position: relative; overflow: hidden; }
+  .article > .wrap, .article > .figure, .article > .gallery, .article > .end { position: relative; z-index: 1; }
+  .g { position: absolute; z-index: 0; pointer-events: none; background: no-repeat center / contain; opacity: 0.26; filter: brightness(1.05); }
+  @media (max-width: 1100px) { .g { display: none; } }
+
+  /* middle story images as faint background, copy flows over top */
+  .story-mid { position: relative; }
+  .story-mid > *:not(.story-bg) { position: relative; z-index: 1; }
+  .story-bg { position: absolute; z-index: 0; pointer-events: none; background-repeat: no-repeat; background-position: center; background-size: cover; opacity: 0.13; filter: grayscale(0.15); }
+  .story-bg-a { width: 62%; aspect-ratio: 3/4; max-height: 60%; top: -4%; left: -6%; background-image: url('../uploads/8816.jpeg'); }
+  .story-bg-b { width: 62%; aspect-ratio: 3/4; max-height: 60%; bottom: -4%; right: -6%; background-image: url('../uploads/8807.jpeg'); }
+  @media (max-width: 760px) { .story-bg { display: none; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <nav class="nav-inner" aria-label="Primary">
+    <a class="brand" href="../" aria-label="An Ideas Merchant, home">
+      <img class="mono-logo" src="../assets/logos/aim-monogram-ivory.png" alt="AIM">
+      <span class="word">An Ideas Merchant</span>
+    </a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M2.4 12h2.6M19 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9"></path></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+      </button>
+      <a class="back" href="../">&larr; Back to home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hd">
+    <img src="../uploads/aim-about-founder-process-desk.jpg" alt="A cluttered desk of storyboards and notes overlooking Auckland at dusk">
+    <div class="wrap hd-inner">
+      <p class="kicker reveal">My Story</p>
+      <h1 class="display reveal">What comes before the work <span class="soft">has always interested me more than the work itself.</span></h1>
+    </div>
+  </section>
+
+  <article class="article">
+    <span class="g" style="width:180px; aspect-ratio:220/215; top:3%; right:4%; transform:rotate(-6deg); background-image:url('assets/glyphs/s1-origin.png');" aria-hidden="true"></span>
+    <span class="g" style="width:130px; aspect-ratio:200/245; top:20%; left:3%; transform:rotate(5deg); opacity:0.22; background-image:url('assets/glyphs/s2-identity.png');" aria-hidden="true"></span>
+    <span class="g" style="width:170px; aspect-ratio:235/210; top:40%; right:3%; transform:rotate(8deg); opacity:0.20; background-image:url('assets/glyphs/s4-narrative.png');" aria-hidden="true"></span>
+    <span class="g" style="width:190px; aspect-ratio:214/190; top:58%; left:4%; transform:rotate(-7deg); opacity:0.22; background-image:url('assets/glyphs/bg-mountain.png');" aria-hidden="true"></span>
+    <span class="g" style="width:150px; aspect-ratio:210/215; bottom:12%; right:5%; transform:rotate(4deg); opacity:0.24; background-image:url('assets/glyphs/s3-audience.png');" aria-hidden="true"></span>
+    <span class="g" style="width:150px; aspect-ratio:208/195; top:74%; right:8%; transform:rotate(-6deg); opacity:0.2; background-image:url('assets/glyphs/bg-gauge.png');" aria-hidden="true"></span>
+    <div class="wrap story-mid">
+      <span class="story-bg story-bg-a" aria-hidden="true"></span>
+      <span class="story-bg story-bg-b" aria-hidden="true"></span>
+      <p class="lead reveal">I've always been more interested in what comes before the work than the work itself.</p>
+
+      <div class="prose">
+        <p class="reveal">For years I worked in the film and television industry as a camera assistant, watching directors, cinematographers and entire crews shape a story one decision at a time. Every shot, every movement and every cut existed for a reason. Nothing was accidental.</p>
+        <p class="reveal">When studying branding and user experience design, I realised businesses work much the same way. Every interaction tells people something. A website, a product, a service, even silence, all leave someone with an impression. Whether intentional or not, every project is already telling a story.</p>
+        <p class="turn reveal">That observation became the thread connecting everything I'd done.</p>
+        <p class="reveal">What fascinated me wasn't design itself. It was the questions that came before it.</p>
+        <p class="reveal">I've found that the answers to those questions are often far more powerful than any logo, website or marketing campaign. They reveal the meaning behind the work. They expose assumptions. They make invisible priorities visible. Most importantly, they give people something worth committing to.</p>
+        <p class="reveal">Because people rarely struggle simply because they don't know what to do. More often, they struggle because they haven't connected what they're building to something meaningful enough to carry them through the difficult parts.</p>
+        <p class="reveal">Without that, every obstacle feels like a reason to stop. With it, the work has direction.</p>
+        <p class="turn reveal">That understanding came from trying to solve the same problem for myself.</p>
+        <p class="reveal">The hardest project I ever worked on was my own. I realised that understanding a problem and acting on it aren't the same thing. Knowing what to do isn't always enough.</p>
+        <p class="reveal">Like many creative people, I never lacked ideas. I lacked a reliable way to separate the ones worth pursuing from the noise. I lacked a reliable way to hold onto them long enough to understand which ones mattered.</p>
+        <p class="reveal">Over time I developed a practice of slowing down, asking better questions, separating signal from noise, and turning complexity into decisions. That way of thinking gradually evolved into Target Practice.</p>
+        <p class="reveal">I'm building An Ideas Merchant to share that process with founders, creatives and organisations. Not to tell them who they should be, but to help uncover what already exists beneath the noise, articulate why it matters, and build enough conviction that execution becomes the natural next step.</p>
+        <p class="turn reveal">Because when the future you're trying to create becomes clear enough, the cost of never building it becomes impossible to ignore.</p>
+      </div>
+
+      <div class="gallery reveal">
+        <div class="gallery-head">
+          <div>
+            <p class="kicker">Selected Frames</p>
+            <h2>The way I see.</h2>
+          </div>
+          <p class="figcaption" style="font-size:11px;letter-spacing:var(--tracking-meta);text-transform:uppercase;color:var(--aim-muted)">Street Observations · Auckland</p>
+        </div>
+        <div class="gallery-grid" id="framesGrid"></div>
+      </div>
+
+      <div class="end reveal">
+        <p class="sign">Clarity before creation.<br>Meaning before momentum.<br>Direction before delivery.</p>
+        <a class="btn" href="../#contact">Start a conversation &rarr;</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-line">
+    <span>&copy; 2026 An Ideas Merchant</span>
+    <span>Auckland, New Zealand</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var tt = document.querySelector('.theme-toggle');
+    if (tt) tt.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      var next = cur === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('aim-theme', next); } catch (e) {}
+    });
+  })();
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (e) { e.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+</script>
+<script>
+  /* ---- Selected Frames: responsive random cycling ----
+     3 slots desktop / 2 mid / 1 mobile. One slot swaps every 8s,
+     round-robin, so effective hold = slotCount * 8s (24s / 16s / 8s). */
+  (function () {
+    var POOL = [
+      'street-8776.jpeg','street-8794.jpeg','street-8799.jpeg','street-8800.jpeg',
+      'street-8802.jpeg','street-8803.jpeg','street-8804b.jpeg','street-8807.jpeg','street-8808.jpeg',
+      'street-8816.jpeg','street-8817.jpeg','street-8818.jpeg','street-8819.jpeg','street-8820.jpeg',
+      'street-8821.jpeg','street-8822.jpeg','street-8823.jpeg','street-8824.jpeg','street-8829.jpeg',
+      'street-8840.jpeg','street-8860.jpeg','street-9017.jpeg','street-9948.jpeg',
+      'street-10209.jpeg','street-10215.jpeg','street-10224.jpeg','street-10225.jpeg','street-10230.jpeg','street-10241.jpeg',
+      'street-10243.jpeg','street-10244.jpeg','street-10261.jpeg','street-10266.jpeg','street-10268.jpeg','street-10269.jpeg','street-10270.jpeg',
+      'street-10275.jpeg','street-10280.jpeg','street-10287.jpeg','street-10296.jpeg','street-10306.jpeg','street-10315.jpeg'
+    ];
+    var grid = document.getElementById('framesGrid');
+    if (!grid) return;
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+    var deck = shuffle(POOL), di = 0;
+    function nextPhoto() {
+      if (di >= deck.length) { deck = shuffle(POOL); di = 0; }
+      return deck[di++];
+    }
+    function slotCountForWidth(w) { return w <= 460 ? 1 : (w <= 640 ? 2 : 3); }
+    function intervalForSlots(n) { return n >= 3 ? 20000 : (n === 2 ? 15000 : 10000); }
+    var current = [];
+    function render() {
+      grid.innerHTML = current.map(function (name) {
+        return '<figure><img src="../uploads/' + encodeURIComponent(name) + '" alt="Street photograph, Auckland" loading="lazy"></figure>';
+      }).join('');
+    }
+    function setSlotCount(n) {
+      if (current.length === n) return;
+      if (current.length < n) { while (current.length < n) current.push(nextPhoto()); }
+      else { current.length = n; }
+      render();
+    }
+    var idx = 0, timer = null;
+    function tick() {
+      var n = current.length;
+      if (!n) return;
+      current[idx % n] = nextPhoto();
+      idx++;
+      render();
+    }
+    function startTimer() {
+      if (timer) clearInterval(timer);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) timer = setInterval(tick, intervalForSlots(current.length));
+    }
+    function refreshSlots() { setSlotCount(slotCountForWidth(window.innerWidth)); startTimer(); }
+    refreshSlots();
+    window.addEventListener('resize', refreshSlots);
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('aim-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<title>GoTrack · Case Study · An Ideas Merchant</title>
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="../assets/favicon/favicon-48.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../assets/favicon/favicon-512.png">
+<link rel="apple-touch-icon" href="../assets/favicon/apple-touch-icon.png">
+<meta name="description" content="How working inside a brand from the ground up revealed the process that became An Ideas Merchant. The GoTrack case study.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="An Ideas Merchant">
+<meta property="og:url" content="https://anideasmerchant.com/case-study/">
+<meta property="og:title" content="GoTrack · Case Study · An Ideas Merchant">
+<meta property="og:description" content="How working inside a brand from the ground up revealed the process that became An Ideas Merchant.">
+<meta property="og:image" content="https://anideasmerchant.com/assets/og/og-home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GoTrack · Case Study · An Ideas Merchant">
+<meta name="twitter:description" content="How working inside a brand from the ground up revealed the process that became An Ideas Merchant.">
+<meta name="twitter:image" content="https://anideasmerchant.com/assets/og/og-home.jpg">
+<link rel="stylesheet" href="../styles.css">
+<style>
+  /* ============================================================
+     An Ideas Merchant — GoTrack case study.
+     Dark cinema direction on AIM tokens. AIM gold frames the
+     narrative; GoSweetSpot blue glows only inside the client's
+     own world (numbers, logo build, the app).
+     ============================================================ */
+  :root {
+    --maxw: 1200px;
+    --readw: 680px;
+    --gutter: clamp(22px, 5vw, 80px);
+    --section-y: clamp(84px, 11vw, 156px);
+    --gt-blue: #1CA6DD;
+    --gt-blue-deep: #0E7AAD;
+    --gt-blue-wash: rgba(28, 166, 221, 0.14);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--aim-black); color: var(--aim-ivory);
+    margin: 0; overflow-x: hidden; font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  p { margin: 0; text-wrap: pretty; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--gutter); }
+  section { position: relative; }
+
+  .display { font-family: var(--font-display); font-weight: 600; line-height: 1.03; letter-spacing: -0.02em; }
+  .kicker { font-family: var(--font-body); font-weight: 500; font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); margin: 0; }
+  .kicker.blue { color: var(--gt-blue); }
+  .meta-label { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0; }
+  h1, h2, h3 { text-wrap: balance; }
+
+  /* ---- NAV ---- */
+  .nav { position: sticky; top: 0; z-index: 60; background: color-mix(in srgb, var(--aim-black) 82%, transparent); backdrop-filter: saturate(120%) blur(12px); border-bottom: 1px solid var(--aim-hairline-ivory); }
+  .nav-inner { max-width: var(--maxw); margin: 0 auto; padding: 16px var(--gutter); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+  .brand { display: flex; align-items: center; gap: 13px; }
+  .brand .mono-logo { height: 38px; width: auto; display: block; }
+  .brand .word { font-family: var(--font-body); font-weight: 500; font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .back { font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--aim-muted); display: inline-flex; align-items: center; gap: 10px; transition: color var(--dur) var(--ease-out); }
+  .back:hover { color: var(--aim-ivory); }
+  .back .arw { transition: transform var(--dur) var(--ease-out); }
+  .back:hover .arw { transform: translateX(-4px); }
+
+  /* ---- theme toggle ---- */
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .theme-toggle { background: none; border: 1px solid var(--aim-hairline-ivory-strong); color: var(--aim-muted);
+    width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center;
+    justify-content: center; flex: none; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .theme-toggle:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); }
+  .theme-toggle svg { width: 18px; height: 18px; display: block; }
+  .theme-toggle .i-moon { display: none; } .theme-toggle .i-sun { display: block; }
+  [data-theme="light"] .theme-toggle .i-moon { display: block; } [data-theme="light"] .theme-toggle .i-sun { display: none; }
+
+  /* ---- LIGHT THEME: premium paper; hero + phases stay cinematic ---- */
+  html { transition: background-color var(--dur-slow) var(--ease-out); }
+  [data-theme="light"] {
+    --aim-black: #F4EFE6; --aim-charcoal: #E9E0D1; --aim-surface: #E6DCCB;
+    --aim-muted: #6D6258; --aim-ivory: #14120F; --aim-gold: #9A6B28; --aim-gold-light: #C99A45;
+    --aim-hairline-ivory: rgba(17,16,14,0.13); --aim-hairline-ivory-strong: rgba(17,16,14,0.24);
+    --aim-ivory-dim: #40382E;
+  }
+  [data-theme="light"] .hero, [data-theme="light"] .phases {
+    --aim-black: #080807; --aim-charcoal: #11100E; --aim-surface: #171512;
+    --aim-muted: #A9A099; --aim-ivory: #F4EFE6; --aim-gold: #C99A45;
+    --aim-hairline-ivory: rgba(244,239,230,0.12); --aim-hairline-ivory-strong: rgba(244,239,230,0.20);
+  }
+  [data-theme="light"] .nav .mono-logo, [data-theme="light"] .footer .mono-logo { filter: invert(1) grayscale(1) brightness(0.16); }
+
+  /* ---- HERO ---- */
+  .hero { position: relative; overflow: hidden; isolation: isolate; border-bottom: 1px solid var(--aim-hairline-ivory); }
+  .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; z-index: -3; opacity: 0.92; filter: saturate(0.95) contrast(1.0); }
+  .hero::after { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(90deg, rgba(8,8,7,0.97) 0%, rgba(8,8,7,0.93) 28%, rgba(8,8,7,0.68) 45%, rgba(8,8,7,0.22) 58%, rgba(8,8,7,0) 70%), linear-gradient(0deg, rgba(8,8,7,0.6) 0%, rgba(8,8,7,0) 55%); }
+  .hero::before { content: ""; position: absolute; z-index: -1; width: min(70vw, 780px); aspect-ratio: 1; right: -14%; top: -12%; border-radius: 50%; background: radial-gradient(circle, var(--gt-blue-wash) 0%, rgba(28,166,221,0) 68%); }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(36px, 6vw, 84px); align-items: center; padding-block: clamp(56px, 9vw, 120px); }
+  .hero-eyebrows { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; margin-bottom: 30px; }
+  .hero-eyebrows .k { font-family: var(--font-body); font-weight: 500; font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); }
+  .hero-eyebrows .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--aim-hairline-ivory-strong); }
+  .hero-lockup { width: clamp(230px, 40vw, 380px); height: auto; }
+  .hero-by { display: flex; align-items: center; gap: 12px; margin-top: 22px; }
+  .hero-by .lbl { font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .hero-by img { height: 20px; width: auto; opacity: 0.9; }
+  .hero-lede { margin-top: 30px; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.6; color: var(--aim-muted); max-width: 42ch; text-wrap: balance; }
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+  .hero-visual .glow { position: absolute; width: 78%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(28,166,221,0.22) 0%, rgba(28,166,221,0) 70%); }
+  .hero-phone { position: relative; width: min(78%, 360px); filter: drop-shadow(0 40px 80px rgba(0,0,0,0.6)); }
+  .hero-appicon { position: absolute; right: 4%; bottom: 2%; width: 96px; border-radius: 24px; box-shadow: 0 20px 44px rgba(0,0,0,0.5); }
+
+  /* ---- STATS ---- */
+  .stats { border-bottom: 1px solid var(--aim-hairline-ivory); background: var(--aim-charcoal); }
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .stat { padding: clamp(30px, 4vw, 54px) var(--gutter); text-align: center; border-left: 1px solid var(--aim-hairline-ivory); }
+  .stat:first-child { border-left: 0; }
+  .stat .n { font-family: var(--font-display); font-weight: 600; font-size: clamp(38px, 5.5vw, 68px); line-height: 1; letter-spacing: -0.03em; color: var(--gt-blue); }
+  .stat .l { margin-top: 12px; font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+
+  /* ---- CREDITS ---- */
+  .credits { padding-block: clamp(40px, 5vw, 64px); border-bottom: 1px solid var(--aim-hairline-ivory); }
+  .credits-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: clamp(20px, 3vw, 40px); }
+  .credit .rk { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .credit .rv { margin-top: 10px; font-family: var(--font-display); font-size: clamp(17px, 1.5vw, 21px); line-height: 1.3; color: var(--aim-ivory); }
+
+  /* ---- shared block ---- */
+  .block { padding-block: var(--section-y); }
+  .block.charcoal { background: var(--aim-charcoal); }
+  .lead-h { font-size: clamp(34px, 5vw, 62px); margin: 16px 0 0; line-height: 1.02; letter-spacing: -0.028em; max-width: 16ch; }
+
+  /* ---- ORIGIN ---- */
+  .origin-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(36px, 6vw, 90px); align-items: start; }
+  .origin-body p { font-size: clamp(16px, 1.25vw, 18px); line-height: 1.74; color: var(--aim-muted); margin: 0 0 20px; max-width: 46ch; text-wrap: pretty; }
+  .origin-body p:last-child { margin-bottom: 0; }
+  .pullquote { margin: clamp(56px, 8vw, 92px) auto 0; max-width: 900px; text-align: center; }
+  .pullquote blockquote { margin: 0; font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(24px, 3.1vw, 40px); line-height: 1.34; color: var(--aim-ivory); letter-spacing: -0.01em; text-wrap: balance; }
+  .pullquote .mark { color: var(--aim-gold); }
+  .pullquote cite { display: block; margin-top: 26px; font-style: normal; font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+
+  /* ---- NUMBERED PHASES ---- */
+  .phases { border-top: 1px solid var(--aim-hairline-ivory); }
+  .phase { border-bottom: 1px solid var(--aim-hairline-ivory); padding-block: clamp(56px, 8vw, 104px); }
+  .phase-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(32px, 5vw, 76px); align-items: center; }
+  .phase.reverse .phase-grid { direction: rtl; }
+  .phase.reverse .phase-grid > * { direction: ltr; }
+  .phase-num { font-family: var(--font-display); font-weight: 600; font-size: clamp(52px, 8vw, 104px); line-height: 0.9; letter-spacing: -0.04em; color: var(--gt-blue); }
+  .phase-num .of { color: var(--aim-muted); font-size: 0.32em; letter-spacing: var(--tracking-meta); vertical-align: middle; margin-left: 10px; }
+  .phase h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(24px, 2.9vw, 38px); line-height: 1.12; letter-spacing: -0.02em; margin: 22px 0 0; max-width: 20ch; text-wrap: balance; }
+  .phase p.body { margin: 22px 0 0; font-size: clamp(16px, 1.25vw, 18px); line-height: 1.74; color: var(--aim-muted); max-width: 48ch; text-wrap: pretty; }
+  .phase-figure { overflow: hidden; border: 1px solid var(--aim-hairline-ivory); background: var(--aim-surface); }
+  .phase-figure img { width: 100%; height: 100%; object-fit: cover; }
+  .figcap { margin-top: 14px; font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .dual-figs { margin-top: clamp(36px, 5vw, 60px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(16px, 2.4vw, 26px); }
+  .dual-figs figure { margin: 0; }
+
+  /* ---- BRAND ATTRIBUTES ---- */
+  .attrs-head { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; margin-bottom: clamp(44px, 6vw, 72px); }
+  .attrs-head .worksheet { overflow: hidden; border: 1px solid var(--aim-hairline-ivory); transform: rotate(-1.2deg); box-shadow: 0 30px 60px rgba(0,0,0,0.45); }
+  .attrs-head .worksheet img { width: 100%; display: block; filter: saturate(0.96) contrast(1.02); }
+  .attrs-intro p { margin-top: 22px; font-size: clamp(16px, 1.25vw, 18px); line-height: 1.74; color: var(--aim-muted); max-width: 44ch; text-wrap: pretty; }
+  .attrs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--aim-hairline-ivory); border: 1px solid var(--aim-hairline-ivory); }
+  .attr { background: var(--aim-black); padding: clamp(26px, 3vw, 40px); }
+  .block.charcoal .attr { background: var(--aim-charcoal); }
+  .attr h4 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2vw, 25px); letter-spacing: -0.01em; color: var(--aim-ivory); }
+  .attr .q { display: block; margin-top: 4px; font-family: var(--font-body); font-size: 11px; letter-spacing: 0.06em; text-transform: none; color: var(--aim-muted); font-style: italic; }
+  .attr ul { list-style: none; margin: 20px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .attr li { display: flex; align-items: baseline; gap: 12px; font-size: clamp(15px, 1.15vw, 17px); line-height: 1.4; color: var(--aim-ivory); }
+  .attr li::before { content: ""; flex: none; width: 6px; height: 6px; margin-top: 7px; border-radius: 50%; background: var(--gt-blue); }
+  .valueprop { margin: clamp(52px, 7vw, 88px) auto 0; max-width: 940px; text-align: center; padding: clamp(40px, 5vw, 64px) var(--gutter); border: 1px solid var(--aim-hairline-ivory); background: var(--gt-blue-wash); }
+  .valueprop .vk { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--gt-blue); }
+  .valueprop blockquote { margin: 20px 0 0; font-family: var(--font-display); font-style: italic; font-size: clamp(22px, 2.8vw, 34px); line-height: 1.36; color: var(--aim-ivory); text-wrap: balance; }
+  .valueprop cite { display: block; margin-top: 22px; font-style: normal; font-size: 12px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+
+  /* ---- LOGO BUILD ---- */
+  .logo-derive { display: grid; grid-template-columns: 1fr auto 1fr; gap: clamp(24px, 4vw, 56px); align-items: center; margin-top: clamp(44px, 6vw, 72px); }
+  .logo-card { border: 1px solid var(--aim-hairline-ink, rgba(17,16,14,0.12)); padding: clamp(30px, 4vw, 52px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; min-height: 190px; background: #F4EFE6; }
+  .logo-card img { width: min(72%, 300px); height: auto; }
+  .logo-card .cap { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: #6D6258; }
+  .logo-arrow { font-family: var(--font-display); font-size: clamp(28px, 4vw, 46px); color: var(--gt-blue); line-height: 1; }
+  .logo-card.derived { border-color: var(--gt-blue); box-shadow: 0 0 0 1px var(--gt-blue), 0 30px 60px rgba(28,166,221,0.12); }
+  .elements { margin-top: clamp(48px, 6vw, 80px); display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(18px, 2.5vw, 28px); }
+  .element { border: 1px solid var(--aim-hairline-ivory); padding: clamp(24px, 3vw, 36px); text-align: center; }
+  .element .icon { height: 92px; display: flex; align-items: center; justify-content: center; margin-bottom: 22px; }
+  .element .icon img { max-height: 92px; width: auto; }
+  .element .icon svg { display: block; }
+  .element h5 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: clamp(16px, 1.5vw, 20px); color: var(--aim-ivory); }
+  .element p { margin: 10px 0 0; font-size: 14px; line-height: 1.6; color: var(--aim-muted); text-wrap: pretty; }
+
+  /* ---- THE APP ---- */
+  .app { background: var(--aim-charcoal); }
+  .app-rail { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(18px, 2.6vw, 32px); margin-top: clamp(44px, 6vw, 68px); align-items: end; }
+  .app-shot { overflow: hidden; border: 1px solid var(--aim-hairline-ivory); background: var(--gt-blue-deep); aspect-ratio: 1024/1536; }
+  .app-shot img { width: 100%; height: 100%; object-fit: cover; }
+  .app-feature { margin-top: clamp(28px, 4vw, 48px); display: grid; grid-template-columns: 0.62fr 1.38fr; gap: clamp(24px, 4vw, 60px); align-items: center; border: 1px solid var(--aim-hairline-ivory); background: var(--aim-black); }
+  .app-feature .shot { background: var(--gt-blue); display: flex; align-items: center; justify-content: center; padding: clamp(28px, 4vw, 52px) clamp(24px, 3vw, 44px) 0; align-self: end; }
+  .app-feature .shot img { width: min(84%, 300px); filter: drop-shadow(0 30px 60px rgba(0,0,0,0.4)); }
+  .app-feature .txt { padding: clamp(36px, 5vw, 64px) clamp(28px, 4vw, 56px); }
+  .app-feature h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(24px, 2.8vw, 36px); letter-spacing: -0.02em; margin: 16px 0 0; }
+  .app-feature p { margin: 20px 0 0; font-size: clamp(16px, 1.2vw, 18px); line-height: 1.72; color: var(--aim-muted); max-width: 46ch; text-wrap: pretty; }
+
+  /* ---- FOOTNOTE / CTA ---- */
+  .footnote { padding-block: var(--section-y); text-align: center; }
+  .footnote h2 { font-size: clamp(30px, 4.4vw, 56px); margin: 18px auto 0; max-width: 20ch; line-height: 1.06; letter-spacing: -0.028em; }
+  .footnote p { margin: 26px auto 0; max-width: 52ch; font-size: clamp(16px, 1.25vw, 18px); line-height: 1.72; color: var(--aim-muted); text-wrap: balance; }
+  .footnote .actions { margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn { font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px 28px; cursor: pointer; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 10px; transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .btn .arw { transition: transform var(--dur) var(--ease-out); }
+  .btn:hover .arw { transform: translateX(4px); }
+  .btn-solid { background: var(--aim-gold); color: var(--aim-charcoal); }
+  .btn-solid:hover { background: var(--aim-gold-light); }
+  .btn-ghost { border-color: var(--aim-hairline-ivory-strong); color: var(--aim-ivory); }
+  .btn-ghost:hover { border-color: var(--aim-ivory); }
+
+  /* ---- FOOTER ---- */
+  .footer { padding: clamp(52px,7vw,80px) 0 44px; border-top: 1px solid var(--aim-hairline-ivory); }
+  .footer-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; align-items: flex-start; }
+  .footer-brand p { max-width: 34ch; color: var(--aim-muted); line-height: 1.66; font-size: 14px; margin-top: 16px; }
+  .footer-cols { display: flex; gap: clamp(40px, 7vw, 88px); flex-wrap: wrap; }
+  .footer-col h4 { font-family: var(--font-body); font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0 0 16px; font-weight: 500; }
+  .footer-col a { display: block; font-size: 14px; color: var(--aim-ivory); margin-bottom: 12px; transition: color var(--dur) var(--ease-out); }
+  .footer-col a:hover { color: var(--aim-gold); }
+  .footer-line { margin-top: clamp(44px,6vw,64px); padding-top: 24px; border-top: 1px solid var(--aim-hairline-ivory); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .footer-line span { font-size: 12px; color: var(--aim-muted); letter-spacing: 0.04em; }
+
+  /* ---- NUMBERED PHASES: one container, journey-map behind, read left/centre/right ---- */
+  .phases { position: relative; overflow: hidden; isolation: isolate; border-top: 1px solid var(--aim-hairline-ivory); min-height: min(94vh, 940px); display: flex; align-items: flex-end; }
+  .phases-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 78% 18%; z-index: -3; opacity: 0.6; filter: saturate(0.82) contrast(1.03); }
+  .phases::after { content: ""; position: absolute; inset: 0; z-index: -2; background: linear-gradient(180deg, rgba(8,8,7,0.4) 0%, rgba(8,8,7,0.1) 18%, rgba(8,8,7,0.45) 42%, rgba(8,8,7,0.85) 66%, #080807 100%), linear-gradient(90deg, rgba(8,8,7,0.88) 0%, rgba(8,8,7,0.5) 32%, rgba(8,8,7,0) 56%); }
+  .phases .wrap { width: 100%; padding-block: clamp(40px, 6vw, 72px) clamp(52px, 8vw, 104px); }
+  .phases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(26px, 3.5vw, 52px); }
+  .phases-head { display: inline-block; }
+  .phase-col { position: relative; }
+  .phase-col + .phase-col { padding-left: clamp(26px, 3.5vw, 52px); border-left: 1px solid rgba(244,239,230,0.2); }
+  .phase-num { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 4vw, 54px); line-height: 0.9; letter-spacing: -0.04em; color: var(--gt-blue); text-shadow: 0 2px 16px rgba(8,8,7,0.55); }
+  .phase-num .of { display: block; margin-top: 10px; color: #F4EFE6; font-size: 11px; font-weight: 500; letter-spacing: var(--tracking-meta); text-transform: uppercase; text-shadow: 0 1px 10px rgba(8,8,7,0.7); }
+  .phase-col h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 1.7vw, 25px); line-height: 1.16; letter-spacing: -0.015em; margin: 20px 0 0; color: #F4EFE6; text-wrap: balance; text-shadow: 0 1px 12px rgba(8,8,7,0.75); }
+  .phase-col p.body { margin: 16px 0 0; font-size: clamp(14px, 1vw, 15px); line-height: 1.66; color: #D2CDC3; text-wrap: pretty; text-shadow: 0 1px 10px rgba(8,8,7,0.8); }
+  @media (max-width: 820px) {
+    .phases-grid { grid-template-columns: 1fr; gap: 0; }
+    .phase-col + .phase-col { padding-left: 0; border-left: 0; border-top: 1px solid rgba(244,239,230,0.16); padding-top: 34px; margin-top: 34px; }
+  }
+
+  /* ---- STRATEGY artifacts ---- */
+  .strategy-figs { display: grid; gap: clamp(16px, 2.4vw, 28px); }
+  .strategy-figs figure { margin: 0; }
+  .strategy-figs .art { overflow: hidden; border: 1px solid var(--aim-hairline-ivory); box-shadow: 0 30px 60px rgba(0,0,0,0.45); }
+  .strategy-figs .art img { width: 100%; display: block; filter: saturate(0.96) contrast(1.02); }
+  .strategy-figs figure:first-child .art { transform: rotate(-1.1deg); }
+  .strategy-figs figure:last-child .art { transform: rotate(0.8deg); }
+  .attrs-label { margin: clamp(40px,5vw,64px) 0 22px; }
+
+  /* ---- reveal ---- */
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity 820ms var(--ease-out), transform 820ms var(--ease-out); }
+  .reveal.in { opacity: 1; transform: none; }
+  .slide-l { opacity: 0; transform: translateX(-40px); transition: opacity 820ms var(--ease-out), transform 820ms var(--ease-out); }
+  .slide-r { opacity: 0; transform: translateX(40px); transition: opacity 820ms var(--ease-out), transform 820ms var(--ease-out); }
+  .slide-l.in, .slide-r.in { opacity: 1; transform: none; }
+  .d1 { transition-delay: 90ms; } .d2 { transition-delay: 180ms; } .d3 { transition-delay: 270ms; }
+  @media (prefers-reduced-motion: reduce) { .reveal, .slide-l, .slide-r { opacity: 1; transform: none; transition: none; } }
+
+  /* ---- responsive ---- */
+  @media (max-width: 940px) {
+    .hero-grid, .origin-grid, .phase-grid, .attrs-head, .app-feature { grid-template-columns: 1fr; }
+    .hero-grid { padding-block: clamp(22px, 4vw, 44px); gap: clamp(20px, 3vw, 34px); }
+    .hero::after { background: linear-gradient(180deg, rgba(8,8,7,0.92) 0%, rgba(8,8,7,0.7) 22%, rgba(8,8,7,0.36) 48%, rgba(8,8,7,0.22) 100%); }
+    .phase.reverse .phase-grid { direction: ltr; }
+    .phases-bg { opacity: 0.22; filter: saturate(0.6) contrast(1.0) brightness(0.85); }
+    .phases::after { background: linear-gradient(180deg, rgba(8,8,7,0.75) 0%, rgba(8,8,7,0.6) 18%, rgba(8,8,7,0.8) 42%, rgba(8,8,7,0.94) 66%, #080807 100%); }
+    .hero-visual { order: 0; margin-top: clamp(8px, 2vw, 20px); }
+    .hero-phone { width: min(58%, 288px); }
+    .hero-appicon { width: 78px; }
+    .credits-grid { grid-template-columns: 1fr 1fr; gap: 26px; }
+    .attrs-grid { grid-template-columns: 1fr 1fr; }
+    .elements { grid-template-columns: 1fr 1fr; }
+    .logo-derive { grid-template-columns: 1fr; }
+    .logo-arrow { transform: rotate(90deg); justify-self: center; }
+    .app-feature .shot { padding-bottom: clamp(28px,4vw,52px); }
+  }
+  @media (max-width: 620px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .stat { border-left: 0; border-top: 1px solid var(--aim-hairline-ivory); }
+    .stat:first-child { border-top: 0; }
+    .attrs-grid, .app-rail, .dual-figs { grid-template-columns: 1fr; }
+    .credits-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====================== NAV ====================== -->
+<header class="nav">
+  <nav class="nav-inner" aria-label="Primary">
+    <a class="brand" href="../" aria-label="An Ideas Merchant, home">
+      <img class="mono-logo" src="../assets/logos/aim-monogram-ivory.png" alt="AIM">
+      <span class="word">An Ideas Merchant</span>
+    </a>
+    <div class="nav-right">
+      <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M4.6 4.6l1.9 1.9M17.5 17.5l1.9 1.9M2.4 12h2.6M19 12h2.6M4.6 19.4l1.9-1.9M17.5 6.5l1.9-1.9"></path></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+      </button>
+      <a class="back" href="../"><span class="arw">&larr;</span> Back to home</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- ====================== HERO ====================== -->
+  <section class="hero">
+    <img class="hero-bg" src="../uploads/aim-case-study-logistics-warehouse-desk-v2.jpg" alt="" aria-hidden="true">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="hero-eyebrows reveal">
+          <span class="k">Origin Story</span><span class="dot"></span>
+          <span class="k">In-House Brand Design</span><span class="dot"></span>
+          <span class="k">UX</span>
+        </div>
+        <img class="hero-lockup reveal d1" src="../assets/logos/gotrack-ivory.png" alt="GoTrack">
+        <div class="hero-by reveal d1">
+          <span class="lbl">by</span>
+          <img src="../assets/logos/gosweetspot-ivory.png" alt="GoSweetSpot">
+        </div>
+        <p class="hero-lede reveal d2">The project where working inside a brand from the ground up revealed the process that became An Ideas Merchant.</p>
+      </div>
+      <div class="hero-visual reveal d1">
+        <span class="glow" aria-hidden="true"></span>
+        <img class="hero-phone" src="../uploads/GoTrack Screen.png" alt="The GoTrack app showing a live parcel tracking list">
+        <img class="hero-appicon" src="../uploads/GoTrack App Icon.png" alt="GoTrack app icon">
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== STATS ====================== -->
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat reveal"><div class="n">10K+</div><div class="l">Android Downloads</div></div>
+      <div class="stat reveal d1"><div class="n">~20K</div><div class="l">Est. Total Reach</div></div>
+      <div class="stat reveal d2"><div class="n">2</div><div class="l">Stores. Shipped.</div></div>
+    </div>
+  </section>
+
+  <!-- ====================== CREDITS ====================== -->
+  <section class="credits">
+    <div class="wrap credits-grid">
+      <div class="credit reveal"><div class="rk">My Role</div><div class="rv">In-House Brand Designer</div></div>
+      <div class="credit reveal d1"><div class="rk">Scope</div><div class="rv">Brand Strategy &amp; UX Design</div></div>
+      <div class="credit reveal d1"><div class="rk">Output</div><div class="rv">App Design, Brand Extension</div></div>
+      <div class="credit reveal d2"><div class="rk">Platform</div><div class="rv">iOS &amp; Google Play</div></div>
+      <div class="credit reveal d2"><div class="rk">Client</div><div class="rv">GoSweetSpot, Auckland NZ</div></div>
+    </div>
+  </section>
+
+  <!-- ====================== THE ORIGIN ====================== -->
+  <section class="block">
+    <div class="wrap">
+      <div class="origin-grid">
+        <div class="reveal">
+          <p class="kicker">The Origin</p>
+          <h2 class="display lead-h">Where An Ideas Merchant began.</h2>
+        </div>
+        <div class="origin-body reveal d1">
+          <p>Working as the in-house brand designer at GoSweetSpot gave me something valuable: full visibility across a brand from the inside. I was responsible for the visual identity, the content strategy, the positioning, and the way the brand spoke across every touchpoint.</p>
+          <p>That role revealed something I have carried into every project since. The brief is rarely the real problem. Getting to the root of what a brand is actually trying to do, who it is really for, and what it genuinely needs to say requires a structured process. Not just instinct. Not just taste. A repeatable framework.</p>
+          <p>GoTrack was where that understanding crystallised. I mapped the user journey across four distinct user types, identified the real gaps, and designed a product that addressed them. That process became the foundation for everything An Ideas Merchant does today.</p>
+        </div>
+      </div>
+
+      <div class="pullquote reveal">
+        <blockquote><span class="mark">&ldquo;</span>GoTrack did not start as an app brief. It started as a brand strategy question: who is actually experiencing this product, and what do they need? Everything followed from that.<span class="mark">&rdquo;</span></blockquote>
+        <cite>Aidan · An Ideas Merchant</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== NUMBERED PHASES ====================== -->
+  <section class="phases">
+    <img class="phases-bg" src="../uploads/journey-map.jpg" alt="" aria-hidden="true">
+    <div class="wrap">
+      <div class="phases-head reveal" style="margin-bottom:clamp(28px,4vw,48px);">
+        <p class="kicker" style="margin-bottom:20px;">The Pressure Point</p>
+        <h2 class="display" style="color:var(--aim-ivory);margin:0;font-size:clamp(32px,4vw,52px);">Four journeys,<br>one map.</h2>
+      </div>
+      <div class="phases-grid">
+        <article class="phase-col reveal">
+          <div class="phase-num">01<span class="of">The Problem</span></div>
+          <h3>Congested support lines, delayed deliveries, customers left in the dark.</h3>
+          <p class="body">GoSweetSpot handled the logistics well for their B2B clients. But the people on the receiving end had no clean, contained way to track what was coming, or what they had sent, without endlessly searching emails. The experience was fragmented at the most critical moment in any transaction. That gap was the brief.</p>
+        </article>
+        <article class="phase-col reveal d1">
+          <div class="phase-num">02<span class="of">The Process</span></div>
+          <h3>Map the full journey before designing a single screen.</h3>
+          <p class="body">A user journey mapping exercise across four user types: B2B clients, B2C shoppers, delivery drivers, and end recipients. Each had different discovery patterns, pain points and needs. Mapping them together revealed the architecture for an app that could serve all of them.</p>
+        </article>
+        <article class="phase-col reveal d2">
+          <div class="phase-num">03<span class="of">The Outcome</span></div>
+          <h3>A shipped product. Two stores. Tens of thousands of users.</h3>
+          <p class="body">GoTrack shipped to both the Apple App Store and Google Play. Android alone shows 10,000 verified downloads, with Apple bringing estimated total reach to 15,000 to 20,000 users. Strategy that started on a whiteboard became infrastructure for thousands of New Zealand businesses.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== STRATEGY ====================== -->
+  <section class="block charcoal" id="strategy">
+    <div class="wrap">
+      <div class="attrs-head">
+        <figure class="worksheet reveal" style="margin:0;overflow:hidden;border:1px solid var(--aim-hairline-ivory);transform:rotate(-1.2deg);box-shadow:0 30px 60px rgba(0,0,0,0.45);">
+          <img src="../uploads/Brand Attribiutes.jpg" alt="The original CORE strategy session worksheet, brand attributes filled in by hand" loading="lazy">
+        </figure>
+        <div class="attrs-intro reveal d1">
+          <p class="kicker">Strategy</p>
+          <h2 class="display lead-h">The strategy, before the screens.</h2>
+          <p>A CORE strategy session with the GoSweetSpot team, run on paper, before a single pixel. Six lenses turned instinct into a shared, repeatable definition of who the brand is, and refuses to be.</p>
+        </div>
+      </div>
+
+      <p class="kicker attrs-label reveal">Brand Attributes</p>
+      <div class="attrs-grid">
+        <div class="attr reveal">
+          <h4>Culture<span class="q">How would your users describe you?</span></h4>
+          <ul><li>Friendly</li><li>Solutions Provider</li><li>Empathy</li></ul>
+        </div>
+        <div class="attr reveal d1">
+          <h4>Users<span class="q">How would you describe your users?</span></h4>
+          <ul><li>Business Owners</li><li>Operations Staff</li><li>Start-ups</li></ul>
+        </div>
+        <div class="attr reveal d2">
+          <h4>Voice<span class="q">How do you sound to others?</span></h4>
+          <ul><li>Local</li><li>Kiwi</li><li>Helpful</li></ul>
+        </div>
+        <div class="attr reveal">
+          <h4>Feeling<span class="q">How do you want others to feel?</span></h4>
+          <ul><li>Satisfied</li><li>At ease</li><li>Resolved</li></ul>
+        </div>
+        <div class="attr reveal d1">
+          <h4>Impact<span class="q">What tangible impact do you have?</span></h4>
+          <ul><li>Economical</li><li>Freed</li><li>Resolved</li></ul>
+        </div>
+        <div class="attr reveal d2">
+          <h4>X Factor<span class="q">What makes you different?</span></h4>
+          <ul><li>We're not a courier</li><li>Enablers</li><li>Customers are advocates</li></ul>
+        </div>
+      </div>
+
+      <div class="valueprop reveal">
+        <p class="vk">Value Proposition</p>
+        <blockquote>&ldquo;We are a friendly solutions provider for growing businesses, making their lives easier by saving them time &amp; money.&rdquo;</blockquote>
+        <cite>GoSweetSpot</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== LOGO BUILD ====================== -->
+  <section class="block">
+    <div class="wrap">
+      <p class="kicker blue reveal">The Mark</p>
+      <h2 class="display lead-h reveal">A sub-brand, carried in motion.</h2>
+      <p class="origin-body reveal d1" style="max-width:52ch;"><span style="color:var(--aim-muted);font-size:clamp(16px,1.25vw,18px);line-height:1.74;">GoTrack had to read as its own product, yet unmistakably belong to GoSweetSpot. The mark is derived directly from the parent lockup, same weight, same warmth, then set in <em style="color:var(--aim-ivory);font-style:italic;">italic to convey motion</em>: a parcel already on its way.</span></p>
+
+      <div class="logo-derive">
+        <div class="logo-card reveal">
+          <img src="../uploads/GSS Logo.png" alt="GoSweetSpot parent logo">
+          <span class="cap">Parent brand</span>
+        </div>
+        <div class="logo-arrow reveal d1" aria-hidden="true">&rarr;</div>
+        <div class="logo-card derived reveal d2">
+          <img src="../uploads/gotracklogo.png" alt="GoTrack derived logo">
+          <span class="cap">Derived sub-brand</span>
+        </div>
+      </div>
+
+      <div class="elements">
+        <div class="element reveal">
+          <div class="icon">
+            <img src="../assets/logos/stylised-o-blue.png" alt="The stylised o as a location marker">
+          </div>
+          <h5>The stylised &ldquo;o&rdquo;</h5>
+          <p>The letterform doubles as a location marker: tracking, built into the name itself.</p>
+        </div>
+        <div class="element reveal d1">
+          <div class="icon">
+            <img src="../assets/logos/paper-plane-blue.png" alt="Paper plane">
+          </div>
+          <h5>Paper plane</h5>
+          <p>A parcel in flight: light, fast, effortless. The signal that something is on its way.</p>
+        </div>
+        <div class="element reveal d2">
+          <div class="icon">
+            <svg width="120" height="72" viewBox="0 0 120 72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6 60 C30 60 34 12 60 12 C86 12 90 44 114 44" fill="none" stroke="#1CA6DD" stroke-width="4" stroke-linecap="round" stroke-dasharray="2 12"/>
+            </svg>
+          </div>
+          <h5>Trail lines</h5>
+          <p>A dashed flight path traces the journey: the route a parcel takes from send to arrival.</p>
+        </div>
+        <div class="element reveal d3">
+          <div class="icon"><img src="../uploads/GoTrack App Icon.png" alt="GoTrack app icon" style="border-radius:20px;"></div>
+          <h5>App icon</h5>
+          <p>Every element resolves into one mark: pin, plane and trail, set on GoSweetSpot blue.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== THE APP ====================== -->
+  <section class="block app">
+    <div class="wrap">
+      <p class="kicker blue reveal">The App</p>
+      <h2 class="display lead-h reveal">Clarity, in the hand.</h2>
+
+      <div class="app-rail">
+        <figure class="app-shot slide-l" style="margin:0;"><img src="../uploads/App Store 01.jpg" alt="Keep track of your parcels the easy way" loading="lazy"></figure>
+        <figure class="app-shot reveal d1" style="margin:0;"><img src="../uploads/App Store 02.jpg" alt="Get updates in real time, the GoTrack tracking screen" loading="lazy"></figure>
+        <figure class="app-shot slide-r d2" style="margin:0;"><img src="../uploads/App Store 03.jpg" alt="Notifications that you control" loading="lazy"></figure>
+      </div>
+
+      <div class="app-feature">
+        <div class="shot slide-l"><img src="../uploads/GoTrack Screen.png" alt="GoTrack parcel list with status per shipment" loading="lazy"></div>
+        <div class="txt reveal d1">
+          <p class="kicker blue">One screen, every parcel</p>
+          <h3>Status at a glance, for everyone in the chain.</h3>
+          <p>Received, picked, on board, pending, delivered: colour-coded and contained. The fragmented email hunt became a single, calm list that B2B clients, shoppers and recipients could all read the same way.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== FOOTNOTE ====================== -->
+  <section class="footnote">
+    <div class="wrap">
+      <p class="kicker reveal">In closing</p>
+      <h2 class="display reveal">This is what happens when strategy comes before execution.</h2>
+      <p class="reveal d1">An Ideas Merchant exists to bring this kind of clarity to every project. GoTrack is where that understanding began.</p>
+      <div class="actions reveal d1">
+        <a class="btn btn-solid" href="../#contact">Start a conversation <span class="arw">&rarr;</span></a>
+        <a class="btn btn-ghost" href="../#process">See the framework</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="../">
+          <img class="mono-logo" src="../assets/logos/aim-monogram-ivory.png" alt="AIM">
+          <span class="word">An Ideas Merchant</span>
+        </a>
+        <p>Clarity before creation.<br>Meaning before momentum.<br>Direction before delivery.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Practice</h4>
+          <a href="../case-study/">Case Study</a>
+          <a href="../story/">About</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="mailto:aidan@anideasmerchant.com">Email</a>
+          <a href="https://instagram.com/anideasmerchant" target="_blank" rel="noopener">Instagram</a>
+          <a href="../#contact">Start a conversation</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-line">
+      <span>&copy; 2026 An Ideas Merchant</span>
+      <span>Auckland, New Zealand</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var tt = document.querySelector('.theme-toggle');
+    if (tt) tt.addEventListener('click', function () {
+      var cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      var next = cur === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('aim-theme', next); } catch (e) {}
+    });
+  })();
+  (function () {
+    var els = document.querySelectorAll('.reveal, .slide-l, .slide-r');
+    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      els.forEach(function (e) { e.classList.add('in'); });
+    } else {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function (e) { io.observe(e); });
+    }
+  })();
+</script>
+</body>
+</html>
