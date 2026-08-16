@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('aim-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<title>Simone · Client Portal · An Ideas Merchant</title>
+<link rel="stylesheet" href="../../styles.css">
+<style>
+  :root { --maxw: 1360px; }
+  * { box-sizing: border-box; }
+  body { background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); margin: 0; -webkit-font-smoothing: antialiased; }
+  a { color: var(--aim-gold); }
+  a:hover { color: var(--aim-gold-light); }
+  .display { font-family: var(--font-display); }
+  html { transition: background-color var(--dur-slow) var(--ease-out); }
+  [data-theme="light"] {
+    --aim-black: #F4EFE6; --aim-charcoal: #E9E0D1; --aim-surface: #E6DCCB;
+    --aim-muted: #6D6258; --aim-ivory: #14120F; --aim-gold: #9A6B28; --aim-gold-light: #C99A45;
+    --aim-hairline-ivory: rgba(17,16,14,0.13); --aim-hairline-ivory-strong: rgba(17,16,14,0.24);
+  }
+  [data-theme="light"] .mono-logo { filter: invert(1) grayscale(1) brightness(0.16); }
+
+  /* ---- Password gate ---- */
+  #gate { position: fixed; inset: 0; background: var(--aim-black); z-index: 100; display: flex; align-items: center; justify-content: center; }
+  #gate.hidden { display: none; }
+  .gate-card { width: min(360px, 86vw); text-align: center; }
+  .gate-card .word { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0 0 28px; }
+  .gate-card h1 { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 28px; color: var(--aim-ivory); margin: 0 0 24px; }
+  .gate-card input { width: 100%; background: var(--aim-surface); border: 1px solid var(--color-border); color: var(--aim-ivory); font-family: var(--font-body); font-size: 15px; padding: 13px 16px; border-radius: var(--radius-sm); outline: none; text-align: center; letter-spacing: 0.08em; }
+  .gate-card input:focus { border-color: var(--aim-gold); }
+  .gate-card button { margin-top: 14px; width: 100%; background: var(--aim-gold); color: var(--color-on-accent); border: none; font-family: var(--font-body); font-size: 12px; font-weight: 600; letter-spacing: var(--tracking-meta); text-transform: uppercase; padding: 13px; border-radius: var(--radius-sm); cursor: pointer; transition: background var(--dur) var(--ease-out); }
+  .gate-card button:hover { background: var(--aim-gold-light); }
+  .gate-card .err { color: #c96a5a; font-size: 12px; margin-top: 12px; height: 14px; opacity: 0; transition: opacity var(--dur) var(--ease-out); }
+  .gate-card .err.show { opacity: 1; }
+  .gate-card .shake { animation: shake 0.4s var(--ease-out); }
+  @keyframes shake { 20%,60% { transform: translateX(-6px); } 40%,80% { transform: translateX(6px); } }
+
+  /* ---- App shell ---- */
+  #app { display: none; }
+  #app.on { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
+  aside { border-right: 1px solid var(--color-border); padding: 28px 22px; display: flex; flex-direction: column; gap: 40px; position: sticky; top: 0; height: 100vh; }
+  .brand-lockup { display: flex; align-items: center; gap: 11px; }
+  .brand-lockup .full { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); line-height: 1.3; }
+  nav.tabs { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  nav.tabs button { display: flex; align-items: center; gap: 12px; background: none; border: none; color: var(--aim-muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.03em; padding: 11px 12px; border-radius: var(--radius-sm); cursor: pointer; text-align: left; transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
+  nav.tabs button:hover { color: var(--aim-ivory); background: var(--color-surface); }
+  nav.tabs button.active { color: var(--aim-ivory); background: var(--color-accent-wash); }
+  nav.tabs button .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--aim-gold); opacity: 0; }
+  nav.tabs button.active .dot { opacity: 1; }
+  .sidebar-foot { border-top: 1px solid var(--color-border); padding-top: 16px; }
+  .sidebar-foot .client { font-size: 12px; color: var(--aim-ivory); margin: 0 0 4px; }
+  .sidebar-foot button { background: none; border: none; color: var(--aim-muted); font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; cursor: pointer; padding: 0; }
+  .sidebar-foot button:hover { color: var(--aim-gold); }
+  .theme-toggle { background: none; border: 1px solid var(--aim-hairline-ivory-strong); color: var(--aim-muted); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .theme-toggle:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); }
+  .theme-toggle svg { width: 16px; height: 16px; display: block; }
+  .theme-toggle .i-moon { display: none; }
+  .theme-toggle .i-sun { display: block; }
+  [data-theme="light"] .theme-toggle .i-moon { display: block; }
+  [data-theme="light"] .theme-toggle .i-sun { display: none; }
+
+  main { padding: 44px clamp(24px, 3.5vw, 56px) 80px; max-width: 1180px; }
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* ---- Dashboard ---- */
+  .greet-kicker { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0; }
+  .greet-name { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(32px, 4vw, 46px); margin: 6px 0 22px; color: var(--aim-ivory); }
+  .chip-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; align-items: stretch; }
+  .chip { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 10px 18px; }
+  .countdown-chip { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 14px 22px; display: flex; align-items: baseline; gap: 12px; background: var(--color-accent-wash); }
+  .countdown-chip .num { font-family: var(--font-display); font-weight: 600; font-size: 40px; line-height: 1; color: var(--aim-gold); }
+  .countdown-chip .lbl2 { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .countdown-chip .lbl2 span { display: block; color: var(--aim-ivory); font-size: 13px; letter-spacing: 0; text-transform: none; margin-top: 2px; }
+  .chip .lbl { display: block; font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); margin-bottom: 3px; }
+  .chip .val { font-size: 14px; color: var(--aim-ivory); }
+
+  .dash-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: start; }
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 26px 28px; }
+  .panel h3 { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0 0 20px; }
+
+  .tp-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-top: 1px solid var(--color-border); }
+  .tp-row:first-of-type { border-top: none; }
+  .tp-num { font-family: var(--font-display); font-size: 18px; color: var(--aim-muted); width: 22px; }
+  .tp-row.done .tp-num, .tp-row.current .tp-num { color: var(--aim-gold); }
+  .tp-key { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aim-ivory); flex: 1; }
+  .tp-row.locked .tp-key { color: var(--aim-muted); }
+  .tp-status { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .tp-row.done .tp-status { color: var(--aim-gold); }
+  .tp-row.current .tp-status { color: var(--aim-ivory); }
+
+  .ms-row { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-top: 1px solid var(--color-border); }
+  .ms-row:first-of-type { border-top: none; }
+  .ms-row .lbl { font-size: 14px; color: var(--aim-ivory); }
+  .ms-row .date { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--aim-gold); }
+
+  .origin-panel { margin-bottom: 20px; }
+  .origin-panel .north { font-family: var(--font-display); font-style: italic; font-size: clamp(18px,1.8vw,21px); line-height: 1.5; color: var(--aim-ivory); margin: 0 0 22px; }
+  .origin-panel .tension-lbl { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0 0 8px; }
+  .origin-panel .tension { font-size: 14px; line-height: 1.7; color: var(--aim-muted); margin: 0 0 20px; max-width: 74ch; }
+  .origin-panel .own-words { border-left: 2px solid var(--aim-gold); padding-left: 16px; font-family: var(--font-display); font-style: italic; font-size: 16px; color: var(--aim-gold); margin: 0; }
+  .origin-status { display: inline-block; font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); background: var(--color-accent-wash); padding: 5px 12px; border-radius: var(--radius-pill); margin-bottom: 18px; }
+
+  /* ---- Media Vault ---- */
+  .vault-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 14px; }
+  .vault-head h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: 28px; margin: 0; }
+  .vault-tiles { display: grid; grid-template-columns: repeat(2, minmax(220px, 1fr)); gap: 18px; max-width: 700px; }
+  .vault-tile { position: relative; aspect-ratio: 9/13; border-radius: var(--radius); overflow: hidden; cursor: pointer; border: 1px solid var(--color-border); transition: border-color var(--dur) var(--ease-out); }
+  .vault-tile:hover { border-color: var(--aim-gold); }
+  .vault-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 60ms linear; }
+  .vault-tile img.on { opacity: 1; }
+  .vault-tile::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.75), rgba(0,0,0,0.1) 50%); }
+  .vault-tile .vt-text { position: absolute; left: 20px; bottom: 18px; right: 20px; z-index: 1; }
+  .vault-tile h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(20px,2.2vw,26px); color: #F4EFE6; margin: 0; }
+  .vault-tile .vt-meta { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(244,239,230,0.75); margin: 6px 0 0; }
+  .vault-tile .vt-hint { position: absolute; top: 14px; right: 16px; z-index: 1; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(244,239,230,0.75); }
+  .group-title { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); }
+  .vault-back { display: inline-flex; align-items: center; gap: 8px; background: none; border: none; color: var(--aim-muted); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; padding: 0; margin-bottom: 22px; }
+  .vault-back:hover { color: var(--aim-gold); }
+  .clip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .clip-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .clip-card { position: relative; aspect-ratio: 9/16; border-radius: var(--radius-sm); overflow: hidden; background: var(--color-surface); cursor: pointer; border: 1px solid var(--color-border); }
+  .clip-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 60ms linear; }
+  .clip-card img.on { opacity: 1; }
+  .clip-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .clip-dur { font-size: 11px; color: var(--aim-muted); }
+  .lut-btn { background: none; border: 1px solid var(--color-border); color: var(--aim-muted); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 9px; border-radius: var(--radius-pill); cursor: pointer; }
+  .lut-btn.is-applied { border-color: var(--aim-gold); color: var(--aim-gold); }
+  .clip-card .play { position: absolute; top: 9px; left: 9px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity var(--dur) var(--ease-out); }
+  .clip-card .dl-btn { position: absolute; top: 9px; right: 9px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); border: none; display: flex; align-items: center; justify-content: center; opacity: 0; cursor: pointer; transition: opacity var(--dur) var(--ease-out); }
+  .clip-card:hover .dl-btn { opacity: 1; }
+  .clip-card .dl-btn svg { width: 11px; height: 11px; stroke: #F4EFE6; }
+  .clip-card:hover .play { opacity: 1; }
+  .clip-card .play svg { width: 9px; height: 9px; fill: #F4EFE6; }
+  .clip-card .add-btn { position: absolute; bottom: 8px; left: 9px; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: #F4EFE6; background: rgba(0,0,0,0.5); border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; opacity: 0; transition: opacity var(--dur) var(--ease-out); }
+  .clip-card:hover .add-btn { opacity: 1; }
+  .clip-card .add-btn.added { opacity: 1; background: var(--aim-gold); color: var(--color-on-accent); }
+
+  /* ---- Content Queue ---- */
+  .queue-strip { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 16px; margin-bottom: 34px; }
+  .queue-strip .clip-wrap { width: 92px; flex: 0 0 auto; }
+  .queue-strip .clip-card { aspect-ratio: 9/16; }
+  .grid9 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; max-width: 560px; }
+  .slot { aspect-ratio: 1; border: 1.5px dashed var(--color-border); border-radius: var(--radius-sm); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: var(--color-surface); }
+  .slot.filled { border-style: solid; }
+  .slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .slot .empty-lbl { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aim-muted); text-align: center; padding: 8px; }
+  .slot.dragover { border-color: var(--aim-gold); }
+  .slot .clear { position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.55); color: var(--aim-ivory); border: none; font-size: 11px; cursor: pointer; display: none; }
+  .slot.filled:hover .clear { display: block; }
+
+  /* ---- Editor placeholder ---- */
+  .editor-shell { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 48px; text-align: center; }
+  .editor-shell .lock { width: 34px; height: 34px; margin: 0 auto 20px; opacity: 0.5; }
+  .editor-shell h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: 24px; margin: 0 0 10px; }
+  .editor-shell p { color: var(--aim-muted); font-size: 14px; max-width: 42ch; margin: 0 auto 30px; line-height: 1.6; }
+  .editor-mock { max-width: 420px; margin: 0 auto; opacity: 0.4; pointer-events: none; }
+  .editor-mock .bar { height: 6px; background: var(--color-track); border-radius: 3px; margin-bottom: 18px; position: relative; }
+  .editor-mock .bar::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 38%; background: var(--aim-gold); border-radius: 3px; }
+  .export-row { display: flex; gap: 10px; justify-content: center; }
+  .export-row button { flex: 1; background: var(--color-surface); border: 1px solid var(--color-border); color: var(--aim-muted); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 10px; border-radius: var(--radius-sm); }
+
+  /* ---- Strategy Doc ---- */
+  .strat-section { padding-bottom: 44px; margin-bottom: 44px; border-bottom: 1px solid var(--color-border); }
+  .kicker-lbl { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); margin: 0 0 8px; }
+  .strat-h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: clamp(24px,2.8vw,34px); margin: 0 0 18px; }
+  .strat-lead { font-size: 15px; line-height: 1.7; color: var(--aim-muted); max-width: 62ch; margin: 0 0 18px; }
+  .chip-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip-tag { display: inline-flex; align-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-pill); padding: 6px 13px; font-size: 12px; color: var(--aim-muted); }
+  .tp-stage-layout { display: grid; grid-template-columns: 240px 1fr; gap: 16px; align-items: start; }
+  @media (max-width: 800px) { .tp-stage-layout { grid-template-columns: 1fr; } }
+  .tp-rail { display: grid; gap: 6px; }
+  .tp-rail button { all: unset; cursor: pointer; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0 14px; color: var(--aim-muted); font: 500 13px/1 var(--font-body); }
+  .tp-rail button[aria-current="true"] { border-color: var(--aim-gold); color: var(--aim-ivory); background: var(--color-accent-wash); }
+  .tp-rail button .n { font-family: var(--font-display); font-size: 15px; color: var(--aim-gold); }
+  .tp-fig { width: 76px; height: 62px; flex: none; }
+  .tp-fig img { width: 100%; height: 100%; object-fit: contain; opacity: 0.55; }
+  .tp-fig.is-active img { opacity: 1; }
+  .tp-panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+  .tp-panel-status { display: inline-flex; align-items: center; font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); background: var(--color-accent-wash); padding: 5px 12px; border-radius: var(--radius-pill); margin-top: 10px; }
+  .tp-panel-head .tp-stage-name { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-transform: none; font-size: 24px; color: var(--aim-ivory); margin: 6px 0 0; }
+  .tp-field { margin-top: 18px; }
+  .tp-field .k { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin-bottom: 6px; }
+  .tp-field .v { font-size: 14px; line-height: 1.7; color: var(--aim-muted); }
+  .tp-out { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; align-items: baseline; gap: 10px; }
+  .tp-out .val { font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--aim-gold); }
+  .pillar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+  .pillar-card { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 20px; background: var(--color-surface); }
+  .pillar-card h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: 18px; margin: 0 0 8px; }
+  .pillar-card p { font-size: 13px; color: var(--aim-muted); line-height: 1.6; margin: 0; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; max-width: 320px; margin-bottom: 12px; }
+  .cal-cell { aspect-ratio: 1; border-radius: 2px; background: var(--color-track); }
+  .cal-cell.has-shoot { background: var(--aim-gold); }
+  .cal-cell.is-competition { background: transparent; border: 1.5px solid var(--aim-gold); }
+  .cal-cell.is-today { outline: 2px solid var(--aim-ivory); outline-offset: 1px; }
+  .cal-legend { display: flex; gap: 20px; flex-wrap: wrap; }
+  .cal-item { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--aim-muted); }
+  .cal-item .sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .action-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 800px) { .action-grid { grid-template-columns: 1fr; } }
+  .strat-ul { margin: 8px 0 0; padding-left: 16px; color: var(--aim-muted); font-size: 13px; display: grid; gap: 8px; }
+  .insight-entry { border-left: 2px solid var(--aim-gold); padding-left: 16px; margin-bottom: 24px; }
+  .insight-tag { display: inline-block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aim-gold); border: 1px solid var(--color-accent-wash); border-radius: var(--radius-pill); padding: 2px 10px; margin-bottom: 8px; }
+  .insight-entry p.obs { color: var(--aim-ivory); font-size: 14px; margin: 0; }
+  .insight-entry p.sug { color: var(--aim-muted); font-size: 13px; margin: 8px 0 0; }
+  .insight-entry p.date { color: var(--aim-muted); font-size: 11px; margin: 8px 0 0; }
+
+  @media (max-width: 760px) {
+    #app.on { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; flex-direction: row; align-items: center; padding: 16px 20px; }
+    nav.tabs { flex-direction: row; flex: none; }
+    .sidebar-foot { display: none; }
+    .dash-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="gate-card">
+    <p class="word">An Ideas Merchant</p>
+    <h1>Client Portal</h1>
+    <input id="gate-pw" type="password" placeholder="Enter access code" autocomplete="off">
+    <button id="gate-submit">Enter</button>
+    <p class="err" id="gate-err">That code isn't right. Try again.</p>
+  </div>
+</div>
+
+<div id="app">
+  <aside>
+    <div class="brand-lockup">
+      <img class="mono-logo" src="../../assets/logos/aim-monogram-ivory.png" alt="An Ideas Merchant" style="height:34px;width:auto;display:block">
+      <span class="full">Client Portal</span>
+    </div>
+    <nav class="tabs">
+      <button data-view="dashboard" class="active"><span class="dot"></span>Dashboard</button>
+      <button data-view="vault"><span class="dot"></span>Media Vault</button>
+      <button data-view="queue"><span class="dot"></span>Content Queue</button>
+      <button data-view="editor"><span class="dot"></span>Reel Editor</button>
+      <button data-view="strategy"><span class="dot"></span>Strategy Doc</button>
+    </nav>
+    <div class="sidebar-foot">
+      <p class="client" id="foot-client">Simone</p>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+        <button id="logout-btn">Log out</button>
+        <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.4 12h2.6M19 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"></path></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <section class="view active" id="view-dashboard">
+      <p class="greet-kicker">Hey there</p>
+      <h1 class="greet-name" id="greet-name">Simone.</h1>
+      <div class="chip-row">
+        <div class="chip"><span class="lbl">Active phase</span><span class="val" id="chip-phase"></span></div>
+        <div class="countdown-chip">
+          <span class="num" id="countdown-num"></span>
+          <span class="lbl2">Days to go<span id="countdown-sub"></span></span>
+        </div>
+      </div>
+      <div class="panel origin-panel">
+        <span class="origin-status" id="origin-status"></span>
+        <p class="north" id="origin-north"></p>
+        <p class="tension-lbl">Core Tension Statement, draft</p>
+        <p class="tension" id="origin-tension"></p>
+        <p class="own-words" id="origin-quote"></p>
+      </div>
+      <div class="dash-grid">
+        <div class="panel">
+          <h3>Target Practice</h3>
+          <div id="tp-list"></div>
+        </div>
+        <div class="panel">
+          <h3>Upcoming milestones</h3>
+          <div id="ms-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-vault">
+      <div class="vault-head">
+        <h2>Media Vault</h2>
+      </div>
+      <p style="color:var(--aim-muted);font-size:13px;max-width:56ch;margin:-16px 0 30px;" id="vault-hint">Move your cursor across a shoot day to preview it. Click to open the clips inside.</p>
+      <div id="vault-groups"></div>
+    </section>
+
+    <section class="view" id="view-queue">
+      <div class="vault-head"><h2>Content Queue</h2></div>
+      <p style="color:var(--aim-muted);font-size:13px;max-width:56ch;margin:-16px 0 22px;">Drag clips from your vault into the grid to plan next week's posts.</p>
+      <div class="queue-strip" id="queue-strip"></div>
+      <div class="grid9" id="grid9"></div>
+    </section>
+
+    <section class="view" id="view-editor">
+      <div class="editor-shell">
+        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="var(--aim-gold)" stroke-width="1.4"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        <h3>Reel Editor</h3>
+        <p>Coming soon. Trim, sequence and caption clips from your vault, then export a 15, 30 or 60 second reel straight to your socials, no other app required.</p>
+        <div class="editor-mock">
+          <div class="bar"></div>
+          <div class="export-row">
+            <button>15s</button><button>30s</button><button>60s</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-strategy">
+      <div class="strat-section">
+        <p class="kicker-lbl">North Star</p>
+        <h2 class="strat-h2">Where this is going.</h2>
+        <p class="strat-lead" id="strat-ambition"></p>
+        <div class="chip-wrap" id="strat-direction"></div>
+        <div class="panel" style="margin-top:20px;border-style:dashed;">
+          <p class="origin-status">Open</p>
+          <p class="tension-lbl">Working brand proposition</p>
+          <p class="tension" style="font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--aim-ivory);" id="strat-proposition"></p>
+        </div>
+      </div>
+
+      <div class="strat-section">
+        <p class="kicker-lbl">Target Practice</p>
+        <h2 class="strat-h2">The five-stage framework.</h2>
+        <div class="tp-stage-layout">
+          <nav class="tp-rail" id="strat-rail"></nav>
+          <article class="panel" id="strat-panel"></article>
+        </div>
+      </div>
+
+      <div class="strat-section">
+        <p class="kicker-lbl">Content Pillars</p>
+        <h2 class="strat-h2">What we're making.</h2>
+        <div class="pillar-grid" id="strat-pillars"></div>
+      </div>
+
+      <div class="strat-section">
+        <p class="kicker-lbl">Documentation Window</p>
+        <h2 class="strat-h2">15 Aug to 26 Sept.</h2>
+        <p class="strat-lead" style="font-size:14px;" id="strat-window-note"></p>
+        <div class="cal-grid" id="strat-calendar"></div>
+        <div class="cal-legend">
+          <span class="cal-item"><span class="sw" style="background:var(--aim-gold);"></span>Shoot day</span>
+          <span class="cal-item"><span class="sw" style="background:transparent;border:1.5px solid var(--aim-gold);"></span>Auckland IFBB</span>
+          <span class="cal-item"><span class="sw" style="background:var(--color-track);outline:2px solid var(--aim-ivory);"></span>Today</span>
+        </div>
+      </div>
+
+      <div class="strat-section">
+        <p class="kicker-lbl">Immediate Actions</p>
+        <h2 class="strat-h2">Right now.</h2>
+        <div class="action-grid">
+          <div class="panel"><p class="tension-lbl">Now</p><ul class="strat-ul" id="strat-actions-now"></ul></div>
+          <div class="panel"><p class="tension-lbl">Next meeting</p><p style="font-family:var(--font-display);font-size:18px;color:var(--aim-ivory);margin:8px 0 0;" id="strat-actions-topic"></p><p class="tension" style="margin-top:8px;" id="strat-actions-outcome"></p></div>
+          <div class="panel"><p class="tension-lbl">Before Auckland IFBB</p><p class="tension" style="margin-top:8px;" id="strat-actions-before"></p></div>
+        </div>
+      </div>
+
+      <div class="strat-section">
+        <p class="kicker-lbl">Insight Log</p>
+        <h2 class="strat-h2">Ideas, without trading one thing for another.</h2>
+        <div id="strat-insights"></div>
+      </div>
+
+      <div class="strat-section">
+        <p class="kicker-lbl">Parking Lot</p>
+        <h2 class="strat-h2">Not now, not forgotten.</h2>
+        <div class="chip-wrap" id="strat-parking"></div>
+      </div>
+
+      <div class="strat-section" style="border-bottom:none;">
+        <p class="kicker-lbl">Post-IFBB Review</p>
+        <h2 class="strat-h2" id="strat-review-target"></h2>
+        <ul class="strat-ul" id="strat-review-items"></ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="vault/clip-data.js"></script>
+<script>
+(function(){
+  const CLIENT = window.AIM_CLIENT, GROUPS = window.AIM_CLIP_GROUPS, GRADES = window.AIM_GRADES;
+  const gate = document.getElementById('gate'), app = document.getElementById('app');
+  const SESSION_KEY = 'aim-client-' + CLIENT.slug + '-auth';
+
+  function enterApp(){ gate.classList.add('hidden'); app.classList.add('on'); }
+  if (sessionStorage.getItem(SESSION_KEY) === '1') enterApp();
+
+  document.getElementById('gate-submit').addEventListener('click', tryEnter);
+  document.getElementById('gate-pw').addEventListener('keydown', e => { if (e.key === 'Enter') tryEnter(); });
+  function tryEnter(){
+    const val = document.getElementById('gate-pw').value.trim();
+    if (val.toLowerCase() === CLIENT.password.toLowerCase()) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      enterApp();
+    } else {
+      const card = document.querySelector('.gate-card'), err = document.getElementById('gate-err');
+      err.classList.add('show'); card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+    }
+  }
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    sessionStorage.removeItem(SESSION_KEY);
+    location.reload();
+  });
+  var tt = document.querySelector('.theme-toggle');
+  if (tt) tt.addEventListener('click', function () {
+    var cur = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    var next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('aim-theme', next); } catch (e) {}
+  });
+
+  // Nav
+  document.querySelectorAll('nav.tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('view-' + btn.dataset.view).classList.add('active');
+    });
+  });
+
+  // Dashboard fill
+  document.getElementById('greet-name').textContent = CLIENT.name + '.';
+  document.getElementById('foot-client').textContent = CLIENT.name;
+  document.getElementById('chip-phase').textContent = CLIENT.phase;
+  (function(){
+    const target = new Date(CLIENT.countdown.dateISO + 'T00:00:00');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const days = Math.round((target - today) / 86400000);
+    document.getElementById('countdown-num').textContent = days >= 0 ? days : 0;
+    document.getElementById('countdown-sub').textContent = (days >= 0 ? ' to ' : ' since ') + CLIENT.countdown.label + ', ' + CLIENT.countdown.date;
+  })();
+  document.getElementById('tp-list').innerHTML = CLIENT.targetPractice.map(s => `
+    <div class="tp-row ${s.status}">
+      <span class="tp-num">${s.n}</span>
+      <span class="tp-key">${s.key}</span>
+      <span class="tp-status">${s.status === 'done' ? 'Complete' : s.status === 'current' ? 'In progress' : 'Locked'}</span>
+    </div>`).join('');
+  document.getElementById('origin-status').textContent = CLIENT.targetPractice[0].note;
+  document.getElementById('origin-north').textContent = CLIENT.origin.northStar;
+  document.getElementById('origin-tension').textContent = CLIENT.origin.coreTension;
+  document.getElementById('origin-quote').textContent = '"' + CLIENT.origin.quote + '"';
+  document.getElementById('ms-list').innerHTML = CLIENT.milestones.map(m => `
+    <div class="ms-row"><span class="lbl">${m.label}</span><span class="date">${m.date}</span></div>`).join('');
+
+  // Build a clip card (frames array; mouse-x scrubs). Each card cycles
+  // its own LUT preview independent of every other card.
+  function buildCard(clip, small){
+    const wrap = document.createElement('div');
+    wrap.className = 'clip-wrap';
+    const card = document.createElement('div');
+    card.className = 'clip-card';
+    card.innerHTML = clip.frames.map((f,i) => `<img src="${f}" class="${i===0?'on':''}">`).join('')
+      + `<span class="play"><svg viewBox="0 0 10 10"><polygon points="0,0 10,5 0,10"/></svg></span>`
+      + (small ? '' : `<button class="dl-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></button><button class="add-btn">+ Queue</button>`);
+    const imgs = card.querySelectorAll('img');
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const pct = Math.min(0.999, Math.max(0, (e.clientX - r.left) / r.width));
+      const idx = Math.floor(pct * imgs.length);
+      imgs.forEach((im,i) => im.classList.toggle('on', i === idx));
+    });
+    card.addEventListener('mouseleave', () => imgs.forEach((im,i) => im.classList.toggle('on', i===0)));
+    card.draggable = true;
+    card.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', JSON.stringify(clip)));
+    wrap.appendChild(card);
+    if (!small) {
+      const addBtn = card.querySelector('.add-btn');
+      addBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        addToQueueStrip(clip);
+        addBtn.textContent = 'Added'; addBtn.classList.add('added');
+        setTimeout(() => { addBtn.textContent = '+ Queue'; addBtn.classList.remove('added'); }, 1200);
+      });
+      card.querySelector('.dl-btn').addEventListener('click', e => {
+        e.stopPropagation();
+        const src = clip.video || clip.frames[0];
+        const a = document.createElement('a');
+        a.href = src;
+        a.download = src.split('/').pop();
+        document.body.appendChild(a); a.click(); a.remove();
+      });
+      const meta = document.createElement('div');
+      meta.className = 'clip-meta';
+      meta.innerHTML = `<span class="clip-dur">${clip.dur}</span><button class="lut-btn">Apply LUT</button>`;
+      const lutBtn = meta.querySelector('.lut-btn');
+      let gradeIdx = 0;
+      lutBtn.addEventListener('click', () => {
+        gradeIdx = (gradeIdx + 1) % GRADES.length;
+        const g = GRADES[gradeIdx];
+        imgs.forEach(im => im.style.filter = g.filter);
+        lutBtn.textContent = gradeIdx === 0 ? 'Apply LUT' : g.label;
+        lutBtn.classList.toggle('is-applied', gradeIdx !== 0);
+      });
+      wrap.appendChild(meta);
+    }
+    return wrap;
+  }
+
+  // Group title card: scrub across every clip in the group for a quick look
+  function buildTile(group, onOpen){
+    const allFrames = group.clips.flatMap(c => c.frames);
+    const tile = document.createElement('div');
+    tile.className = 'vault-tile';
+    tile.innerHTML = allFrames.map((f,i) => `<img src="${f}" class="${i===0?'on':''}">`).join('')
+      + `<span class="vt-hint">Scrub to preview</span>`
+      + `<div class="vt-text"><h3>${group.title}</h3><p class="vt-meta">${group.location} \u00b7 ${group.date} \u00b7 ${group.clips.length} clips</p></div>`;
+    const imgs = tile.querySelectorAll('img');
+    tile.addEventListener('mousemove', e => {
+      const r = tile.getBoundingClientRect();
+      const pct = Math.min(0.999, Math.max(0, (e.clientX - r.left) / r.width));
+      const idx = Math.floor(pct * imgs.length);
+      imgs.forEach((im,i) => im.classList.toggle('on', i === idx));
+    });
+    tile.addEventListener('mouseleave', () => imgs.forEach((im,i) => im.classList.toggle('on', i===0)));
+    tile.addEventListener('click', () => onOpen(group));
+    return tile;
+  }
+
+  // Vault: overview shows one tile per shoot day, click opens its clip grid
+  const vaultGroups = document.getElementById('vault-groups');
+  const vaultHint = document.getElementById('vault-hint');
+  function showVaultOverview(){
+    vaultHint.textContent = 'Move your cursor across a shoot day to preview it. Click to open the clips inside.';
+    vaultGroups.innerHTML = '';
+    const tiles = document.createElement('div');
+    tiles.className = 'vault-tiles';
+    GROUPS.forEach(group => tiles.appendChild(buildTile(group, showVaultDetail)));
+    vaultGroups.appendChild(tiles);
+  }
+  function showVaultDetail(group){
+    vaultHint.textContent = 'Move your cursor across a clip to scrub through it.';
+    vaultGroups.innerHTML = '';
+    const back = document.createElement('button');
+    back.className = 'vault-back';
+    back.textContent = '\u2190 All shoot days';
+    back.addEventListener('click', showVaultOverview);
+    vaultGroups.appendChild(back);
+    const h = document.createElement('p'); h.className = 'group-title'; h.style.margin = '0 0 16px'; h.textContent = group.title + ' \u00b7 ' + group.location + ' \u00b7 ' + group.date;
+    vaultGroups.appendChild(h);
+    const grid = document.createElement('div'); grid.className = 'clip-grid';
+    group.clips.forEach(clip => grid.appendChild(buildCard(clip, false)));
+    vaultGroups.appendChild(grid);
+  }
+  showVaultOverview();
+
+  // Queue strip (clips added via + Queue button, for drag into grid)
+  const queueStrip = document.getElementById('queue-strip');
+  function addToQueueStrip(clip){
+    queueStrip.appendChild(buildCard(clip, true));
+  }
+  // seed strip with all vault clips so it's usable without pressing + first
+  GROUPS.forEach(g => g.clips.forEach(c => queueStrip.appendChild(buildCard(c, true))));
+
+  // 9-grid drop targets
+  const grid9 = document.getElementById('grid9');
+  for (let i = 0; i < 9; i++) {
+    const slot = document.createElement('div');
+    slot.className = 'slot';
+    slot.innerHTML = `<span class="empty-lbl">Drop clip</span><button class="clear">×</button>`;
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('dragover'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('dragover'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault(); slot.classList.remove('dragover');
+      const clip = JSON.parse(e.dataTransfer.getData('text/plain'));
+      slot.classList.add('filled');
+      slot.innerHTML = `<img src="${clip.frames[0]}"><button class="clear">×</button>`;
+      slot.querySelector('.clear').addEventListener('click', ev => {
+        ev.stopPropagation(); slot.classList.remove('filled');
+        slot.innerHTML = `<span class="empty-lbl">Drop clip</span><button class="clear">×</button>`;
+      });
+    });
+    grid9.appendChild(slot);
+  }
+
+  // Strategy Doc
+  const S = window.AIM_STRATEGY;
+  document.getElementById('strat-ambition').textContent = S.northStar.ambition;
+  document.getElementById('strat-direction').innerHTML = S.northStar.direction.map(d => `<span class="chip-tag">${d}</span>`).join('');
+  document.getElementById('strat-proposition').textContent = '"' + S.northStar.proposition + '"';
+
+  function tpStageBody(s){
+    const figClass = 'tp-fig' + (s.active ? ' is-active' : '');
+    let out = `<div class="tp-panel-head"><div><p class="kicker-lbl">Stage ${s.num} \u00b7 ${s.role}</p><h3 class="tp-stage-name">${s.name}</h3><span class="tp-panel-status">${s.statusLabel}</span></div><div class="${figClass}"><img src="${s.figure}" alt=""></div></div>`;
+    if (s.whatWeKnow) out += `<div class="tp-field"><div class="k">What we know</div><div class="v">${s.whatWeKnow}</div></div>`;
+    if (s.decisions) out += `<div class="tp-field"><div class="k">Decisions</div><div class="v">${s.decisions}</div></div>`;
+    out += `<div class="tp-out"><span style="color:var(--aim-gold);">\u2192</span><span><span class="k" style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--aim-muted);">Output</span><span class="val">${s.output}</span></span></div>`;
+    return out;
+  }
+  const stratRail = document.getElementById('strat-rail'), stratPanel = document.getElementById('strat-panel');
+  S.targetPractice.forEach((s,i) => {
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-current', i===0 ? 'true' : 'false');
+    btn.innerHTML = `<span>${s.name}</span><span class="n">${s.num}</span>`;
+    btn.addEventListener('click', () => {
+      stratRail.querySelectorAll('button').forEach(b => b.setAttribute('aria-current','false'));
+      btn.setAttribute('aria-current','true');
+      stratPanel.innerHTML = tpStageBody(s);
+    });
+    stratRail.appendChild(btn);
+  });
+  stratPanel.innerHTML = tpStageBody(S.targetPractice[0]);
+
+  document.getElementById('strat-pillars').innerHTML = S.pillars.map(p => `<div class="pillar-card"><h3>${p.name}</h3><p>${p.body}</p></div>`).join('');
+
+  document.getElementById('strat-window-note').textContent = S.window.note;
+  (function(){
+    const start = new Date(S.window.start+'T00:00:00'), end = new Date(S.window.end+'T00:00:00');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const shootSet = new Set(S.window.shootDates);
+    const totalDays = Math.round((end-start)/86400000)+1;
+    let cells = '';
+    for (let i=0;i<totalDays;i++){
+      const d = new Date(start.getTime()+i*86400000);
+      const iso = d.toISOString().slice(0,10);
+      let cls = 'cal-cell';
+      if (iso === S.window.competitionDate) cls += ' is-competition';
+      else if (shootSet.has(iso)) cls += ' has-shoot';
+      if (d.getTime() === today.getTime()) cls += ' is-today';
+      cells += `<div class="${cls}" title="${d.toLocaleDateString('en-NZ',{day:'numeric',month:'short'})}"></div>`;
+    }
+    document.getElementById('strat-calendar').innerHTML = cells;
+  })();
+
+  document.getElementById('strat-actions-now').innerHTML = S.actions.now.map(a => `<li>${a}</li>`).join('');
+  document.getElementById('strat-actions-topic').textContent = S.actions.nextTopic;
+  document.getElementById('strat-actions-outcome').textContent = S.actions.nextOutcome;
+  document.getElementById('strat-actions-before').textContent = S.actions.beforeIfbb;
+
+  document.getElementById('strat-insights').innerHTML = S.insightLog.slice().reverse().map(e => `
+    <div class="insight-entry"><span class="insight-tag">${e.tag}</span><p class="obs">${e.obs}</p><p class="sug">${e.sug}</p><p class="date">${e.date}</p></div>`).join('');
+
+  document.getElementById('strat-parking').innerHTML = S.parkingLot.map(p => `<span class="chip-tag">${p}</span>`).join('');
+
+  document.getElementById('strat-review-target').textContent = 'Target: ' + S.postReview.target;
+  document.getElementById('strat-review-items').innerHTML = S.postReview.items.map(i => `<li>${i}</li>`).join('');
+})();
+</script>
+</body>
+</html>
