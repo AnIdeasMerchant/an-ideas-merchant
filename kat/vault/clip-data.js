@@ -20,8 +20,17 @@ window.AIM_CLIENT = {
 
 window.AIM_STRATEGY = { notStarted: true };
 
+const baseT = "vault/tattoo/";
 const baseK = "vault/portraits/";
 window.AIM_CLIP_GROUPS = [
+  { title: "Tattoo Session", location: "", date: "", clips: [
+    { frames: [baseT+"tattoo-01.jpg", baseT+"tattoo-02.jpg", baseT+"tattoo-03.jpg"], dur: "0:03" },
+    { frames: [baseT+"tattoo-04.jpg", baseT+"tattoo-05.jpg", baseT+"tattoo-06.jpg"], dur: "0:03" },
+    { frames: [baseT+"tattoo-07.jpg", baseT+"tattoo-08.jpg", baseT+"tattoo-09.jpg"], dur: "0:02" },
+    { frames: [baseT+"tattoo-10.jpg", baseT+"tattoo-11.jpg", baseT+"tattoo-12.jpg"], dur: "0:03" },
+    { frames: [baseT+"tattoo-13.jpg", baseT+"tattoo-14.jpg", baseT+"tattoo-15.jpg"], dur: "0:02" },
+    { frames: [baseT+"tattoo-16.jpg", baseT+"tattoo-17.jpg", baseT+"tattoo-18.jpg"], dur: "0:03" }
+  ]},
   { title: "Portrait Session", location: "", date: "", clips: [
     { frames: [baseK+"IMG_2644.JPG"], dur: "Photo" },
     { frames: [baseK+"IMG_2660.JPG"], dur: "Photo" },
