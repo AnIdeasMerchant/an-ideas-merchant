@@ -15,6 +15,8 @@ window.AIM_CLIENT = {
     { n: "04", key: "NARRATIVE ENGINE", status: "locked" },
     { n: "05", key: "DECISION MAP", status: "locked" }
   ],
+  // Pulled from the Stage 01 working document, the "why" behind the work,
+  // kept in plain view for Simone. Update as later stages lock in.
   origin: {
     northStar: "Help people make meaningful changes in their everyday lives and empower them to smash their fitness and wellbeing goals, beyond just teaching exercises or programming workouts.",
     coreTension: "Simone isn't selling injury-prevention PT. She's using her own transformation, in the final weeks before Auckland IFBB, as proof that she knows who she is, and she wants to help other people find that same self-knowledge. The content has to be about her: her training, her intensity, her identity. That's what earns her the right to say she can help someone else get there too.",
@@ -104,6 +106,21 @@ window.AIM_CLIP_GROUPS = [
     { frames: [baseH+"IMG_9349.JPG", baseH+"IMG_9351.JPG", baseH+"IMG_9352.JPG"], dur: "0:02" },
     { frames: [baseH+"IMG_9353.JPG", baseH+"IMG_9355.JPG", baseH+"IMG_9356.JPG"], dur: "0:03" },
     { frames: [baseH+"IMG_9360.JPG", baseH+"IMG_9371.JPG", baseH+"IMG_9374.JPG"], dur: "0:02" }
+  ]},
+  { title: "Session Stills", location: "", date: "", clips: [
+    { frames: [base+"Timeline 1_01_07_45_24.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_01_41_53_00.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_01_51_25_18.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_01_57_51_07.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_02_06_19_12.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_02_07_24_06.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_02_11_36_00.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_02_16_49_24.jpg"], dur: "Photo" },
+    { frames: [base+"Timeline 1_02_17_38_04.jpg"], dur: "Photo" },
+    { frames: [baseH+"IMG_9344.JPG"], dur: "Photo" },
+    { frames: [baseH+"IMG_9349.JPG"], dur: "Photo" },
+    { frames: [baseH+"IMG_9353.JPG"], dur: "Photo" },
+    { frames: [baseH+"IMG_9360.JPG"], dur: "Photo" }
   ]}
 ];
 
