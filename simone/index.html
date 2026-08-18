@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light dark">
 <script>
   (function () {
-    try {
-      var t = localStorage.getItem('aim-theme');
-      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
+    var t = 'light';
+    try { var s = localStorage.getItem('aim-theme'); if (s === 'light' || s === 'dark') t = s; } catch (e) {}
+    document.documentElement.setAttribute('data-theme', t);
   })();
 </script>
 <title>Simone · Client Portal · An Ideas Merchant</title>
@@ -28,6 +27,12 @@
     --aim-hairline-ivory: rgba(17,16,14,0.13); --aim-hairline-ivory-strong: rgba(17,16,14,0.24);
   }
   [data-theme="light"] .mono-logo { filter: invert(1) grayscale(1) brightness(0.16); }
+  /* Gate always renders in the dark palette, regardless of the app theme */
+  [data-theme="light"] #gate {
+    --aim-black: #080807; --aim-charcoal: #11100E; --aim-surface: #171512;
+    --aim-muted: #A9A099; --aim-ivory: #F4EFE6; --aim-gold: #C99A45; --aim-gold-light: #E2BE72;
+    --color-border: rgba(244,239,230,0.12); --color-accent-wash: rgba(201,154,69,0.16); --color-on-accent: #11100E;
+  }
 
   /* ---- Password gate ---- */
   #gate { position: fixed; inset: 0; background: var(--aim-black); z-index: 100; display: flex; align-items: center; justify-content: center; }
@@ -50,6 +55,7 @@
   aside { border-right: 1px solid var(--color-border); padding: 28px 22px; display: flex; flex-direction: column; gap: 40px; position: sticky; top: 0; height: 100vh; }
   .brand-lockup { display: flex; align-items: center; gap: 11px; }
   .brand-lockup .full { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); line-height: 1.3; }
+  .nav-chevron { display: none; width: 12px; height: 12px; color: var(--aim-muted); transition: transform var(--dur) var(--ease-out); flex: none; }
   nav.tabs { display: flex; flex-direction: column; gap: 4px; flex: 1; }
   nav.tabs button { display: flex; align-items: center; gap: 12px; background: none; border: none; color: var(--aim-muted); font-family: var(--font-body); font-size: 13px; font-weight: 500; letter-spacing: 0.03em; padding: 11px 12px; border-radius: var(--radius-sm); cursor: pointer; text-align: left; transition: background var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
   nav.tabs button:hover { color: var(--aim-ivory); background: var(--color-surface); }
@@ -201,8 +207,8 @@
   .tp-rail button[aria-current="true"] { border-color: var(--aim-gold); color: var(--aim-ivory); background: var(--color-accent-wash); }
   .tp-rail button .n { font-family: var(--font-display); font-size: 15px; color: var(--aim-gold); }
   .tp-fig { width: 76px; height: 62px; flex: none; }
-  .tp-fig img { width: 100%; height: 100%; object-fit: contain; opacity: 0.55; }
-  .tp-fig.is-active img { opacity: 1; }
+  .tp-fig .diagram { display: block; width: 100%; height: 100%; background-color: var(--aim-ivory); opacity: 0.55; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain; }
+  .tp-fig.is-active .diagram { opacity: 1; }
   .tp-panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
   .tp-panel-status { display: inline-flex; align-items: center; font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-gold); background: var(--color-accent-wash); padding: 5px 12px; border-radius: var(--radius-pill); margin-top: 10px; }
   .tp-panel-head .tp-stage-name { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; text-transform: none; font-size: 24px; color: var(--aim-ivory); margin: 6px 0 0; }
@@ -232,12 +238,85 @@
   .insight-entry p.sug { color: var(--aim-muted); font-size: 13px; margin: 8px 0 0; }
   .insight-entry p.date { color: var(--aim-muted); font-size: 11px; margin: 8px 0 0; }
 
+  /* ---- Action stack ---- */
+  .stack-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+  .stack-card + .stack-card { margin-top: 10px; }
+  .stack-card.peek { cursor: pointer; }
+  .stack-card .sc-head { padding: 16px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .stack-card .sc-head h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; font-size: 16px; margin: 0; color: var(--aim-ivory); }
+  .stack-card.peek .sc-head { opacity: 0.62; transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+  .stack-card.peek:hover .sc-head { opacity: 1; transform: translateX(4px); }
+  .stack-card .sc-body { padding: 0 22px 22px; font-size: 13px; color: var(--aim-muted); line-height: 1.7; }
+  .stack-card .sc-body p { margin: 0 0 8px; }
+  .stack-card .sc-body p:last-child { margin-bottom: 0; }
+  .stack-card.peek .sc-body { display: none; }
+  .stack-card .sc-hint { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); flex: none; }
+
+  /* ---- Target Practice rail status ---- */
+  .tp-rail-status { display: block; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aim-muted); margin-top: 2px; }
+  .tp-rail button[aria-current="true"] .tp-rail-status { color: var(--aim-gold); }
+
+  /* ---- Documentation window (expandable) ---- */
+  .doc-toggle-hint { font-size: 10px; letter-spacing: 0.04em; color: var(--aim-gold); margin-top: 2px; }
+  .doc-window { overflow: hidden; max-height: 0; transition: max-height var(--dur-slow) var(--ease-out); margin-bottom: 0; }
+  .doc-window.open { max-height: 900px; margin-bottom: 40px; }
+  .doc-window-inner { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 26px 28px; background: var(--color-surface); }
+
+  /* ---- Content Queue ---- */
+  .queue-lead { color: var(--aim-muted); font-size: 13px; max-width: 60ch; margin: -16px 0 30px; }
+  .queue-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; align-items: start; }
+  .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .day-slot { border: 1.5px dashed var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); display: flex; flex-direction: column; min-height: 168px; overflow: hidden; position: relative; }
+  .day-slot.filled { border-style: solid; }
+  .day-slot.dragover { border-color: var(--aim-gold); }
+  .day-slot .day-hd { padding: 8px 10px; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aim-muted); border-bottom: 1px solid var(--color-border); }
+  .day-slot .day-body { flex: 1; position: relative; display: flex; align-items: center; justify-content: center; }
+  .day-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .day-slot .empty-lbl { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aim-muted); text-align: center; padding: 8px; }
+  .day-slot .clip-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 8px; font-size: 10px; color: #F4EFE6; background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent); }
+  .day-slot .clear { position: absolute; top: 6px; right: 6px; width: 18px; height: 18px; border-radius: 50%; background: rgba(0,0,0,0.55); color: #F4EFE6; border: none; font-size: 11px; cursor: pointer; display: none; }
+  .day-slot.filled:hover .clear { display: block; }
+  .opp-card { border-left: 2px solid var(--aim-gold); padding-left: 14px; margin-bottom: 22px; }
+  .opp-card .date { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aim-gold); }
+  .opp-card h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; font-size: 15px; margin: 4px 0 4px; color: var(--aim-ivory); }
+  .opp-card p { font-size: 13px; color: var(--aim-muted); margin: 0; line-height: 1.6; }
+  .vault-add-btn { position: absolute; bottom: 9px; right: 9px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); border: none; display: flex; align-items: center; justify-content: center; opacity: 0; cursor: pointer; transition: opacity var(--dur) var(--ease-out), background var(--dur) var(--ease-out); }
+  .clip-card:hover .vault-add-btn { opacity: 1; }
+  .vault-add-btn:hover { background: var(--aim-gold); }
+  .vault-add-btn svg { width: 11px; height: 11px; stroke: #F4EFE6; }
+  .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--aim-ivory); color: var(--aim-black); font-size: 12px; letter-spacing: 0.02em; padding: 10px 20px; border-radius: var(--radius-pill); opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); z-index: 95; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 900px) {
+    .queue-layout { grid-template-columns: 1fr; }
+    .week-grid { grid-template-columns: repeat(auto-fit, minmax(100px,1fr)); }
+  }
+
   @media (max-width: 760px) {
     #app.on { grid-template-columns: 1fr; }
-    aside { position: static; height: auto; flex-direction: row; align-items: center; padding: 16px 20px; }
-    nav.tabs { flex-direction: row; flex: none; }
-    .sidebar-foot { display: none; }
-    .dash-grid { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; padding: 14px 16px; gap: 16px; }
+    .brand-lockup { flex: none; cursor: pointer; }
+    .nav-chevron { display: block; }
+    aside.nav-open .nav-chevron { transform: rotate(180deg); }
+    nav.tabs { display: none; flex-direction: column; gap: 2px; flex-basis: 100%; order: 3; border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 2px; }
+    aside.nav-open nav.tabs { display: flex; }
+    nav.tabs button { padding: 11px 12px; }
+    .sidebar-foot { display: flex; align-items: center; gap: 10px; flex: none; border-top: none; padding-top: 0; margin-left: auto; order: 2; }
+    .sidebar-foot .client { display: none; }
+    main { padding: 28px 18px 60px; }
+    .dash-grid, .action-grid, .pillar-grid { grid-template-columns: 1fr; }
+    .pillar-card { cursor: pointer; }
+    .pillar-card .pc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .pillar-card .pc-chev { width: 12px; height: 12px; color: var(--aim-muted); flex: none; transition: transform var(--dur) var(--ease-out); }
+    .pillar-card.open .pc-chev { transform: rotate(180deg); }
+    .pillar-card p { display: none; margin-top: 10px; }
+    .pillar-card.open p { display: block; }
+    .tp-stage-layout { grid-template-columns: 1fr; }
+    .vault-tiles { grid-template-columns: 1fr; max-width: 100%; }
+    .clip-grid { grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); }
+    #lightbox { padding: 20px; }
+    .lightbox-nav { width: 38px; height: 38px; }
+    #lightbox-prev { left: 8px; } #lightbox-next { right: 8px; }
   }
 </style>
 </head>
@@ -255,16 +334,16 @@
 
 <div id="app">
   <aside>
-    <div class="brand-lockup">
+    <div class="brand-lockup" id="brand-toggle">
       <img class="mono-logo" src="../../assets/logos/aim-monogram-ivory.png" alt="An Ideas Merchant" style="height:34px;width:auto;display:block">
       <span class="full">Client Portal</span>
+      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
     </div>
     <nav class="tabs">
       <button data-view="dashboard" class="active"><span class="dot"></span>Dashboard</button>
       <button data-view="vault"><span class="dot"></span>Media Vault</button>
       <button data-view="queue"><span class="dot"></span>Content Queue</button>
       <button data-view="editor"><span class="dot"></span>Reel Editor</button>
-      <button data-view="strategy"><span class="dot"></span>Strategy Doc</button>
     </nav>
     <div class="sidebar-foot">
       <p class="client" id="foot-client">Simone</p>
@@ -284,28 +363,51 @@
       <h1 class="greet-name" id="greet-name">Simone.</h1>
       <div class="chip-row">
         <div class="chip"><span class="lbl">Active phase</span><span class="val" id="chip-phase"></span></div>
-        <div class="countdown-chip">
+        <button type="button" class="countdown-chip" id="countdown-toggle" style="cursor:pointer;border:1px solid var(--color-border);text-align:left;font:inherit;">
           <span class="num" id="countdown-num"></span>
-          <span class="lbl2">Days to go<span id="countdown-sub"></span></span>
+          <span class="lbl2">Days to go<span id="countdown-sub"></span><span class="doc-toggle-hint">Click to see the documentation window &darr;</span></span>
+        </button>
+      </div>
+
+      <div class="doc-window" id="doc-window">
+        <div class="doc-window-inner">
+          <p class="kicker-lbl">Documentation Window</p>
+          <h2 class="strat-h2" id="doc-window-range" style="font-size:22px;"></h2>
+          <p class="strat-lead" style="font-size:13px;" id="doc-window-note"></p>
+          <div class="cal-grid" id="doc-calendar"></div>
+          <div class="cal-legend" style="margin-bottom:26px;">
+            <span class="cal-item"><span class="sw" style="background:var(--aim-gold);"></span>Shoot day</span>
+            <span class="cal-item"><span class="sw" style="background:transparent;border:1.5px solid var(--aim-gold);"></span>Auckland IFBB</span>
+            <span class="cal-item"><span class="sw" style="background:var(--color-track);outline:2px solid var(--aim-ivory);"></span>Today</span>
+          </div>
+          <p class="tension-lbl">What's coming up</p>
+          <div id="doc-milestones"></div>
         </div>
       </div>
+
       <div class="panel origin-panel">
         <span class="origin-status" id="origin-status"></span>
-        <p class="north" id="origin-north"></p>
+        <p class="tension-lbl">Working brand proposition</p>
+        <p class="north" id="origin-proposition"></p>
         <p class="tension-lbl">Core Tension Statement, draft</p>
         <p class="tension" id="origin-tension"></p>
         <p class="own-words" id="origin-quote"></p>
       </div>
-      <div class="dash-grid">
-        <div class="panel">
-          <h3>Target Practice</h3>
-          <div id="tp-list"></div>
-        </div>
-        <div class="panel">
-          <h3>Upcoming milestones</h3>
-          <div id="ms-list"></div>
-        </div>
+
+      <p class="kicker-lbl" style="margin-top:40px;">Immediate Actions</p>
+      <h2 class="strat-h2">Right now.</h2>
+      <div class="stack" id="action-stack" style="margin-bottom:44px;"></div>
+
+      <p class="kicker-lbl">Target Practice</p>
+      <h2 class="strat-h2">The five-stage framework.</h2>
+      <div class="tp-stage-layout" style="margin-bottom:44px;">
+        <nav class="tp-rail" id="strat-rail"></nav>
+        <article class="panel" id="strat-panel"></article>
       </div>
+
+      <p class="kicker-lbl">Content Pillars</p>
+      <h2 class="strat-h2">What I'm making.</h2>
+      <div class="pillar-grid" id="strat-pillars"></div>
     </section>
 
     <section class="view" id="view-vault">
@@ -318,9 +420,17 @@
 
     <section class="view" id="view-queue">
       <div class="vault-head"><h2>Content Queue</h2></div>
-      <p style="color:var(--aim-muted);font-size:13px;max-width:56ch;margin:-16px 0 22px;">Drag clips from your vault into the grid to plan next week's posts.</p>
-      <div class="queue-strip" id="queue-strip"></div>
-      <div class="grid9" id="grid9"></div>
+      <p class="queue-lead">Plan this week's posts from your vault, then look further ahead at what's worth capturing next.</p>
+      <div class="queue-layout">
+        <div>
+          <p class="kicker-lbl">This week</p>
+          <div class="week-grid" id="week-grid"></div>
+        </div>
+        <div>
+          <p class="kicker-lbl">Coming up</p>
+          <div id="opp-list"></div>
+        </div>
+      </div>
     </section>
 
     <section class="view" id="view-editor">
@@ -337,76 +447,11 @@
       </div>
     </section>
 
-    <section class="view" id="view-strategy">
-      <div class="strat-section">
-        <p class="kicker-lbl">North Star</p>
-        <h2 class="strat-h2">Where this is going.</h2>
-        <p class="strat-lead" id="strat-ambition"></p>
-        <div class="chip-wrap" id="strat-direction"></div>
-        <div class="panel" style="margin-top:20px;border-style:dashed;">
-          <p class="origin-status">Open</p>
-          <p class="tension-lbl">Working brand proposition</p>
-          <p class="tension" style="font-family:var(--font-display);font-style:italic;font-size:16px;color:var(--aim-ivory);" id="strat-proposition"></p>
-        </div>
-      </div>
-
-      <div class="strat-section">
-        <p class="kicker-lbl">Target Practice</p>
-        <h2 class="strat-h2">The five-stage framework.</h2>
-        <div class="tp-stage-layout">
-          <nav class="tp-rail" id="strat-rail"></nav>
-          <article class="panel" id="strat-panel"></article>
-        </div>
-      </div>
-
-      <div class="strat-section">
-        <p class="kicker-lbl">Content Pillars</p>
-        <h2 class="strat-h2">What we're making.</h2>
-        <div class="pillar-grid" id="strat-pillars"></div>
-      </div>
-
-      <div class="strat-section">
-        <p class="kicker-lbl">Documentation Window</p>
-        <h2 class="strat-h2">15 Aug to 26 Sept.</h2>
-        <p class="strat-lead" style="font-size:14px;" id="strat-window-note"></p>
-        <div class="cal-grid" id="strat-calendar"></div>
-        <div class="cal-legend">
-          <span class="cal-item"><span class="sw" style="background:var(--aim-gold);"></span>Shoot day</span>
-          <span class="cal-item"><span class="sw" style="background:transparent;border:1.5px solid var(--aim-gold);"></span>Auckland IFBB</span>
-          <span class="cal-item"><span class="sw" style="background:var(--color-track);outline:2px solid var(--aim-ivory);"></span>Today</span>
-        </div>
-      </div>
-
-      <div class="strat-section">
-        <p class="kicker-lbl">Immediate Actions</p>
-        <h2 class="strat-h2">Right now.</h2>
-        <div class="action-grid">
-          <div class="panel"><p class="tension-lbl">Now</p><ul class="strat-ul" id="strat-actions-now"></ul></div>
-          <div class="panel"><p class="tension-lbl">Next meeting</p><p style="font-family:var(--font-display);font-size:18px;color:var(--aim-ivory);margin:8px 0 0;" id="strat-actions-topic"></p><p class="tension" style="margin-top:8px;" id="strat-actions-outcome"></p></div>
-          <div class="panel"><p class="tension-lbl">Before Auckland IFBB</p><p class="tension" style="margin-top:8px;" id="strat-actions-before"></p></div>
-        </div>
-      </div>
-
-      <div class="strat-section">
-        <p class="kicker-lbl">Insight Log</p>
-        <h2 class="strat-h2">Ideas, without trading one thing for another.</h2>
-        <div id="strat-insights"></div>
-      </div>
-
-      <div class="strat-section">
-        <p class="kicker-lbl">Parking Lot</p>
-        <h2 class="strat-h2">Not now, not forgotten.</h2>
-        <div class="chip-wrap" id="strat-parking"></div>
-      </div>
-
-      <div class="strat-section" style="border-bottom:none;">
-        <p class="kicker-lbl">Post-IFBB Review</p>
-        <h2 class="strat-h2" id="strat-review-target"></h2>
-        <ul class="strat-ul" id="strat-review-items"></ul>
-      </div>
-    </section>
+    <section class="view" id="view-strategy" style="display:none;"></section>
   </main>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <div id="lightbox" class="hidden">
   <button class="lightbox-nav" id="lightbox-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -507,12 +552,16 @@
   });
 
   // Nav
+  document.getElementById('brand-toggle').addEventListener('click', () => {
+    document.querySelector('aside').classList.toggle('nav-open');
+  });
   document.querySelectorAll('nav.tabs button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
       btn.classList.add('active');
       document.getElementById('view-' + btn.dataset.view).classList.add('active');
+      document.querySelector('aside').classList.remove('nav-open');
     });
   });
 
@@ -527,29 +576,96 @@
     document.getElementById('countdown-num').textContent = days >= 0 ? days : 0;
     document.getElementById('countdown-sub').textContent = (days >= 0 ? ' to ' : ' since ') + CLIENT.countdown.label + ', ' + CLIENT.countdown.date;
   })();
-  document.getElementById('tp-list').innerHTML = CLIENT.targetPractice.map(s => `
-    <div class="tp-row ${s.status}">
-      <span class="tp-num">${s.n}</span>
-      <span class="tp-key">${s.key}</span>
-      <span class="tp-status">${s.status === 'done' ? 'Complete' : s.status === 'current' ? 'In progress' : 'Locked'}</span>
-    </div>`).join('');
+  const S = window.AIM_STRATEGY;
   document.getElementById('origin-status').textContent = CLIENT.targetPractice[0].note;
-  document.getElementById('origin-north').textContent = CLIENT.origin.northStar;
+  document.getElementById('origin-proposition').textContent = '"' + CLIENT.origin.proposition + '"';
   document.getElementById('origin-tension').textContent = CLIENT.origin.coreTension;
   document.getElementById('origin-quote').textContent = '"' + CLIENT.origin.quote + '"';
-  document.getElementById('ms-list').innerHTML = CLIENT.milestones.map(m => `
-    <div class="ms-row"><span class="lbl">${m.label}</span><span class="date">${m.date}</span></div>`).join('');
+
+  // Documentation window: collapsed by default, toggled from the countdown chip
+  const docWindow = document.getElementById('doc-window');
+  document.getElementById('countdown-toggle').addEventListener('click', () => docWindow.classList.toggle('open'));
+  document.getElementById('doc-window-range').textContent = new Date(S.window.start+'T00:00:00').toLocaleDateString('en-NZ',{day:'numeric',month:'short'}) + ' to ' + new Date(S.window.end+'T00:00:00').toLocaleDateString('en-NZ',{day:'numeric',month:'short'}) + '.';
+  document.getElementById('doc-window-note').textContent = S.window.note;
+  document.getElementById('doc-milestones').innerHTML = CLIENT.milestones.map(m => `
+    <div class="ms-row"><span class="lbl">${m.label}<br><span style="color:var(--aim-muted);font-size:12px;">${m.idea}</span></span><span class="date">${m.date}</span></div>`).join('');
+  (function(){
+    const start = new Date(S.window.start+'T00:00:00'), end = new Date(S.window.end+'T00:00:00');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const shootSet = new Set(S.window.shootDates);
+    const totalDays = Math.round((end-start)/86400000)+1;
+    let cells = '';
+    for (let i=0;i<totalDays;i++){
+      const d = new Date(start.getTime()+i*86400000);
+      const iso = d.toISOString().slice(0,10);
+      let cls = 'cal-cell';
+      if (iso === S.window.competitionDate) cls += ' is-competition';
+      else if (shootSet.has(iso)) cls += ' has-shoot';
+      if (d.getTime() === today.getTime()) cls += ' is-today';
+      cells += `<div class="${cls}" title="${d.toLocaleDateString('en-NZ',{day:'numeric',month:'short'})}"></div>`;
+    }
+    document.getElementById('doc-calendar').innerHTML = cells;
+  })();
+
+  // Immediate Actions stack: top card is fully open, the rest peek behind it, click promotes
+  const actionCards = [
+    { title: 'Now', body: '<ul class="strat-ul" style="margin:0;">' + S.actions.now.map(a => `<li>${a}</li>`).join('') + '</ul>' },
+    { title: 'Next meeting \u00b7 ' + S.actions.nextTopic, body: `<p>${S.actions.nextOutcome}</p>` },
+    { title: 'Before Auckland IFBB', body: `<p>${S.actions.beforeIfbb}</p>` }
+  ];
+  let stackOrder = [0,1,2];
+  function renderStack(){
+    const el = document.getElementById('action-stack');
+    el.innerHTML = stackOrder.map((ci,pos) => {
+      const c = actionCards[ci];
+      return `<div class="stack-card ${pos===0?'active':'peek'}" data-ci="${ci}"><div class="sc-head"><h4>${c.title}</h4>${pos===0?'':'<span class="sc-hint">Click to open</span>'}</div><div class="sc-body">${c.body}</div></div>`;
+    }).join('');
+    el.querySelectorAll('.stack-card.peek').forEach(card => {
+      card.addEventListener('click', () => {
+        const ci = +card.dataset.ci;
+        stackOrder = [ci, ...stackOrder.filter(x => x !== ci)];
+        renderStack();
+      });
+    });
+  }
+  renderStack();
+
+  // Target Practice five-stage framework
+  function tpStageBody(s){
+    let out = `<div class="tp-panel-head"><div><p class="kicker-lbl">Stage ${s.num} \u00b7 ${s.role}</p><h3 class="tp-stage-name">${s.name}</h3><span class="tp-panel-status">${s.statusLabel}</span></div><div class="tp-fig${s.status==='current'?' is-active':''}"><span class="diagram" style="-webkit-mask-image:url('${s.figure}');mask-image:url('${s.figure}')"></span></div></div>`;
+    if (s.whatWeKnow) out += `<div class="tp-field"><div class="k">What we know</div><div class="v">${s.whatWeKnow}</div></div>`;
+    if (s.decisions) out += `<div class="tp-field"><div class="k">Decisions</div><div class="v">${s.decisions}</div></div>`;
+    if (s.why) out += `<div class="tp-field"><div class="k">Why this matters</div><div class="v">${s.why}</div></div>`;
+    out += `<div class="tp-out"><span style="color:var(--aim-gold);">\u2192</span><span><span class="k" style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--aim-muted);">Output</span><span class="val" style="${s.status==='locked'?'color:var(--aim-muted);font-style:normal;':''}">${s.status==='locked' ? 'Not unlocked yet' : s.output}</span></span></div>`;
+    return out;
+  }
+  const stratRail = document.getElementById('strat-rail'), stratPanel = document.getElementById('strat-panel');
+  S.targetPractice.forEach((s,i) => {
+    const btn = document.createElement('button');
+    btn.setAttribute('aria-current', i===0 ? 'true' : 'false');
+    btn.innerHTML = `<span><span>${s.name}</span><span class="tp-rail-status">${s.status==='done'?'Complete':s.status==='current'?'In progress':'Locked'}</span></span><span class="n">${s.num}</span>`;
+    btn.addEventListener('click', () => {
+      stratRail.querySelectorAll('button').forEach(b => b.setAttribute('aria-current','false'));
+      btn.setAttribute('aria-current','true');
+      stratPanel.innerHTML = tpStageBody(s);
+    });
+    stratRail.appendChild(btn);
+  });
+  stratPanel.innerHTML = tpStageBody(S.targetPractice[0]);
+
+  document.getElementById('strat-pillars').innerHTML = S.pillars.map((p,i) => `<div class="pillar-card${i===0?' open':''}"><div class="pc-head"><h3>${p.name}</h3><svg class="pc-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div><p>${p.body}</p></div>`).join('');
+  document.querySelectorAll('.pillar-card').forEach(card => card.querySelector('.pc-head').addEventListener('click', () => card.classList.toggle('open')));
 
   // Build a clip card (frames array; mouse-x scrubs). Each card cycles
   // its own LUT preview independent of every other card.
-  function buildCard(clip, small, list, idx){
+  function buildCard(clip, small, list, idx, groupTitle){
     const wrap = document.createElement('div');
     wrap.className = 'clip-wrap';
     const card = document.createElement('div');
     card.className = 'clip-card';
     card.innerHTML = clip.frames.map((f,i) => `<img src="${f}" class="${i===0?'on':''}">`).join('')
       + `<span class="play"><svg viewBox="0 0 10 10"><polygon points="0,0 10,5 0,10"/></svg></span>`
-      + (small ? '' : `<button class="dl-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></button><button class="add-btn">+ Queue</button>`);
+      + (small ? '' : `<button class="dl-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></button><button class="vault-add-btn" title="Add to Content Queue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>`);
     const imgs = card.querySelectorAll('img');
     card.addEventListener('mousemove', e => {
       const r = card.getBoundingClientRect();
@@ -559,16 +675,14 @@
     });
     card.addEventListener('mouseleave', () => imgs.forEach((im,i) => im.classList.toggle('on', i===0)));
     card.draggable = true;
-    card.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', JSON.stringify(clip)));
+    card.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', JSON.stringify(Object.assign({}, clip, { _label: (groupTitle || 'Vault') + (typeof idx === 'number' ? ' \u00b7 clip ' + (idx+1) : '') }))));
     card.addEventListener('click', () => openLightbox(list || [clip], idx || 0));
     wrap.appendChild(card);
     if (!small) {
-      const addBtn = card.querySelector('.add-btn');
+      const addBtn = card.querySelector('.vault-add-btn');
       addBtn.addEventListener('click', e => {
         e.stopPropagation();
-        addToQueueStrip(clip);
-        addBtn.textContent = 'Added'; addBtn.classList.add('added');
-        setTimeout(() => { addBtn.textContent = '+ Queue'; addBtn.classList.remove('added'); }, 1200);
+        assignToNextDay(clip, (groupTitle || 'Vault') + (typeof idx === 'number' ? ' \u00b7 clip ' + (idx+1) : ''));
       });
       card.querySelector('.dl-btn').addEventListener('click', e => {
         e.stopPropagation();
@@ -637,101 +751,53 @@
     const h = document.createElement('p'); h.className = 'group-title'; h.style.margin = '0 0 16px'; h.textContent = group.title + ' \u00b7 ' + group.location + ' \u00b7 ' + group.date;
     vaultGroups.appendChild(h);
     const grid = document.createElement('div'); grid.className = 'clip-grid';
-    group.clips.forEach((clip, idx) => grid.appendChild(buildCard(clip, false, group.clips, idx)));
+    group.clips.forEach((clip, idx) => grid.appendChild(buildCard(clip, false, group.clips, idx, group.title)));
     vaultGroups.appendChild(grid);
   }
   showVaultOverview();
 
-  // Queue strip (clips added via + Queue button, for drag into grid)
-  const queueStrip = document.getElementById('queue-strip');
-  function addToQueueStrip(clip){
-    queueStrip.appendChild(buildCard(clip, true));
+  // Content Queue: this week's planner + upcoming opportunities
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    clearTimeout(showToast._tm);
+    showToast._tm = setTimeout(() => t.classList.remove('show'), 1800);
   }
-  // seed strip with all vault clips so it's usable without pressing + first
-  GROUPS.forEach(g => g.clips.forEach(c => queueStrip.appendChild(buildCard(c, true))));
-
-  // 9-grid drop targets
-  const grid9 = document.getElementById('grid9');
-  for (let i = 0; i < 9; i++) {
+  const WEEKDAY = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function fillDaySlot(slot, clip, label){
+    slot.classList.add('filled');
+    slot.querySelector('.day-body').innerHTML = `<img src="${clip.frames[0]}"><span class="clip-label">${label}</span><button class="clear">\u00d7</button>`;
+    slot.querySelector('.clear').addEventListener('click', ev => {
+      ev.stopPropagation(); slot.classList.remove('filled');
+      slot.querySelector('.day-body').innerHTML = `<span class="empty-lbl">Drop clip</span>`;
+    });
+  }
+  function assignToNextDay(clip, label){
+    const slots = Array.from(document.querySelectorAll('.day-slot'));
+    const open = slots.find(s => !s.classList.contains('filled'));
+    if (!open) { showToast('This week is full \u2014 clear a day first'); return; }
+    fillDaySlot(open, clip, label);
+    showToast('Added to ' + open.dataset.label);
+  }
+  const weekGrid = document.getElementById('week-grid');
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate() + i);
+    const label = WEEKDAY[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth()+1);
     const slot = document.createElement('div');
-    slot.className = 'slot';
-    slot.innerHTML = `<span class="empty-lbl">Drop clip</span><button class="clear">×</button>`;
+    slot.className = 'day-slot';
+    slot.dataset.label = label;
+    slot.innerHTML = `<div class="day-hd">${label}</div><div class="day-body"><span class="empty-lbl">Drop clip</span></div>`;
     slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('dragover'); });
     slot.addEventListener('dragleave', () => slot.classList.remove('dragover'));
     slot.addEventListener('drop', e => {
       e.preventDefault(); slot.classList.remove('dragover');
       const clip = JSON.parse(e.dataTransfer.getData('text/plain'));
-      slot.classList.add('filled');
-      slot.innerHTML = `<img src="${clip.frames[0]}"><button class="clear">×</button>`;
-      slot.querySelector('.clear').addEventListener('click', ev => {
-        ev.stopPropagation(); slot.classList.remove('filled');
-        slot.innerHTML = `<span class="empty-lbl">Drop clip</span><button class="clear">×</button>`;
-      });
+      fillDaySlot(slot, clip, clip._label || 'Vault clip');
     });
-    grid9.appendChild(slot);
+    weekGrid.appendChild(slot);
   }
-
-  // Strategy Doc
-  const S = window.AIM_STRATEGY;
-  document.getElementById('strat-ambition').textContent = S.northStar.ambition;
-  document.getElementById('strat-direction').innerHTML = S.northStar.direction.map(d => `<span class="chip-tag">${d}</span>`).join('');
-  document.getElementById('strat-proposition').textContent = '"' + S.northStar.proposition + '"';
-
-  function tpStageBody(s){
-    const figClass = 'tp-fig' + (s.active ? ' is-active' : '');
-    let out = `<div class="tp-panel-head"><div><p class="kicker-lbl">Stage ${s.num} \u00b7 ${s.role}</p><h3 class="tp-stage-name">${s.name}</h3><span class="tp-panel-status">${s.statusLabel}</span></div><div class="${figClass}"><img src="${s.figure}" alt=""></div></div>`;
-    if (s.whatWeKnow) out += `<div class="tp-field"><div class="k">What we know</div><div class="v">${s.whatWeKnow}</div></div>`;
-    if (s.decisions) out += `<div class="tp-field"><div class="k">Decisions</div><div class="v">${s.decisions}</div></div>`;
-    out += `<div class="tp-out"><span style="color:var(--aim-gold);">\u2192</span><span><span class="k" style="display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--aim-muted);">Output</span><span class="val">${s.output}</span></span></div>`;
-    return out;
-  }
-  const stratRail = document.getElementById('strat-rail'), stratPanel = document.getElementById('strat-panel');
-  S.targetPractice.forEach((s,i) => {
-    const btn = document.createElement('button');
-    btn.setAttribute('aria-current', i===0 ? 'true' : 'false');
-    btn.innerHTML = `<span>${s.name}</span><span class="n">${s.num}</span>`;
-    btn.addEventListener('click', () => {
-      stratRail.querySelectorAll('button').forEach(b => b.setAttribute('aria-current','false'));
-      btn.setAttribute('aria-current','true');
-      stratPanel.innerHTML = tpStageBody(s);
-    });
-    stratRail.appendChild(btn);
-  });
-  stratPanel.innerHTML = tpStageBody(S.targetPractice[0]);
-
-  document.getElementById('strat-pillars').innerHTML = S.pillars.map(p => `<div class="pillar-card"><h3>${p.name}</h3><p>${p.body}</p></div>`).join('');
-
-  document.getElementById('strat-window-note').textContent = S.window.note;
-  (function(){
-    const start = new Date(S.window.start+'T00:00:00'), end = new Date(S.window.end+'T00:00:00');
-    const today = new Date(); today.setHours(0,0,0,0);
-    const shootSet = new Set(S.window.shootDates);
-    const totalDays = Math.round((end-start)/86400000)+1;
-    let cells = '';
-    for (let i=0;i<totalDays;i++){
-      const d = new Date(start.getTime()+i*86400000);
-      const iso = d.toISOString().slice(0,10);
-      let cls = 'cal-cell';
-      if (iso === S.window.competitionDate) cls += ' is-competition';
-      else if (shootSet.has(iso)) cls += ' has-shoot';
-      if (d.getTime() === today.getTime()) cls += ' is-today';
-      cells += `<div class="${cls}" title="${d.toLocaleDateString('en-NZ',{day:'numeric',month:'short'})}"></div>`;
-    }
-    document.getElementById('strat-calendar').innerHTML = cells;
-  })();
-
-  document.getElementById('strat-actions-now').innerHTML = S.actions.now.map(a => `<li>${a}</li>`).join('');
-  document.getElementById('strat-actions-topic').textContent = S.actions.nextTopic;
-  document.getElementById('strat-actions-outcome').textContent = S.actions.nextOutcome;
-  document.getElementById('strat-actions-before').textContent = S.actions.beforeIfbb;
-
-  document.getElementById('strat-insights').innerHTML = S.insightLog.slice().reverse().map(e => `
-    <div class="insight-entry"><span class="insight-tag">${e.tag}</span><p class="obs">${e.obs}</p><p class="sug">${e.sug}</p><p class="date">${e.date}</p></div>`).join('');
-
-  document.getElementById('strat-parking').innerHTML = S.parkingLot.map(p => `<span class="chip-tag">${p}</span>`).join('');
-
-  document.getElementById('strat-review-target').textContent = 'Target: ' + S.postReview.target;
-  document.getElementById('strat-review-items').innerHTML = S.postReview.items.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('opp-list').innerHTML = CLIENT.milestones.map(m => `
+    <div class="opp-card"><span class="date">${m.date}</span><h4>${m.label}</h4><p>${m.idea}</p></div>`).join('');
 })();
 </script>
 </body>
