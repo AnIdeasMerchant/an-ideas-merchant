@@ -221,6 +221,7 @@
   .pillar-card { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 20px; background: var(--color-surface); }
   .pillar-card h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: 18px; margin: 0 0 8px; }
   .pillar-card p { font-size: 13px; color: var(--aim-muted); line-height: 1.6; margin: 0; }
+  .pillar-card .pc-chev { display: none; width: 12px; height: 12px; color: var(--aim-muted); flex: none; transition: transform var(--dur) var(--ease-out); }
   .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; max-width: 320px; margin-bottom: 12px; }
   .cal-cell { aspect-ratio: 1; border-radius: 2px; background: var(--color-track); }
   .cal-cell.has-shoot { background: var(--aim-gold); }
@@ -307,7 +308,7 @@
     .dash-grid, .action-grid, .pillar-grid { grid-template-columns: 1fr; }
     .pillar-card { cursor: pointer; }
     .pillar-card .pc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-    .pillar-card .pc-chev { width: 12px; height: 12px; color: var(--aim-muted); flex: none; transition: transform var(--dur) var(--ease-out); }
+    .pillar-card .pc-chev { display: block; }
     .pillar-card.open .pc-chev { transform: rotate(180deg); }
     .pillar-card p { display: none; margin-top: 10px; }
     .pillar-card.open p { display: block; }
