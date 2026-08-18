@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Portal · An Ideas Merchant</title>
+<link rel="stylesheet" href="../styles.css">
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--aim-black);color:var(--aim-ivory);font-family:var(--font-body);padding:40px}
+  .gate-card{width:min(360px,86vw);text-align:center}
+  .word{font-size:11px;letter-spacing:var(--tracking-meta);text-transform:uppercase;color:var(--aim-muted);margin:0 0 28px}
+  h1{font-family:var(--font-display);font-style:italic;font-weight:500;font-size:28px;color:var(--aim-ivory);margin:0 0 24px}
+  input{width:100%;background:var(--aim-surface);border:1px solid var(--color-border);color:var(--aim-ivory);font-family:var(--font-body);font-size:15px;padding:13px 16px;border-radius:8px;box-sizing:border-box;text-align:center}
+  input:focus{border-color:var(--aim-gold);outline:none}
+  button{margin-top:14px;width:100%;background:var(--aim-gold);color:var(--color-on-accent);border:none;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:13px 16px;border-radius:8px;cursor:pointer}
+  button:hover{background:var(--aim-gold-light)}
+  .err{color:#c96a5a;font-size:12px;margin-top:12px;height:14px;opacity:0;transition:opacity 0.2s ease}
+  .err.show{opacity:1}
+  .shake{animation:shake 0.4s ease}
+  @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+<div class="gate-card">
+  <p class="word">An Ideas Merchant</p>
+  <h1>Client Portal</h1>
+  <input id="pw" type="password" placeholder="Enter access code" autocomplete="off">
+  <button id="submit">Enter</button>
+  <p class="err" id="err">That code isn't right. Try again.</p>
+</div>
+<script>
+  const ROUTES = { bisou: "simone/" };
+  function tryEnter(){
+    const val = document.getElementById('pw').value.trim().toLowerCase();
+    if (ROUTES[val]) { window.location.href = ROUTES[val]; return; }
+    const card = document.querySelector('.gate-card'), err = document.getElementById('err');
+    err.classList.add('show'); card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake');
+  }
+  document.getElementById('submit').addEventListener('click', tryEnter);
+  document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') tryEnter(); });
+</script>
+</body>
+</html>
