@@ -7,6 +7,8 @@ window.AIM_CLIENT = {
   slug: "simone",
   password: "bisou", // EDIT, cosmetic gate only, not real auth
   phase: "Documentation",
+  location: "Auckland, New Zealand", // EDIT — generic per-client profile, used by discovery + AI tools
+  niche_keywords: ["bodybuilding", "IFBB competition prep", "personal training", "fitness coaching"], // EDIT
   countdown: { label: "Auckland IFBB", date: "26 SEP 2026", dateISO: "2026-09-26" }, // EDIT
   targetPractice: [
     { n: "01", key: "ORIGIN", status: "current", note: "Drafted from voice notes, call still needed to lock it in" },
@@ -40,18 +42,18 @@ window.AIM_STRATEGY = {
   targetPractice: [
     {
       num: "01", name: "Origin / Awareness", role: "Foundation", output: "The Core Tension Statement",
-      figure: "../../assets/glyphs/s1-origin.png", status: "current",
+      figure: "assets/glyphs/s1-origin.png", status: "current",
       statusLabel: "Origin drafted from voice notes, call still needed to lock it in",
       whatWeKnow: "Draft Core Tension Statement, not locked, needs confirmation: \"Simone isn't selling injury-prevention PT. She's using her own transformation, in the final weeks before Auckland IFBB, as proof that she knows who she is, and she wants to help other people find that same self-knowledge. The content has to be about her: her training, her intensity, her identity.\" Her own words: \"I know exactly who I am, this year, that's what I'm bringing to the stage.\"",
       decisions: "Offer direction: online personal training and lifestyle coaching, not bodybuilder-only. Positioning centres on her own visible transformation and mindset shift, not a credentials-led physio or PT pitch."
     },
-    { num: "02", name: "Identity", role: "Foundation", output: "The Decision Filter", figure: "../../assets/glyphs/s2-identity.png", status: "locked", statusLabel: "Not yet started",
+    { num: "02", name: "Identity", role: "Foundation", output: "The Decision Filter", figure: "assets/glyphs/s2-identity.png", status: "locked", statusLabel: "Not yet started",
       why: "Before a brand can speak, it has to know what it is and what it refuses to be. This stage defines the role it plays in someone's life, guide, rebel, translator or protector, and sets the filter every future decision gets run through." },
-    { num: "03", name: "Audience Truth", role: "Strategy", output: "The Audience Pressure Point", figure: "../../assets/glyphs/s3-audience.png", status: "locked", statusLabel: "Not yet started",
+    { num: "03", name: "Audience Truth", role: "Strategy", output: "The Audience Pressure Point", figure: "assets/glyphs/s3-audience.png", status: "locked", statusLabel: "Not yet started",
       why: "Demographics don't tell you who someone is. This stage gets at what they're actually tired of, what they secretly want, and what moment in their life they're standing in, so the work speaks to a real person, not a segment." },
-    { num: "04", name: "Narrative Engine", role: "Strategy", output: "The Narrative Arc", figure: "../../assets/glyphs/s4-narrative.png", status: "locked", statusLabel: "Not yet started",
+    { num: "04", name: "Narrative Engine", role: "Strategy", output: "The Narrative Arc", figure: "assets/glyphs/s4-narrative.png", status: "locked", statusLabel: "Not yet started",
       why: "Every brand is telling a story whether it means to or not. This stage shapes that story deliberately, where someone starts, what shifts, who they become on the other side, and turns it into language that can actually be used." },
-    { num: "05", name: "Decision Map", role: "Execution", output: "A 90-Day Action Spine", figure: "../../assets/glyphs/s5-process.png", status: "locked", statusLabel: "Not yet started",
+    { num: "05", name: "Decision Map", role: "Execution", output: "A 90-Day Action Spine", figure: "assets/glyphs/s5-process.png", status: "locked", statusLabel: "Not yet started",
       why: "Clarity means nothing without action. This stage cuts the noise down to what actually matters right now, what's premature, and what moves the needle first, so the next 90 days have a spine, not a wish list." }
   ],
   // Content pillars, written back in Simone's own words from her Stage 01
@@ -83,8 +85,8 @@ window.AIM_STRATEGY = {
    are ready; the scrub handler already checks for either. Clips are
    organised by shoot day; each day gets a title card you can scrub
    through to preview everything captured that day. */
-const base = "vault/clips/";
-const baseH = "vault/clips-henderson/";
+const base = "assets/clients/simone/clips/";
+const baseH = "assets/clients/simone/clips-henderson/";
 window.AIM_CLIP_GROUPS = [
   { title: "Flex Pt Chev", date: "02.08.26", location: "Flex Fitness, Pt Chevalier", clips: [
     { frames: [base+"Timeline 1_01_07_45_24.jpg", base+"Timeline 1_01_27_50_21.jpg", base+"Timeline 1_01_34_40_21.jpg"], dur: "0:03" },

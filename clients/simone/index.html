@@ -16,6 +16,11 @@
 <style>
   :root { --maxw: 1360px; }
   * { box-sizing: border-box; }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--aim-hairline-ivory-strong, rgba(244,239,230,0.18)); border-radius: 10px; border: 2px solid transparent; background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--aim-gold); background-clip: padding-box; }
+  * { scrollbar-width: thin; scrollbar-color: var(--aim-gold) transparent; }
   body { background: var(--color-bg); color: var(--color-text); font-family: var(--font-body); margin: 0; -webkit-font-smoothing: antialiased; }
   a { color: var(--aim-gold); }
   a:hover { color: var(--aim-gold-light); }
@@ -53,6 +58,7 @@
   #app { display: none; }
   #app.on { display: grid; grid-template-columns: 232px 1fr; min-height: 100vh; }
   aside { border-right: 1px solid var(--color-border); padding: 28px 22px; display: flex; flex-direction: column; gap: 40px; position: sticky; top: 0; height: 100vh; }
+  .brand-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
   .brand-lockup { display: flex; align-items: center; gap: 11px; }
   .brand-lockup .full { font-size: 10px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); line-height: 1.3; }
   .nav-chevron { display: none; width: 12px; height: 12px; color: var(--aim-muted); transition: transform var(--dur) var(--ease-out); flex: none; }
@@ -62,12 +68,12 @@
   nav.tabs button.active { color: var(--aim-ivory); background: var(--color-accent-wash); }
   nav.tabs button .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--aim-gold); opacity: 0; }
   nav.tabs button.active .dot { opacity: 1; }
-  .sidebar-foot { border-top: 1px solid var(--color-border); padding-top: 16px; }
-  .sidebar-foot .client { font-size: 12px; color: var(--aim-ivory); margin: 0 0 4px; }
+  .sidebar-foot { border-top: 1px solid var(--color-border); padding-top: 16px; display: flex; align-items: center; justify-content: space-between; }
+  .sidebar-foot .client { font-size: 12px; color: var(--aim-ivory); margin: 0; }
   .sidebar-foot button { background: none; border: none; color: var(--aim-muted); font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; cursor: pointer; padding: 0; }
   .sidebar-foot button:hover { color: var(--aim-gold); }
-  .theme-toggle { background: none; border: 1px solid var(--aim-hairline-ivory-strong); color: var(--aim-muted); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
-  .theme-toggle:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); }
+  .theme-toggle { background: none; border: 1px solid var(--aim-hairline-ivory-strong); color: var(--aim-muted); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex: none; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out); }
+  .theme-toggle:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); box-shadow: 0 4px 12px -6px rgba(0,0,0,0.4); }
   .theme-toggle svg { width: 16px; height: 16px; display: block; }
   .theme-toggle .i-moon { display: none; }
   .theme-toggle .i-sun { display: block; }
@@ -91,7 +97,8 @@
   .chip .val { font-size: 14px; color: var(--aim-ivory); white-space: nowrap; }
 
   .dash-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: start; }
-  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 26px 28px; }
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 26px 28px; box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 12px 28px -18px rgba(0,0,0,0.35); transition: box-shadow var(--dur) var(--ease-out); }
+  .panel:hover { box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 18px 36px -18px rgba(0,0,0,0.42); }
   .panel h3 { font-size: 11px; letter-spacing: var(--tracking-meta); text-transform: uppercase; color: var(--aim-muted); margin: 0 0 20px; }
 
   .tp-row { display: flex; align-items: center; gap: 16px; padding: 14px 0; border-top: 1px solid var(--color-border); }
@@ -134,7 +141,8 @@
   .vault-back:hover { color: var(--aim-gold); }
   .clip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
   .clip-wrap { display: flex; flex-direction: column; gap: 8px; }
-  .clip-card { position: relative; aspect-ratio: 9/16; border-radius: var(--radius-sm); overflow: hidden; background: var(--color-surface); cursor: pointer; border: 1px solid var(--color-border); }
+  .clip-card { position: relative; aspect-ratio: 9/16; border-radius: var(--radius-sm); overflow: hidden; background: var(--color-surface); cursor: pointer; border: 1px solid var(--color-border); box-shadow: 0 6px 16px -12px rgba(0,0,0,0.4); transition: box-shadow var(--dur) var(--ease-out), transform var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .clip-card:hover { box-shadow: 0 14px 28px -14px rgba(0,0,0,0.5); transform: translateY(-2px); border-color: var(--aim-hairline-ivory-strong, rgba(244,239,230,0.22)); }
   .clip-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 60ms linear; }
   .clip-card img.on { opacity: 1; }
   .clip-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
@@ -218,7 +226,8 @@
   .tp-out { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; align-items: baseline; gap: 10px; }
   .tp-out .val { font-family: var(--font-display); font-style: italic; font-size: 17px; color: var(--aim-gold); }
   .pillar-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
-  .pillar-card { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 20px; background: var(--color-surface); }
+  .pillar-card { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 20px; background: var(--color-surface); box-shadow: 0 6px 16px -14px rgba(0,0,0,0.4); transition: box-shadow var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+  .pillar-card:hover { box-shadow: 0 14px 26px -14px rgba(0,0,0,0.45); transform: translateY(-2px); }
   .pillar-card h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.02em; font-size: 18px; margin: 0 0 8px; }
   .pillar-card p { font-size: 13px; color: var(--aim-muted); line-height: 1.6; margin: 0; }
   .pillar-card .pc-chev { display: none; width: 12px; height: 12px; color: var(--aim-muted); flex: none; transition: transform var(--dur) var(--ease-out); }
@@ -260,8 +269,11 @@
   /* ---- Documentation window (expandable) ---- */
   .doc-toggle-hint { font-size: 10px; letter-spacing: 0.04em; color: var(--aim-gold); margin-top: 2px; }
   .doc-window { overflow: hidden; max-height: 0; transition: max-height var(--dur-slow) var(--ease-out); margin-bottom: 0; }
-  .doc-window.open { max-height: 900px; margin-bottom: 40px; }
+  .doc-window.open { max-height: 2400px; margin-bottom: 40px; }
   .doc-window-inner { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 26px 28px; background: var(--color-surface); }
+  .cal-two-col { display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; }
+  .cu-box { border-left: 1px solid var(--color-border); padding-left: 28px; }
+  @media (max-width: 800px) { .cal-two-col { grid-template-columns: 1fr; } .cu-box { border-left: none; padding-left: 0; border-top: 1px solid var(--color-border); padding-top: 22px; } }
 
   /* ---- Content Queue ---- */
   .queue-lead { color: var(--aim-muted); font-size: 13px; max-width: 60ch; margin: -16px 0 30px; }
@@ -281,10 +293,103 @@
   .opp-card .date { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aim-gold); }
   .opp-card h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; font-size: 15px; margin: 4px 0 4px; color: var(--aim-ivory); }
   .opp-card p { font-size: 13px; color: var(--aim-muted); margin: 0; line-height: 1.6; }
-  .vault-add-btn { position: absolute; bottom: 9px; right: 9px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); border: none; display: flex; align-items: center; justify-content: center; opacity: 0; cursor: pointer; transition: opacity var(--dur) var(--ease-out), background var(--dur) var(--ease-out); }
-  .clip-card:hover .vault-add-btn { opacity: 1; }
-  .vault-add-btn:hover { background: var(--aim-gold); }
-  .vault-add-btn svg { width: 11px; height: 11px; stroke: #F4EFE6; }
+  .idea-gen { border: 1px solid var(--color-border); border-radius: var(--radius); padding: 24px 26px; margin-bottom: 34px; background: var(--color-surface); }
+  .idea-gen .ig-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .idea-gen p.lead { font-size: 13px; color: var(--aim-muted); max-width: 56ch; margin: 6px 0 0; }
+  .ig-btn { background: var(--aim-gold); color: var(--color-on-accent); border: none; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 11px 20px; border-radius: var(--radius-pill); cursor: pointer; flex: none; box-shadow: 0 8px 18px -10px rgba(201,154,69,0.55); transition: box-shadow var(--dur) var(--ease-out), background var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); }
+  .ig-btn:hover { background: var(--aim-gold-light); box-shadow: 0 10px 22px -10px rgba(201,154,69,0.65); transform: translateY(-1px); }
+  .ig-btn:disabled { opacity: 0.6; cursor: default; }
+  .idea-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; margin-top: 22px; }
+  #idea-carousel { margin-top: 20px; }
+  .idea-carousel-row { display: flex; align-items: center; gap: 14px; }
+  .idea-carousel-row .ic-arrow { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--color-border); background: none; color: var(--aim-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .idea-carousel-row .ic-arrow:hover { color: var(--aim-ivory); border-color: var(--aim-gold); }
+  .idea-carousel-row .ic-arrow svg { width: 13px; height: 13px; }
+  .idea-dots { display: flex; gap: 6px; justify-content: center; margin-top: 14px; }
+  .idea-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--color-border); }
+  .idea-dots span.on { background: var(--aim-gold); }
+  .sec-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 4px 0; margin-top: 40px; }
+  .sec-chev { width: 14px; height: 14px; color: var(--aim-muted); transition: transform var(--dur) var(--ease-out); flex: none; }
+  .sec-toggle.collapsed .sec-chev { transform: rotate(-90deg); }
+  .sec-body { overflow: hidden; max-height: 3000px; transition: max-height var(--dur-slow) var(--ease-out), margin var(--dur-slow) var(--ease-out); margin-top: 20px; }
+  .sec-body.closed { max-height: 0; margin-top: 0; }
+  .idea-card { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 16px 18px; background: var(--color-bg); }
+  .idea-card .pillar-tag { display: inline-block; font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aim-gold); border: 1px solid var(--color-accent-wash); border-radius: var(--radius-pill); padding: 3px 10px; margin-bottom: 10px; }
+  .idea-card .angle { font-size: 13px; color: var(--aim-ivory); line-height: 1.6; margin: 0 0 8px; }
+  .idea-card .hook { font-family: var(--font-display); font-style: italic; font-size: 13px; color: var(--aim-muted); margin: 0; }
+  .ig-error { color: #c96a5a; font-size: 12px; margin-top: 14px; }
+  .cu-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .cu-link { background: none; border: none; color: var(--aim-gold); font-size: 11px; letter-spacing: 0.04em; cursor: pointer; padding: 0; }
+  .cu-link:hover { text-decoration: underline; }
+  .cu-tabs { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--color-border); }
+  .cu-tab { background: none; border: none; color: var(--aim-muted); font-size: 12px; padding: 8px 4px; margin-right: 18px; cursor: pointer; border-bottom: 2px solid transparent; }
+  .cu-tab.active { color: var(--aim-ivory); border-bottom-color: var(--aim-gold); }
+  .cu-sync-panel { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 14px 16px; margin-bottom: 18px; }
+  .cu-note { font-size: 11px; color: var(--aim-muted); line-height: 1.6; margin: 0 0 10px; }
+  .cu-sync-panel input { width: 100%; box-sizing: border-box; background: var(--color-surface); border: 1px solid var(--color-border); color: var(--aim-ivory); font-size: 12px; padding: 8px 10px; border-radius: 6px; }
+  .event-card { border-left: 2px solid var(--aim-gold); padding-left: 14px; margin-bottom: 18px; }
+  .event-card .date { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--aim-gold); }
+  .event-card h4 { font-family: var(--font-display); font-weight: 600; font-size: 15px; margin: 4px 0 4px; color: var(--aim-ivory); }
+  .event-card .loc { font-size: 12px; color: var(--aim-muted); margin: 0 0 8px; }
+  .why-badge { display: inline-block; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--aim-gold); border: 1px solid var(--color-accent-wash); border-radius: var(--radius-pill); padding: 3px 9px; margin: 0 6px 6px 0; }
+  .event-card .add-sched-btn { display: block; margin-top: 10px; background: none; border: 1px solid var(--color-border); color: var(--aim-ivory); font-size: 11px; padding: 8px 14px; border-radius: var(--radius-pill); cursor: pointer; }
+  .event-card .add-sched-btn:hover { border-color: var(--aim-gold); color: var(--aim-gold); }
+  .shotlist-card { background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 12px 14px; margin-top: 10px; font-size: 12px; color: var(--aim-muted); line-height: 1.7; }
+  .shotlist-card .k { color: var(--aim-gold); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; display: block; margin-bottom: 6px; }
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 98; }
+  .modal-backdrop.hidden { display: none; }
+  .modal-box { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 26px; width: min(380px,90vw); box-shadow: 0 24px 48px -20px rgba(0,0,0,0.5); }
+  .modal-box h3 { font-family: var(--font-display); font-size: 18px; margin: 0 0 18px; color: var(--aim-ivory); }
+  .modal-box label { display: block; font-size: 11px; color: var(--aim-muted); margin-bottom: 12px; }
+  .modal-box input, .modal-box select, .modal-box textarea { width: 100%; box-sizing: border-box; background: var(--color-bg); border: 1px solid var(--color-border); color: var(--aim-ivory); font-family: var(--font-body); font-size: 13px; padding: 8px 10px; border-radius: 6px; margin-top: 5px; }
+  .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+  .modal-actions button:first-child { background: none; border: 1px solid var(--color-border); color: var(--aim-muted); font-size: 11px; padding: 9px 16px; border-radius: var(--radius-pill); cursor: pointer; }
+
+  /* ---- Reel Editor ---- */
+  .editor-layout { display: grid; grid-template-columns: 1fr 340px; gap: 30px; align-items: start; }
+  .editor-preview { position: relative; width: 100%; max-width: 300px; margin: 0 auto; }
+  .editor-preview canvas { width: 100%; aspect-ratio: 9/16; border-radius: var(--radius); background: #000; display: block; }
+  .editor-preview-controls { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 12px; }
+  .editor-preview-controls button { background: none; border: 1px solid var(--color-border); color: var(--aim-ivory); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 16px; border-radius: var(--radius-pill); cursor: pointer; }
+  .editor-preview-controls span { font-size: 12px; color: var(--aim-muted); }
+  .editor-duration-row, .editor-caption-row { max-width: 300px; margin: 22px auto 0; }
+  .seg-row { display: flex; gap: 8px; margin-top: 8px; }
+  .seg-row button { flex: 1; background: var(--color-surface); border: 1px solid var(--color-border); color: var(--aim-muted); font-size: 12px; padding: 9px; border-radius: var(--radius-sm); cursor: pointer; }
+  .seg-row button.active { border-color: var(--aim-gold); color: var(--aim-ivory); background: var(--color-accent-wash); }
+  .editor-caption-row input { width: 100%; box-sizing: border-box; background: var(--color-surface); border: 1px solid var(--color-border); color: var(--aim-ivory); font-family: var(--font-body); font-size: 13px; padding: 10px 12px; border-radius: var(--radius-sm); margin-top: 8px; }
+  #ed-export { display: block; max-width: 300px; margin: 22px auto 0; width: 100%; }
+  .ed-seq-item { display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); margin-bottom: 8px; background: var(--color-surface); }
+  .ed-seq-item img { width: 40px; height: 60px; object-fit: cover; border-radius: 4px; flex: none; }
+  .ed-seq-item .ed-seq-label { flex: 1; font-size: 11px; color: var(--aim-muted); line-height: 1.4; min-width: 0; }
+  .ed-seq-item input { width: 44px; background: var(--color-bg); border: 1px solid var(--color-border); color: var(--aim-ivory); font-size: 12px; padding: 4px; border-radius: 4px; text-align: center; }
+  .ed-seq-item .ed-rm { background: none; border: none; color: var(--aim-muted); cursor: pointer; font-size: 14px; flex: none; }
+  .ed-seq-item .ed-rm:hover { color: #c96a5a; }
+  .ed-total { font-size: 11px; color: var(--aim-muted); margin: 4px 0 18px; }
+  .ed-total.over { color: #c96a5a; }
+  .ed-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-height: 340px; overflow-y: auto; }
+  .ed-picker-item { aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; cursor: pointer; border: 1px solid var(--color-border); position: relative; }
+  .ed-picker-item img { width: 100%; height: 100%; object-fit: cover; }
+  .ed-picker-item:hover { border-color: var(--aim-gold); }
+  .ed-empty { font-size: 12px; color: var(--aim-muted); }
+  .ed-hint { font-size: 11px; color: var(--aim-muted); line-height: 1.6; margin: 4px 0 0; }
+  .vo-box { border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 16px; background: var(--color-surface); }
+  #vo-wave { width: 100%; height: 56px; display: block; background: var(--color-bg); border-radius: 6px; margin-bottom: 10px; }
+  .vo-trim-row { display: flex; gap: 14px; margin-bottom: 12px; }
+  .vo-trim-row label { font-size: 11px; color: var(--aim-muted); display: flex; align-items: center; gap: 6px; }
+  .vo-trim-row input { width: 56px; background: var(--color-bg); border: 1px solid var(--color-border); color: var(--aim-ivory); font-size: 12px; padding: 4px 6px; border-radius: 4px; }
+  .vo-slider-row { display: flex; align-items: center; gap: 10px; font-size: 11px; color: var(--aim-muted); margin-bottom: 8px; }
+  .vo-slider-row input[type="range"] { flex: 1; accent-color: var(--aim-gold); }
+  .vo-slider-row span:last-child { width: 34px; text-align: right; }
+  .vo-mute-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--aim-ivory); margin: 6px 0 10px; }
+  .vo-note { font-size: 10px; color: var(--aim-muted); line-height: 1.6; margin: 0 0 12px; }
+  #vo-replace-btn { width: 100%; background: none; border: 1px solid var(--color-border); color: var(--aim-muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 9px; border-radius: var(--radius-pill); cursor: pointer; }
+  #vo-replace-btn:hover { color: var(--aim-ivory); border-color: var(--aim-ivory); }
+  .ed-tip { max-width: 300px; margin: 12px auto 0; font-size: 11px; color: var(--aim-muted); text-align: center; line-height: 1.6; }
+  @media (max-width: 900px) { .editor-layout { grid-template-columns: 1fr; } }
+  .reel-add-btn { position: absolute; bottom: 9px; right: 9px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.45); border: none; display: flex; align-items: center; justify-content: center; opacity: 0; cursor: pointer; transition: opacity var(--dur) var(--ease-out), background var(--dur) var(--ease-out); }
+  .clip-card:hover .reel-add-btn { opacity: 1; }
+  .reel-add-btn:hover { background: var(--aim-gold); }
+  .reel-add-btn svg { width: 10px; height: 10px; stroke: #F4EFE6; }
   .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--aim-ivory); color: var(--aim-black); font-size: 12px; letter-spacing: 0.02em; padding: 10px 20px; border-radius: var(--radius-pill); opacity: 0; pointer-events: none; transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out); z-index: 95; }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
@@ -302,6 +407,7 @@
     nav.tabs { display: none; flex-direction: column; gap: 2px; flex-basis: 100%; order: 3; border-top: 1px solid var(--color-border); padding-top: 12px; margin-top: 2px; }
     aside.nav-open nav.tabs { display: flex; }
     nav.tabs button { padding: 11px 12px; }
+    .brand-row { flex: none; }
     .sidebar-foot { display: flex; align-items: center; gap: 10px; flex: none; border-top: none; padding-top: 0; margin-left: auto; order: 2; }
     .sidebar-foot .client { display: none; }
     main { padding: 28px 18px 60px; }
@@ -335,26 +441,26 @@
 
 <div id="app">
   <aside>
-    <div class="brand-lockup" id="brand-toggle">
-      <img class="mono-logo" src="../../assets/logos/aim-monogram-ivory.png" alt="An Ideas Merchant" style="height:34px;width:auto;display:block">
-      <span class="full">Client Portal</span>
-      <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    <div class="brand-row">
+      <div class="brand-lockup" id="brand-toggle">
+        <img class="mono-logo" src="../../assets/logos/aim-monogram-ivory.png" alt="An Ideas Merchant" style="height:34px;width:auto;display:block">
+        <span class="full">Client Portal</span>
+        <svg class="nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.4 12h2.6M19 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"></path></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
+      </button>
     </div>
     <nav class="tabs">
       <button data-view="dashboard" class="active"><span class="dot"></span>Dashboard</button>
       <button data-view="vault"><span class="dot"></span>Media Vault</button>
-      <button data-view="queue"><span class="dot"></span>Content Queue</button>
       <button data-view="editor"><span class="dot"></span>Reel Editor</button>
+      <button data-view="queue"><span class="dot"></span>Content Queue</button>
     </nav>
     <div class="sidebar-foot">
       <p class="client" id="foot-client">Simone</p>
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-        <button id="logout-btn">Log out</button>
-        <button class="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">
-          <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.4v2.6M12 19v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.4 12h2.6M19 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"></path></svg>
-          <svg class="i-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"></path></svg>
-        </button>
-      </div>
+      <button id="logout-btn">Log out</button>
     </div>
   </aside>
 
@@ -366,24 +472,57 @@
         <div class="chip"><span class="lbl">Active phase</span><span class="val" id="chip-phase"></span></div>
         <button type="button" class="countdown-chip" id="countdown-toggle" style="cursor:pointer;border:1px solid var(--color-border);text-align:left;font:inherit;">
           <span class="num" id="countdown-num"></span>
-          <span class="lbl2">Days to go<span id="countdown-sub"></span><span class="doc-toggle-hint">Click to see the documentation window &darr;</span></span>
+          <span class="lbl2">Days to go<span id="countdown-sub"></span><span class="doc-toggle-hint">Click to see the content schedule &darr;</span></span>
         </button>
       </div>
 
       <div class="doc-window" id="doc-window">
-        <div class="doc-window-inner">
-          <p class="kicker-lbl">Documentation Window</p>
-          <h2 class="strat-h2" id="doc-window-range" style="font-size:22px;"></h2>
-          <p class="strat-lead" style="font-size:13px;" id="doc-window-note"></p>
-          <div class="cal-grid" id="doc-calendar"></div>
-          <div class="cal-legend" style="margin-bottom:26px;">
-            <span class="cal-item"><span class="sw" style="background:var(--aim-gold);"></span>Shoot day</span>
-            <span class="cal-item"><span class="sw" style="background:transparent;border:1.5px solid var(--aim-gold);"></span>Auckland IFBB</span>
-            <span class="cal-item"><span class="sw" style="background:var(--color-track);outline:2px solid var(--aim-ivory);"></span>Today</span>
+        <div class="doc-window-inner cal-two-col">
+          <div>
+            <p class="kicker-lbl">Content Schedule</p>
+            <h2 class="strat-h2" id="doc-window-range" style="font-size:22px;"></h2>
+            <p class="strat-lead" style="font-size:13px;" id="doc-window-note"></p>
+            <div class="cal-grid" id="doc-calendar"></div>
+            <div class="cal-legend" style="margin-bottom:0;">
+              <span class="cal-item"><span class="sw" style="background:var(--aim-gold);"></span>Shoot day</span>
+              <span class="cal-item"><span class="sw" style="background:transparent;border:1.5px solid var(--aim-gold);"></span>Auckland IFBB</span>
+              <span class="cal-item"><span class="sw" style="background:var(--color-track);outline:2px solid var(--aim-ivory);"></span>Today</span>
+            </div>
           </div>
-          <p class="tension-lbl">What's coming up</p>
-          <div id="doc-milestones"></div>
+          <div class="cu-box">
+            <div class="cu-head">
+              <p class="tension-lbl" style="margin:0;">What's coming up</p>
+              <button class="cu-link" id="cu-sync-toggle">Sync calendar</button>
+            </div>
+            <div class="cu-tabs">
+              <button class="cu-tab active" data-cu="milestones">Milestones</button>
+              <button class="cu-tab" data-cu="events">Local Events</button>
+            </div>
+            <div id="cu-sync-panel" class="cu-sync-panel" style="display:none;">
+              <p class="cu-note">Live two-way sync (Google Calendar / iCal) needs a small backend to hold the connection securely, this is wired and ready to connect once that's in place.</p>
+              <input type="text" id="cu-ical-url" placeholder="Paste an iCal feed URL (for later)">
+              <button class="ig-btn" id="cu-add-event-btn" style="width:100%;margin-top:10px;">+ Add custom event</button>
+            </div>
+            <div id="doc-milestones"></div>
+            <div id="cu-events-panel" style="display:none;">
+              <button class="ig-btn" id="cu-find-events">Find local industry events</button>
+              <p class="ig-error" id="cu-events-error" style="display:none;"></p>
+              <div id="cu-events-list"></div>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div class="idea-gen">
+        <div class="ig-row">
+          <div>
+            <p class="kicker-lbl" style="margin:0;">Idea Generator</p>
+            <p class="lead">Fresh content angles for this week, drawn from your Core Tension Statement and pillars, not generic fitness advice.</p>
+          </div>
+          <button class="ig-btn" id="ig-generate">Generate ideas</button>
+        </div>
+        <div id="idea-carousel"></div>
+        <p class="ig-error" id="ig-error" style="display:none;"></p>
       </div>
 
       <div class="panel origin-panel">
@@ -395,20 +534,32 @@
         <p class="own-words" id="origin-quote"></p>
       </div>
 
-      <p class="kicker-lbl" style="margin-top:40px;">Immediate Actions</p>
-      <h2 class="strat-h2">Right now.</h2>
-      <div class="stack" id="action-stack" style="margin-bottom:44px;"></div>
-
-      <p class="kicker-lbl">Target Practice</p>
-      <h2 class="strat-h2">The five-stage framework.</h2>
-      <div class="tp-stage-layout" style="margin-bottom:44px;">
-        <nav class="tp-rail" id="strat-rail"></nav>
-        <article class="panel" id="strat-panel"></article>
+      <div class="sec-toggle collapsed" data-sec="actions">
+        <div><p class="kicker-lbl" style="margin:0;">Immediate Actions</p><h2 class="strat-h2" style="margin:2px 0 0;">Right now.</h2></div>
+        <svg class="sec-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sec-body closed" id="sec-actions">
+        <div class="stack" id="action-stack"></div>
       </div>
 
-      <p class="kicker-lbl">Content Pillars</p>
-      <h2 class="strat-h2">What I'm making.</h2>
-      <div class="pillar-grid" id="strat-pillars"></div>
+      <div class="sec-toggle collapsed" data-sec="tp">
+        <div><p class="kicker-lbl" style="margin:0;">Target Practice</p><h2 class="strat-h2" style="margin:2px 0 0;">The five-stage framework.</h2></div>
+        <svg class="sec-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sec-body closed" id="sec-tp">
+        <div class="tp-stage-layout">
+          <nav class="tp-rail" id="strat-rail"></nav>
+          <article class="panel" id="strat-panel"></article>
+        </div>
+      </div>
+
+      <div class="sec-toggle collapsed" data-sec="pillars">
+        <div><p class="kicker-lbl" style="margin:0;">Content Pillars</p><h2 class="strat-h2" style="margin:2px 0 0;">What I'm making.</h2></div>
+        <svg class="sec-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="sec-body closed" id="sec-pillars">
+        <div class="pillar-grid" id="strat-pillars"></div>
+      </div>
     </section>
 
     <section class="view" id="view-vault">
@@ -435,14 +586,54 @@
     </section>
 
     <section class="view" id="view-editor">
-      <div class="editor-shell">
-        <svg class="lock" viewBox="0 0 24 24" fill="none" stroke="var(--aim-gold)" stroke-width="1.4"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-        <h3>Reel Editor</h3>
-        <p>Coming soon. Trim, sequence and caption clips from your vault, then export a 15, 30 or 60 second reel straight to your socials, no other app required.</p>
-        <div class="editor-mock">
-          <div class="bar"></div>
-          <div class="export-row">
-            <button>15s</button><button>30s</button><button>60s</button>
+      <div class="vault-head"><h2>Reel Editor</h2></div>
+      <p class="queue-lead">Build a sequence from your vault, preview it graded, and export a real file straight from here.</p>
+      <div class="editor-layout">
+        <div class="editor-main">
+          <div class="editor-preview">
+            <canvas id="ed-canvas" width="405" height="720"></canvas>
+            <div class="editor-preview-controls">
+              <button id="ed-play">Preview</button>
+              <span id="ed-time">0:00 / 0:00</span>
+            </div>
+          </div>
+          <div class="editor-duration-row">
+            <span class="kicker-lbl" style="margin:0;">Target length</span>
+            <div class="seg-row" id="ed-duration"><button data-d="15">15s</button><button data-d="30" class="active">30s</button><button data-d="60">60s</button></div>
+          </div>
+          <div class="editor-caption-row">
+            <label class="kicker-lbl" for="ed-caption">Caption overlay (optional)</label>
+            <input id="ed-caption" type="text" placeholder="e.g. 6 weeks out.">
+          </div>
+          <div class="editor-caption-row">
+            <span class="kicker-lbl" style="margin:0;">Grade</span>
+            <div class="seg-row" id="ed-grade"></div>
+          </div>
+          <button class="ig-btn" id="ed-export">Export reel</button>
+          <p class="ig-error" id="ed-error" style="display:none;max-width:300px;margin:14px auto 0;text-align:center;"></p>
+          <p class="ed-tip" id="ed-tip" style="display:none;">Reel downloaded. Add music natively inside Instagram/TikTok when you post, that keeps you within their licensed library.</p>
+        </div>
+        <div class="editor-side">
+          <p class="kicker-lbl">Your sequence</p>
+          <p class="ed-total" id="ed-total"></p>
+          <div id="ed-sequence"></div>
+          <p class="ed-hint">Add clips from the Media Vault (the film-strip icon on each clip), or drag one in here.</p>
+          <p class="kicker-lbl" style="margin-top:26px;">Voiceover</p>
+          <div class="vo-box" id="vo-box">
+            <input type="file" id="vo-file" accept="audio/mpeg,audio/mp4,audio/wav,.mp3,.m4a,.wav" style="display:none;">
+            <button class="ig-btn" id="vo-upload-btn" style="width:100%;">Upload voiceover</button>
+            <div id="vo-loaded" style="display:none;">
+              <canvas id="vo-wave" width="300" height="56"></canvas>
+              <div class="vo-trim-row">
+                <label>In <input type="number" id="vo-in" min="0" step="0.1" value="0"></label>
+                <label>Out <input type="number" id="vo-out" min="0" step="0.1" value="0"></label>
+              </div>
+              <div class="vo-slider-row"><span>Voiceover</span><input type="range" id="vo-vol" min="0" max="100" value="100"><span id="vo-vol-val">100%</span></div>
+              <div class="vo-slider-row"><span>Camera audio</span><input type="range" id="vo-broll-vol" min="0" max="100" value="20"><span id="vo-broll-val">20%</span></div>
+              <label class="vo-mute-row"><input type="checkbox" id="vo-mute"> Mute camera audio</label>
+              <p class="vo-note">Your clips are currently still-frame placeholders with no camera audio, this mixer is ready for when real video with sound is swapped in.</p>
+              <button id="vo-replace-btn">Replace audio</button>
+            </div>
           </div>
         </div>
       </div>
@@ -453,6 +644,18 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="event-modal" class="modal-backdrop hidden">
+  <div class="modal-box">
+    <h3>Add custom event</h3>
+    <label>Title<input type="text" id="ev-title" placeholder="e.g. Posing clinic"></label>
+    <label>Date<input type="date" id="ev-date"></label>
+    <label>Category
+      <select id="ev-category"><option>Shoot opportunity</option><option>Meeting</option><option>Personal</option><option>Milestone</option></select>
+    </label>
+    <label>Notes<textarea id="ev-notes" rows="3" placeholder="Optional"></textarea></label>
+    <div class="modal-actions"><button id="ev-cancel">Cancel</button><button class="ig-btn" id="ev-save">Save event</button></div>
+  </div>
+</div>
 
 <div id="lightbox" class="hidden">
   <button class="lightbox-nav" id="lightbox-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -583,13 +786,100 @@
   document.getElementById('origin-tension').textContent = CLIENT.origin.coreTension;
   document.getElementById('origin-quote').textContent = '"' + CLIENT.origin.quote + '"';
 
+  // Custom events, persisted per client, merged into the Milestones list
+  const customEventsKey = 'aim-events-' + CLIENT.slug;
+  function loadCustomEvents(){ try { return JSON.parse(localStorage.getItem(customEventsKey) || '[]'); } catch(e){ return []; } }
+  function saveCustomEvents(list){ localStorage.setItem(customEventsKey, JSON.stringify(list)); }
+  function renderMilestones(){
+    const custom = loadCustomEvents().map(e => ({ label: e.title, date: new Date(e.date+'T00:00:00').toLocaleDateString('en-NZ',{day:'numeric',month:'short'}).toUpperCase(), idea: e.notes || e.category, _iso: e.date }));
+    const all = CLIENT.milestones.concat(custom);
+    document.getElementById('doc-milestones').innerHTML = all.map(m => `
+      <div class="ms-row"><span class="lbl">${m.label}<br><span style="color:var(--aim-muted);font-size:12px;">${m.idea}</span></span><span class="date">${m.date}</span></div>`).join('');
+  }
+  renderMilestones();
+
+  // Coming-up tabs (Milestones / Local Industry Events)
+  document.querySelectorAll('.cu-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.cu-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const isEvents = tab.dataset.cu === 'events';
+      document.getElementById('doc-milestones').style.display = isEvents ? 'none' : 'block';
+      document.getElementById('cu-events-panel').style.display = isEvents ? 'block' : 'none';
+    });
+  });
+  document.getElementById('cu-sync-toggle').addEventListener('click', () => {
+    const p = document.getElementById('cu-sync-panel');
+    p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  });
+
+  // Custom event modal
+  const evModal = document.getElementById('event-modal');
+  document.getElementById('cu-add-event-btn').addEventListener('click', () => evModal.classList.remove('hidden'));
+  document.getElementById('ev-cancel').addEventListener('click', () => evModal.classList.add('hidden'));
+  document.getElementById('ev-save').addEventListener('click', () => {
+    const title = document.getElementById('ev-title').value.trim();
+    const date = document.getElementById('ev-date').value;
+    if (!title || !date) { showToast('Add a title and date first'); return; }
+    const list = loadCustomEvents();
+    list.push({ title, date, category: document.getElementById('ev-category').value, notes: document.getElementById('ev-notes').value.trim() });
+    saveCustomEvents(list);
+    evModal.classList.add('hidden');
+    document.getElementById('ev-title').value = ''; document.getElementById('ev-date').value = ''; document.getElementById('ev-notes').value = '';
+    renderMilestones();
+    showToast('Event added');
+  });
+
+  // Local Industry Events discovery + shot-list generator, driven entirely
+  // by this client's own profile fields (location, niche_keywords), so the
+  // same code serves any future client without edits.
+  const cuFindBtn = document.getElementById('cu-find-events');
+  const cuEventsList = document.getElementById('cu-events-list');
+  const cuEventsError = document.getElementById('cu-events-error');
+  cuFindBtn.addEventListener('click', async () => {
+    cuFindBtn.disabled = true; cuFindBtn.textContent = 'Searching\u2026';
+    cuEventsError.style.display = 'none';
+    try {
+      const system = `You are the AI Creative Director for ${CLIENT.name}. You specialize in translating everyday moments in the ${CLIENT.niche_keywords.join(', ')} industry into high-end 9:16 vertical video shot suggestions. Suggest plausible upcoming local events worth attending for community trust and B-roll. Respond with ONLY valid JSON: an array of up to 4 objects shaped {"title": string, "date": string (rough date or month is fine), "location": string, "whyAttend": array of 1-3 short badge labels (e.g. "Networking", "Community Trust", "B-Roll Opportunity")}. No markdown, no prose outside the JSON.`;
+      const user = `Location: ${CLIENT.location}. Niche: ${CLIENT.niche_keywords.join(', ')}.`;
+      const text = await window.claude.complete({ system, messages: [{ role: 'user', content: user }] });
+      const events = JSON.parse(text.slice(text.indexOf('['), text.lastIndexOf(']')+1));
+      cuEventsList.innerHTML = events.map((e,i) => `
+        <div class="event-card" data-i="${i}">
+          <span class="date">${e.date}</span><h4>${e.title}</h4><p class="loc">${e.location}</p>
+          <div>${e.whyAttend.map(b => `<span class="why-badge">${b}</span>`).join('')}</div>
+          <button class="add-sched-btn">Add to My Schedule &amp; Generate Shot List</button>
+          <div class="shotlist-slot"></div>
+        </div>`).join('');
+      cuEventsList.querySelectorAll('.event-card').forEach((card, i) => {
+        card.querySelector('.add-sched-btn').addEventListener('click', async (ev) => {
+          const btn = ev.target;
+          btn.disabled = true; btn.textContent = 'Adding\u2026';
+          const list = loadCustomEvents();
+          list.push({ title: events[i].title, date: new Date().toISOString().slice(0,10), category: 'Shoot opportunity', notes: events[i].location });
+          saveCustomEvents(list);
+          renderMilestones();
+          try {
+            const shotSystem = `You are the AI Creative Director for ${CLIENT.name}, specializing in the ${CLIENT.niche_keywords.join(', ')} industry. Given an event, suggest exactly 3 specific 9:16 B-roll shots worth capturing there. Respond with ONLY valid JSON: an array of exactly 3 short strings.`;
+            const shotText = await window.claude.complete({ system: shotSystem, messages: [{ role: 'user', content: `Event: ${events[i].title}, ${events[i].location}.` }] });
+            const shots = JSON.parse(shotText.slice(shotText.indexOf('['), shotText.lastIndexOf(']')+1));
+            card.querySelector('.shotlist-slot').innerHTML = `<div class="shotlist-card"><span class="k">Shot list</span>${shots.map(s => '<div>\u2013 ' + s + '</div>').join('')}</div>`;
+          } catch(e) {}
+          btn.textContent = 'Added to schedule'; btn.classList.add('is-applied');
+        });
+      });
+    } catch (e) {
+      cuEventsError.textContent = "Couldn't find events right now, try again in a moment.";
+      cuEventsError.style.display = 'block';
+    }
+    cuFindBtn.disabled = false; cuFindBtn.textContent = 'Find local industry events';
+  });
+
   // Documentation window: collapsed by default, toggled from the countdown chip
   const docWindow = document.getElementById('doc-window');
   document.getElementById('countdown-toggle').addEventListener('click', () => docWindow.classList.toggle('open'));
   document.getElementById('doc-window-range').textContent = new Date(S.window.start+'T00:00:00').toLocaleDateString('en-NZ',{day:'numeric',month:'short'}) + ' to ' + new Date(S.window.end+'T00:00:00').toLocaleDateString('en-NZ',{day:'numeric',month:'short'}) + '.';
   document.getElementById('doc-window-note').textContent = S.window.note;
-  document.getElementById('doc-milestones').innerHTML = CLIENT.milestones.map(m => `
-    <div class="ms-row"><span class="lbl">${m.label}<br><span style="color:var(--aim-muted);font-size:12px;">${m.idea}</span></span><span class="date">${m.date}</span></div>`).join('');
   (function(){
     const start = new Date(S.window.start+'T00:00:00'), end = new Date(S.window.end+'T00:00:00');
     const today = new Date(); today.setHours(0,0,0,0);
@@ -631,6 +921,13 @@
   }
   renderStack();
 
+  document.querySelectorAll('.sec-toggle').forEach(t => {
+    t.addEventListener('click', () => {
+      t.classList.toggle('collapsed');
+      document.getElementById('sec-' + t.dataset.sec).classList.toggle('closed');
+    });
+  });
+
   // Target Practice five-stage framework
   function tpStageBody(s){
     let out = `<div class="tp-panel-head"><div><p class="kicker-lbl">Stage ${s.num} \u00b7 ${s.role}</p><h3 class="tp-stage-name">${s.name}</h3><span class="tp-panel-status">${s.statusLabel}</span></div><div class="tp-fig${s.status==='current'?' is-active':''}"><span class="diagram" style="-webkit-mask-image:url('${s.figure}');mask-image:url('${s.figure}')"></span></div></div>`;
@@ -666,7 +963,7 @@
     card.className = 'clip-card';
     card.innerHTML = clip.frames.map((f,i) => `<img src="${f}" class="${i===0?'on':''}">`).join('')
       + `<span class="play"><svg viewBox="0 0 10 10"><polygon points="0,0 10,5 0,10"/></svg></span>`
-      + (small ? '' : `<button class="dl-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></button><button class="vault-add-btn" title="Add to Content Queue"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></button>`);
+      + (small ? '' : `<button class="dl-btn" title="Download"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></button><button class="reel-add-btn" title="Add to Reel Editor"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 19 12 5 20 5 4"/></svg></button>`);
     const imgs = card.querySelectorAll('img');
     card.addEventListener('mousemove', e => {
       const r = card.getBoundingClientRect();
@@ -680,10 +977,10 @@
     card.addEventListener('click', () => openLightbox(list || [clip], idx || 0));
     wrap.appendChild(card);
     if (!small) {
-      const addBtn = card.querySelector('.vault-add-btn');
+      const addBtn = card.querySelector('.reel-add-btn');
       addBtn.addEventListener('click', e => {
         e.stopPropagation();
-        assignToNextDay(clip, (groupTitle || 'Vault') + (typeof idx === 'number' ? ' \u00b7 clip ' + (idx+1) : ''));
+        addClipToReel(clip, (groupTitle || 'Vault') + (typeof idx === 'number' ? ' \u00b7 clip ' + (idx+1) : ''));
       });
       card.querySelector('.dl-btn').addEventListener('click', e => {
         e.stopPropagation();
@@ -799,6 +1096,266 @@
   }
   document.getElementById('opp-list').innerHTML = CLIENT.milestones.map(m => `
     <div class="opp-card"><span class="date">${m.date}</span><h4>${m.label}</h4><p>${m.idea}</p></div>`).join('');
+
+  // Idea Generator: content angles from Claude, grounded in her locked
+  // stage outputs (never a raw stage interview, that stays human-led).
+  const igBtn = document.getElementById('ig-generate');
+  const igCarousel = document.getElementById('idea-carousel');
+  const igError = document.getElementById('ig-error');
+  let ideas = [], ideaIdx = 0;
+  function renderIdeaCarousel(){
+    if (!ideas.length) { igCarousel.innerHTML = ''; return; }
+    const i = ideas[ideaIdx];
+    igCarousel.innerHTML = `
+      <div class="idea-carousel-row">
+        <button class="ic-arrow" id="ic-prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <div class="idea-card" style="flex:1;"><span class="pillar-tag">${i.pillar}</span><p class="angle">${i.angle}</p><p class="hook">"${i.hook}"</p></div>
+        <button class="ic-arrow" id="ic-next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+      <div class="idea-dots">${ideas.map((_,n) => `<span class="${n===ideaIdx?'on':''}"></span>`).join('')}</div>`;
+    document.getElementById('ic-prev').addEventListener('click', () => { ideaIdx = (ideaIdx - 1 + ideas.length) % ideas.length; renderIdeaCarousel(); });
+    document.getElementById('ic-next').addEventListener('click', () => { ideaIdx = (ideaIdx + 1) % ideas.length; renderIdeaCarousel(); });
+  }
+  igBtn.addEventListener('click', async () => {
+    igBtn.disabled = true; igBtn.textContent = 'Thinking\u2026';
+    igError.style.display = 'none';
+    try {
+      const system = 'You are a sharp creative-direction consultant helping a personal trainer plan Instagram content. You will be given her Core Tension Statement, her own words, and her content pillars, all drawn from a strategic framework already completed with her coach. Generate content angles specific to her real situation, not generic fitness-influencer advice. Respond with ONLY valid JSON: an array of exactly 5 objects shaped {"pillar": string (one of her pillar names, verbatim), "angle": string (one concrete, specific content idea, one sentence), "hook": string (a short opening line or caption hook for it)}. No markdown, no prose outside the JSON array.';
+      const user = `Client: ${CLIENT.name}, prepping for ${CLIENT.countdown.label} on ${CLIENT.countdown.date}.\nCore Tension Statement: "${CLIENT.origin.coreTension}"\nHer own words: "${CLIENT.origin.quote}"\nContent pillars:\n${S.pillars.map(p => '- ' + p.name + ': ' + p.body).join('\\n')}`;
+      const text = await window.claude.complete({ system, messages: [{ role: 'user', content: user }] });
+      ideas = JSON.parse(text.slice(text.indexOf('['), text.lastIndexOf(']')+1));
+      ideaIdx = 0;
+      renderIdeaCarousel();
+    } catch (e) {
+      igError.textContent = "Couldn't generate ideas right now, try again in a moment.";
+      igError.style.display = 'block';
+    }
+    igBtn.disabled = false; igBtn.textContent = 'Generate ideas';
+  });
+
+  // Reel Editor: build a sequence from vault clips, preview graded on a
+  // canvas, export a real file via MediaRecorder. Frame-only clips play
+  // as a slideshow; once real .video clips exist the same pipeline draws
+  // actual video frames instead, no rework needed.
+  const edCanvas = document.getElementById('ed-canvas');
+  const edCtx = edCanvas.getContext('2d');
+  let edSequence = [];
+  let edTarget = 30;
+  let edGradeFilter = 'none';
+  const edFrameCache = {};
+
+  function fmtTime(s){ s = Math.max(0, Math.round(s)); return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0'); }
+  function edTotalDuration(){ return edSequence.reduce((a,i) => a + i.duration, 0); }
+  function renderEdSequence(){
+    const seq = document.getElementById('ed-sequence');
+    if (!edSequence.length) { seq.innerHTML = '<p class="ed-empty">Add clips from the vault to start building your reel.</p>'; }
+    else {
+      seq.innerHTML = edSequence.map((it,i) => `
+        <div class="ed-seq-item" data-i="${i}">
+          <img src="${it.clip.frames[0]}">
+          <span class="ed-seq-label">${it.label}</span>
+          <input type="number" min="1" max="10" value="${it.duration}" title="Seconds">
+          <button class="ed-rm" title="Remove">\u00d7</button>
+        </div>`).join('');
+      seq.querySelectorAll('.ed-seq-item').forEach(el => {
+        const i = +el.dataset.i;
+        el.querySelector('input').addEventListener('input', e => { edSequence[i].duration = Math.max(1, +e.target.value || 1); renderEdSequence(); });
+        el.querySelector('.ed-rm').addEventListener('click', () => { edSequence.splice(i,1); renderEdSequence(); });
+      });
+    }
+    const total = edTotalDuration();
+    const totalEl = document.getElementById('ed-total');
+    totalEl.textContent = total + 's of ' + edTarget + 's target';
+    totalEl.classList.toggle('over', total > edTarget);
+    document.getElementById('ed-time').textContent = '0:00 / ' + fmtTime(total);
+  }
+  function addClipToReel(clip, label){
+    edSequence.push({ clip, duration: 3, label: label || 'Vault clip' });
+    renderEdSequence();
+    showToast('Added to Reel Editor');
+  }
+  [document.getElementById('ed-sequence'), document.querySelector('.editor-preview')].forEach(dz => {
+    dz.addEventListener('dragover', e => e.preventDefault());
+    dz.addEventListener('drop', e => {
+      e.preventDefault();
+      const clip = JSON.parse(e.dataTransfer.getData('text/plain'));
+      addClipToReel(clip, clip._label || 'Vault clip');
+    });
+  });
+  renderEdSequence();
+
+  document.querySelectorAll('#ed-duration button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#ed-duration button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      edTarget = +btn.dataset.d;
+      renderEdSequence();
+    });
+  });
+  const edGradeRow = document.getElementById('ed-grade');
+  GRADES.forEach((g,i) => {
+    const btn = document.createElement('button');
+    btn.textContent = g.label;
+    if (i===0) btn.classList.add('active');
+    btn.addEventListener('click', () => {
+      edGradeRow.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      edGradeFilter = g.filter;
+      if (!edPlaying) drawEdFrame(0);
+    });
+    edGradeRow.appendChild(btn);
+  });
+
+  function drawEdFrame(t){
+    const w = edCanvas.width, h = edCanvas.height;
+    edCtx.fillStyle = '#000'; edCtx.fillRect(0,0,w,h);
+    let acc = 0, item = null, into = 0;
+    for (const it of edSequence) {
+      if (t < acc + it.duration) { item = it; into = t - acc; break; }
+      acc += it.duration;
+    }
+    if (item) {
+      const frames = item.clip.frames;
+      const fi = Math.min(frames.length-1, Math.floor((into / item.duration) * frames.length));
+      const src = frames[fi];
+      if (!edFrameCache[src]) { const im = new Image(); im.src = src; edFrameCache[src] = im; }
+      const img = edFrameCache[src];
+      if (img.complete && img.naturalWidth) {
+        edCtx.filter = edGradeFilter;
+        const scale = Math.max(w/img.naturalWidth, h/img.naturalHeight);
+        const dw = img.naturalWidth*scale, dh = img.naturalHeight*scale;
+        edCtx.drawImage(img, (w-dw)/2, (h-dh)/2, dw, dh);
+      }
+      edCtx.filter = 'none';
+    }
+    const caption = document.getElementById('ed-caption').value.trim();
+    if (caption) {
+      edCtx.fillStyle = 'rgba(0,0,0,0.5)'; edCtx.fillRect(0, h-90, w, 90);
+      edCtx.fillStyle = '#F4EFE6'; edCtx.font = '600 26px Georgia, serif'; edCtx.textAlign = 'center';
+      edCtx.fillText(caption, w/2, h-45);
+    }
+  }
+
+  let edPlaying = false, edStartTs = 0;
+  function edStep(now){
+    if (!edPlaying) return;
+    const total = edTotalDuration();
+    const t = (now - edStartTs) / 1000;
+    if (t >= total) { edPlaying = false; document.getElementById('ed-play').textContent = 'Preview'; drawEdFrame(0); document.getElementById('ed-time').textContent = '0:00 / ' + fmtTime(total); return; }
+    drawEdFrame(t);
+    document.getElementById('ed-time').textContent = fmtTime(t) + ' / ' + fmtTime(total);
+    requestAnimationFrame(edStep);
+  }
+  document.getElementById('ed-play').addEventListener('click', () => {
+    if (!edSequence.length) return;
+    edPlaying = !edPlaying;
+    if (edPlaying) { edStartTs = performance.now(); document.getElementById('ed-play').textContent = 'Pause'; requestAnimationFrame(edStep); }
+    else { document.getElementById('ed-play').textContent = 'Preview'; }
+  });
+  drawEdFrame(0);
+
+  // Voiceover upload + waveform + mix, kept generic so a future real
+  // camera-audio track (once .video clips exist) slots into the same mixer.
+  let voBuffer = null;
+  let sharedAudioCtx = null;
+  function getAudioCtx(){ if (!sharedAudioCtx) sharedAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); return sharedAudioCtx; }
+  const voFileInput = document.getElementById('vo-file');
+  const voUploadBtn = document.getElementById('vo-upload-btn');
+  const voReplaceBtn = document.getElementById('vo-replace-btn');
+  const voLoaded = document.getElementById('vo-loaded');
+  const voWave = document.getElementById('vo-wave');
+  const voInInput = document.getElementById('vo-in');
+  const voOutInput = document.getElementById('vo-out');
+  const voVolInput = document.getElementById('vo-vol');
+  const voVolVal = document.getElementById('vo-vol-val');
+  const voBrollInput = document.getElementById('vo-broll-vol');
+  const voBrollVal = document.getElementById('vo-broll-val');
+  const voMuteInput = document.getElementById('vo-mute');
+  voUploadBtn.addEventListener('click', () => voFileInput.click());
+  voReplaceBtn.addEventListener('click', () => voFileInput.click());
+  voFileInput.addEventListener('change', async () => {
+    const file = voFileInput.files[0];
+    if (!file) return;
+    try {
+      const arr = await file.arrayBuffer();
+      voBuffer = await getAudioCtx().decodeAudioData(arr);
+    } catch (e) { showToast("Couldn't read that audio file"); return; }
+    voInInput.value = 0;
+    voOutInput.value = voBuffer.duration.toFixed(1);
+    voLoaded.style.display = 'block';
+    voUploadBtn.style.display = 'none';
+    drawWaveform();
+  });
+  function drawWaveform(){
+    if (!voBuffer) return;
+    const data = voBuffer.getChannelData(0);
+    const w = voWave.width, h = voWave.height;
+    const wctx = voWave.getContext('2d');
+    wctx.clearRect(0,0,w,h);
+    const step = Math.max(1, Math.floor(data.length / w));
+    wctx.fillStyle = 'rgba(201,154,69,0.75)';
+    for (let x=0;x<w;x++){
+      let min=1,max=-1;
+      for (let i=0;i<step;i++){ const v = data[x*step+i] || 0; if (v<min) min=v; if (v>max) max=v; }
+      const y1 = (1+min)*h/2, y2 = (1+max)*h/2;
+      wctx.fillRect(x, y1, 1, Math.max(1, y2-y1));
+    }
+  }
+  voVolInput.addEventListener('input', () => voVolVal.textContent = voVolInput.value + '%');
+  voBrollInput.addEventListener('input', () => voBrollVal.textContent = voBrollInput.value + '%');
+  voMuteInput.addEventListener('change', () => { voBrollInput.disabled = voMuteInput.checked; });
+
+  document.getElementById('ed-export').addEventListener('click', async () => {
+    const errEl = document.getElementById('ed-error');
+    errEl.style.display = 'none';
+    if (!edSequence.length) { errEl.textContent = 'Add at least one clip first.'; errEl.style.display = 'block'; return; }
+    const total = edTotalDuration();
+    const mimeCandidates = ['video/mp4;codecs=avc1', 'video/webm;codecs=vp9', 'video/webm'];
+    const mime = mimeCandidates.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m));
+    if (!mime) { errEl.textContent = "This browser can't export video. Try Chrome or Edge."; errEl.style.display = 'block'; return; }
+    const stream = edCanvas.captureStream(30);
+    const tracks = [...stream.getVideoTracks()];
+    let voSource = null, audioCtx = null;
+    if (voBuffer) {
+      audioCtx = getAudioCtx();
+      const dest = audioCtx.createMediaStreamDestination();
+      voSource = audioCtx.createBufferSource();
+      voSource.buffer = voBuffer;
+      const gain = audioCtx.createGain();
+      gain.gain.value = (+voVolInput.value) / 100;
+      voSource.connect(gain).connect(dest);
+      tracks.push(...dest.stream.getAudioTracks());
+      const inSec = Math.max(0, +voInInput.value || 0);
+      const outSec = Math.min(voBuffer.duration, +voOutInput.value || voBuffer.duration);
+      voSource.start(0, inSec, Math.max(0.1, Math.min(outSec - inSec, total)));
+    }
+    const combined = new MediaStream(tracks);
+    const chunks = [];
+    const rec = new MediaRecorder(combined, { mimeType: mime });
+    rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    const btn = document.getElementById('ed-export');
+    btn.disabled = true; btn.textContent = 'Exporting\u2026';
+    document.getElementById('ed-tip').style.display = 'none';
+    rec.onstop = () => {
+      if (voSource) { try { voSource.stop(); } catch(e){} }
+      const blob = new Blob(chunks, { type: mime });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'reel-' + CLIENT.slug + '-' + Date.now() + (mime.includes('mp4') ? '.mp4' : '.webm');
+      document.body.appendChild(a); a.click(); a.remove();
+      btn.disabled = false; btn.textContent = 'Export reel';
+      document.getElementById('ed-tip').style.display = 'block';
+    };
+    rec.start();
+    const startTs = performance.now();
+    function recStep(now){
+      const t = (now - startTs) / 1000;
+      if (t >= total) { rec.stop(); return; }
+      drawEdFrame(t);
+      requestAnimationFrame(recStep);
+    }
+    requestAnimationFrame(recStep);
+  });
 })();
 </script>
 </body>
