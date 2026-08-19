@@ -85,8 +85,8 @@ window.AIM_STRATEGY = {
    are ready; the scrub handler already checks for either. Clips are
    organised by shoot day; each day gets a title card you can scrub
    through to preview everything captured that day. */
-const base = "assets/clients/simone/clips/";
-const baseH = "assets/clients/simone/clips-henderson/";
+const base = "vault/clips/";
+const baseH = "vault/clips-henderson/";
 window.AIM_CLIP_GROUPS = [
   { title: "Flex Pt Chev", date: "02.08.26", location: "Flex Fitness, Pt Chevalier", clips: [
     { frames: [base+"Timeline 1_01_07_45_24.jpg", base+"Timeline 1_01_27_50_21.jpg", base+"Timeline 1_01_34_40_21.jpg"], dur: "0:03" },
