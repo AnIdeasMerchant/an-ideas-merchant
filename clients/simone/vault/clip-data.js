@@ -7,6 +7,14 @@ window.AIM_CLIENT = {
   slug: "simone",
   password: "bisou", // EDIT, cosmetic gate only, not real auth
   phase: "Documentation",
+  // The arc a client moves through. `phase` above must match one of these.
+  phases: [
+    { name: "Discovery", status: "done", note: "Getting the raw material: voice notes, context, what's actually going on." },
+    { name: "Target Practice", status: "open", note: "The five-stage framework. Stage 01 drafted, the other four still to run." },
+    { name: "Documentation", status: "now", note: "Capturing consistently, building an archive before worrying about polish." },
+    { name: "Distribution", status: "open", note: "Getting a publishing rhythm going so the work actually reaches people." },
+    { name: "Review", status: "open", note: "Looking back at what landed, then setting the next 90-day objective." }
+  ],
   location: "Auckland, New Zealand", // EDIT — generic per-client profile, used by discovery + AI tools
   niche_keywords: ["bodybuilding", "IFBB competition prep", "personal training", "fitness coaching"], // EDIT
   countdown: { label: "Auckland IFBB", date: "26 SEP 2026", dateISO: "2026-09-26" }, // EDIT
@@ -27,10 +35,10 @@ window.AIM_CLIENT = {
   // Milestones double as content opportunities, shown on the dashboard
   // countdown expand and in the Content Queue's "Coming up" list. EDIT dates/ideas.
   milestones: [
-    { label: "Posing mock test", date: "12 SEP", idea: "Behind-the-scenes practice footage builds anticipation for the stage." },
-    { label: "Physique check-in", date: "18 SEP", idea: "A strong before/after moment worth capturing on its own." },
-    { label: "Peak week starts", date: "20 SEP", idea: "Show the shift in intensity and discipline as the final push begins." },
-    { label: "Competition day", date: "26 SEP", idea: "The payoff moment the whole archive has been building towards." }
+    { label: "Posing mock test", date: "12 SEP", idea: "Behind-the-scenes practice footage builds anticipation for the stage.", img: "vault/clips/Timeline 1_01_41_53_00.jpg" },
+    { label: "Physique check-in", date: "18 SEP", idea: "A strong before/after moment worth capturing on its own.", img: "vault/clips-henderson/IMG_9349.JPG" },
+    { label: "Peak week starts", date: "20 SEP", idea: "Show the shift in intensity and discipline as the final push begins.", img: "vault/clips/Timeline 1_01_07_45_24.jpg" },
+    { label: "Competition day", date: "26 SEP", idea: "The payoff moment the whole archive has been building towards.", img: "vault/clips-henderson/IMG_9360.JPG" }
   ]
 };
 
@@ -42,18 +50,18 @@ window.AIM_STRATEGY = {
   targetPractice: [
     {
       num: "01", name: "Origin / Awareness", role: "Foundation", output: "The Core Tension Statement",
-      figure: "assets/glyphs/s1-origin.png", status: "current",
+      figure: "../../assets/glyphs/s1-origin.png", status: "current",
       statusLabel: "Origin drafted from voice notes, call still needed to lock it in",
       whatWeKnow: "Draft Core Tension Statement, not locked, needs confirmation: \"Simone isn't selling injury-prevention PT. She's using her own transformation, in the final weeks before Auckland IFBB, as proof that she knows who she is, and she wants to help other people find that same self-knowledge. The content has to be about her: her training, her intensity, her identity.\" Her own words: \"I know exactly who I am, this year, that's what I'm bringing to the stage.\"",
       decisions: "Offer direction: online personal training and lifestyle coaching, not bodybuilder-only. Positioning centres on her own visible transformation and mindset shift, not a credentials-led physio or PT pitch."
     },
-    { num: "02", name: "Identity", role: "Foundation", output: "The Decision Filter", figure: "assets/glyphs/s2-identity.png", status: "locked", statusLabel: "Not yet started",
+    { num: "02", name: "Identity", role: "Foundation", output: "The Decision Filter", figure: "../../assets/glyphs/s2-identity.png", status: "locked", statusLabel: "Not yet started",
       why: "Before a brand can speak, it has to know what it is and what it refuses to be. This stage defines the role it plays in someone's life, guide, rebel, translator or protector, and sets the filter every future decision gets run through." },
-    { num: "03", name: "Audience Truth", role: "Strategy", output: "The Audience Pressure Point", figure: "assets/glyphs/s3-audience.png", status: "locked", statusLabel: "Not yet started",
+    { num: "03", name: "Audience Truth", role: "Strategy", output: "The Audience Pressure Point", figure: "../../assets/glyphs/s3-audience.png", status: "locked", statusLabel: "Not yet started",
       why: "Demographics don't tell you who someone is. This stage gets at what they're actually tired of, what they secretly want, and what moment in their life they're standing in, so the work speaks to a real person, not a segment." },
-    { num: "04", name: "Narrative Engine", role: "Strategy", output: "The Narrative Arc", figure: "assets/glyphs/s4-narrative.png", status: "locked", statusLabel: "Not yet started",
+    { num: "04", name: "Narrative Engine", role: "Strategy", output: "The Narrative Arc", figure: "../../assets/glyphs/s4-narrative.png", status: "locked", statusLabel: "Not yet started",
       why: "Every brand is telling a story whether it means to or not. This stage shapes that story deliberately, where someone starts, what shifts, who they become on the other side, and turns it into language that can actually be used." },
-    { num: "05", name: "Decision Map", role: "Execution", output: "A 90-Day Action Spine", figure: "assets/glyphs/s5-process.png", status: "locked", statusLabel: "Not yet started",
+    { num: "05", name: "Decision Map", role: "Execution", output: "A 90-Day Action Spine", figure: "../../assets/glyphs/s5-process.png", status: "locked", statusLabel: "Not yet started",
       why: "Clarity means nothing without action. This stage cuts the noise down to what actually matters right now, what's premature, and what moves the needle first, so the next 90 days have a spine, not a wish list." }
   ],
   // Content pillars, written back in Simone's own words from her Stage 01
